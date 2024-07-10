@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\TrainerAuthController;
@@ -32,6 +33,8 @@ Route::post('/student/login', [StudentAuthController::class, 'login'])->name('lo
 Route::get('/student/register', [StudentAuthController::class, 'showRegistrationForm'])->name('student.register');
 Route::post('/student/register', [StudentAuthController::class, 'register'])->name('register.student');
 Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
+Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
+Route::get('/student/dashboard' , [StudentController::class , 'dashboard'])->name('student.dashboard');
 
 //Groups routes
 Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');

@@ -21,13 +21,13 @@ class Group extends Model
         'condiviso',
         'numero_massimo_partecipanti',
         'livello',
-        'studenti',
+        'studenti_id',
         'data_inizio_corso',
         'data_fine_corso',
     ];
 
     protected $casts = [
-        'studenti' => 'array',
+        'studenti_id' => 'array',
     ];
 
     public function primoAllenatore()

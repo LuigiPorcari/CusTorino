@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('condiviso');
             $table->integer('numero_massimo_partecipanti');
             $table->integer('livello');
-            $table->json('studenti')->nullable();
+            $table->json('studenti_id')->nullable();
             $table->unsignedBigInteger('primo_allenatore_id')->nullable();
             $table->foreign('primo_allenatore_id')->references('id')->on('trainers');
             $table->unsignedBigInteger('secondo_allenatore_id')->nullable();

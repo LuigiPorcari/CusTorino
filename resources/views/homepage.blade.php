@@ -31,6 +31,7 @@
     {{-- Logica Student --}}
     @if (Auth::guard('student')->check())
         <p>Benvenuto, {{ Auth::guard('student')->user()->nome }}</p>
+        <a href="{{route('student.dashboard')}}">Dashboard</a>
         <form action="{{ route('student.logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger">Logout</button>

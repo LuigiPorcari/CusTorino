@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Alias;
 use App\Models\Group;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -34,4 +35,5 @@ class Student extends Authenticatable
     {
         return $this->belongsToMany(Alias::class);
     }
+    
 }
