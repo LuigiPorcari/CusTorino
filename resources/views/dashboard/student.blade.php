@@ -18,7 +18,6 @@
                         <form action="{{ route('student.markAbsence', $alias->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
-                            {{-- <input type="hidden" name="redirect_to" value="{{ url()->current() }}"> --}}
                             <button type="submit" class="btn btn-danger btn-sm">Segna Assenza</button>
                         </form>
                     </th>
@@ -52,23 +51,27 @@
         <tbody>
             @if (Auth::guard('student')->user()->Nrecoveries > 0)
                 @foreach ($aliases as $alias)
-                    {{-- @foreach ($alias->studenti_id as $studente) --}}
-                    @if (
-                        !in_array(Auth::guard('student')->user()->id, $alias->studenti_id) &&
-                            Auth::guard('student')->user()->level - 1 < $alias->livello &&
-                            $alias->livello < Auth::guard('student')->user()->level + 2 &&
-                            Auth::guard('student')->user()->gender == $alias->tipo &&
-                            count($alias->studenti_id) < $alias->numero_massimo_partecipanti)
-                        <tr>
-                            <th scope="row">
-                                <a href="">Recupera Assenza</a>
-                            </th>
-                            <td>{{ $alias->nome }}</td>
-                            <td>{{ $alias->data_allenamento }}</td>
-                            <td>{{ $alias->orario }}</td>
-                        </tr>
-                    @endif
-                    {{-- @endforeach --}}
+                    @foreach (Auth::guard('student')->user()->groups as $group)
+                        @if ($group->nome != $alias->nome &&
+                            !in_array(Auth::guard('student')->user()->id, $alias->studenti_id) &&
+                                Auth::guard('student')->user()->level - 1 < $alias->livello &&
+                                $alias->livello < Auth::guard('student')->user()->level + 2 &&
+                                Auth::guard('student')->user()->gender == $alias->tipo &&
+                                count($alias->studenti_id) < $alias->numero_massimo_partecipanti)
+                            <tr>
+                                <th scope="row">
+                                    <form action="{{ route('student.recAbsence', $alias->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm">Recupera Assenza</button>
+                                    </form>
+                                </th>
+                                <td>{{ $alias->nome }}</td>
+                                <td>{{ $alias->data_allenamento }}</td>
+                                <td>{{ $alias->orario }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
                 @endforeach
             @else
                 <tr>
