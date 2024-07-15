@@ -31,7 +31,8 @@ Route::post('/trainer/register', [TrainerAuthController::class, 'register'])->na
 Route::post('/trainer/logout', [TrainerAuthController::class, 'logout'])->name('trainer.logout');
 Route::get('/trainer/dashboard' , [TrainerController::class , 'dashboard'])->name('trainer.dashboard');
 Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
-Route::post('/student/student-recoveries/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('student.recoveries');
+Route::post('/trainer/student-recoveries/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('student.recoveries');
+Route::post('/trainer/trainer-absence/{alias}', [TrainerController::class, 'aliasUpdate'])->name('alias.update');
 
 // Student routes
 Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');
