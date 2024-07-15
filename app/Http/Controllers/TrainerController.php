@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Alias;
+use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class TrainerController extends Controller
+{
+    public function dashboard()
+    {
+        $primo_allenatore_id = Auth::guard('trainer')->user()->id;
+        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $primo_allenatore_id)->get();
+        $secondo_allenatore_id = Auth::guard('trainer')->user()->id;
+        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $secondo_allenatore_id)->get();
+        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore'));
+    }
+
+    public function studentAbsence(Request $request, $aliasId)
+    {
+
+        $request->validate([
+            'student_ids' => 'required|array',
+            'student_ids.*' => 'required|integer|exists:students,id',
+        ]);
+
+        $alias = Alias::findOrFail($aliasId);
+        $studentIds = $request->student_ids;
+
+        // Rimuovi gli studenti selezionati dall'array studenti_id
+        $studenti = $alias->studenti_id ?? [];
+        foreach ($studentIds as $studentId) {
+            if (($key = array_search($studentId, $studenti)) !== false) {
+                unset($studenti[$key]);
+                // Incrementa Nrecoveries dello studente
+                $student = Student::find($studentId);
+                $student->increment('Nrecoveries');
+            }
+        }
+        $alias->studenti_id = array_values($studenti); // Reindex the array
+        $alias->save();
+        // Rimuovi la relazione N-N
+        $alias->students()->sync($alias->studenti_id);
+
+        return redirect()->back()->with('success', 'Assenze segnate con successo.');
+    }
+}

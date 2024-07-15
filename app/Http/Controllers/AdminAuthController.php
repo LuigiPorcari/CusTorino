@@ -20,11 +20,9 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $groups = Group::all();
-        $aliases = Alias::all();
-
+        
         if (Auth::guard('admin')->attempt($credentials)) {
-            return view('dashboard.admin' , compact('groups' , 'aliases'));
+            return view('homepage');
         }
 
         return redirect()->back()->withErrors(['email' => 'Le credenziali non sono corrette.']);

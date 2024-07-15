@@ -20,7 +20,7 @@ class TrainerAuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('trainer')->attempt($credentials)) {
-            return view('dashboard.trainer');
+            return view('homepage');
         }
 
         return redirect()->back()->withErrors(['email' => 'Le credenziali non sono corrette.']);

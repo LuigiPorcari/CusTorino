@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\StudentAuthController;
 use App\Http\Controllers\TrainerAuthController;
@@ -19,6 +21,7 @@ Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('login.
 Route::get('/admin/register', [AdminAuthController::class, 'showRegistrationForm'])->name('admin.register');
 Route::post('/admin/register', [AdminAuthController::class, 'register'])->name('register.admin');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+Route::get('/admin/dashboard' , [AdminController::class , 'dashboard'])->name('admin.dashboard');
 
 // Trainer routes
 Route::get('/trainer/login', [TrainerAuthController::class, 'showLoginForm'])->name('trainer.login');
@@ -26,6 +29,8 @@ Route::post('/trainer/login', [TrainerAuthController::class, 'login'])->name('lo
 Route::get('/trainer/register', [TrainerAuthController::class, 'showRegistrationForm'])->name('trainer.register');
 Route::post('/trainer/register', [TrainerAuthController::class, 'register'])->name('register.trainer');
 Route::post('/trainer/logout', [TrainerAuthController::class, 'logout'])->name('trainer.logout');
+Route::get('/trainer/dashboard' , [TrainerController::class , 'dashboard'])->name('trainer.dashboard');
+Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
 
 // Student routes
 Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');

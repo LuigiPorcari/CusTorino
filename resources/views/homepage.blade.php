@@ -13,6 +13,7 @@
     @if (Auth::guard('admin')->check())
         <p>Benvenuto, {{ Auth::guard('admin')->user()->nome }}</p>
         <a href="{{route('groups.create')}}">Crea gruppi</a>
+        <a href="{{route('admin.dashboard')}}">Dashboard</a>
         <form action="{{ route('admin.logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger">Logout</button>
@@ -22,6 +23,7 @@
     {{-- Logica Trainer --}}
     @if (Auth::guard('trainer')->check())
         <p>Benvenuto, {{ Auth::guard('trainer')->user()->nome }}</p>
+        <a href="{{route('trainer.dashboard')}}">Dashboard</a>
         <form action="{{ route('trainer.logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger">Logout</button>
