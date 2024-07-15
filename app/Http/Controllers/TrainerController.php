@@ -15,7 +15,8 @@ class TrainerController extends Controller
         $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $primo_allenatore_id)->get();
         $secondo_allenatore_id = Auth::guard('trainer')->user()->id;
         $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $secondo_allenatore_id)->get();
-        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore'));
+        $students = Student::all();
+        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore' , 'students'));
     }
 
     public function studentAbsence(Request $request, $aliasId)
@@ -46,4 +47,35 @@ class TrainerController extends Controller
 
         return redirect()->back()->with('success', 'Assenze segnate con successo.');
     }
+
+    public function recoveriesStudent(Request $request, $aliasId)
+{
+    $request->validate([
+        'student_ids' => 'required|array',
+        'student_ids.*' => 'required|integer|exists:students,id',
+    ]);
+
+    $alias = Alias::findOrFail($aliasId);
+    $studentIds = $request->student_ids;
+
+    // Recupera l'array studenti_id dal gruppo alias
+    $currentStudentIds = $alias->studenti_id ?? [];
+
+
+    foreach ($studentIds as $studentId) {
+        if (!in_array($studentId, $currentStudentIds)) {
+            $currentStudentIds[] = $studentId;
+            // Decrementa Nrecoveries dello studente
+            $student = Student::find($studentId);
+            $student->decrement('Nrecoveries');
+        }
+    }
+
+    // Aggiorna l'array studenti_id del gruppo alias
+    $alias->studenti_id = $currentStudentIds;
+    $alias->save();
+    // Aggiungi gli studenti selezionati alla relazione N-N
+    $alias->students()->sync($alias->studenti_id);
+    return redirect()->back()->with('success', 'Recuperi registrati con successo.');
+}
 }

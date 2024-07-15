@@ -31,6 +31,7 @@ Route::post('/trainer/register', [TrainerAuthController::class, 'register'])->na
 Route::post('/trainer/logout', [TrainerAuthController::class, 'logout'])->name('trainer.logout');
 Route::get('/trainer/dashboard' , [TrainerController::class , 'dashboard'])->name('trainer.dashboard');
 Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
+Route::post('/student/student-recoveries/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('student.recoveries');
 
 // Student routes
 Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');
@@ -38,8 +39,8 @@ Route::post('/student/login', [StudentAuthController::class, 'login'])->name('lo
 Route::get('/student/register', [StudentAuthController::class, 'showRegistrationForm'])->name('student.register');
 Route::post('/student/register', [StudentAuthController::class, 'register'])->name('register.student');
 Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
-Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
 Route::get('/student/dashboard' , [StudentController::class , 'dashboard'])->name('student.dashboard');
+Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
 Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');
 
 //Groups routes

@@ -41,10 +41,10 @@ class StudentController extends Controller
         $student = Auth::guard('student')->user();
         $alias = Alias::findOrFail($aliasId);
 
-        // Rimuovi lo studente dalla relazione N-N con l'alias
+        // Aggiungi lo studente dalla relazione N-N con l'alias
         $alias->students()->attach($student->id);
 
-        // Incrementa il contatore delle assenze dello studente
+        // Decrementa il contatore delle assenze dello studente
         $student->decrement('Nrecoveries');
 
         // Aggiorna l'array degli studenti nell'alias
