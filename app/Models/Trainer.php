@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Alias;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Trainer extends Authenticatable
 {
@@ -15,7 +16,7 @@ class Trainer extends Authenticatable
 
     protected $guard = 'trainer';
 
-    
+
     protected $fillable = [
         'nome', 'cognome', 'email', 'password',
     ];
@@ -25,4 +26,42 @@ class Trainer extends Authenticatable
     ];
 
     protected $table = 'trainers';
+
+    public function primoAllenatoreAliases()
+    {
+        return $this->hasMany(Alias::class, 'primo_allenatore_id');
+    }
+
+    public function secondoAllenatoreAliases()
+    {
+        return $this->hasMany(Alias::class, 'secondo_allenatore_id');
+    }
+
+    public function calcolaStipendioAllenatore($trainerId)
+    {
+        $trainer = Trainer::findOrFail($trainerId);
+        $stipendio = 0;
+
+        // Gruppi Alias dove il trainer è primo allenatore
+        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $trainer->id)->get();
+        foreach ($aliasesPrimoAllenatore as $alias) {
+            if ($alias->condiviso == "true") {
+                $stipendio += 15.00;
+            } else {
+                $stipendio += 22.50;
+            }
+        }
+
+        // Gruppi Alias dove il trainer è secondo allenatore
+        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $trainer->id)->get();
+        foreach ($aliasesSecondoAllenatore as $alias) {
+            if ($alias->condiviso == "true") {
+                $stipendio += 15.00;
+            } else {
+                $stipendio += 7.50;
+            }
+        }
+
+        return $stipendio;
+    }
 }

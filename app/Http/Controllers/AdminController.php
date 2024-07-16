@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alias;
 use App\Models\Group;
+use App\Models\Trainer;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -12,6 +13,7 @@ class AdminController extends Controller
     {
         $groups = Group::all();
         $aliases = Alias::all();
-        return view('dashboard.admin', compact('groups' , 'aliases'));
+        $trainers = Trainer::all();
+        return view('dashboard.admin', compact('groups' , 'aliases' , 'trainers'));
     }
 }
