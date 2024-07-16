@@ -1,5 +1,156 @@
 <x-layout documentTitle="Admin Dashbord">
-    <h1>Admin Dashbord</h1>
+    <div class="container mt-5">
+        <h1 class="mt-5 pt-5 text-center">Admin Dashboard</h1>
+        <h2 class="text-center">Benvenuto, {{Auth::guard('admin')->user()->nome}} {{Auth::guard('admin')->user()->cognome}}</h2>
+        <h3 class="text-center mt-5 mb-0">Tabelle dei gruppi</h3>
+        <div class="row">
+            @foreach ($groups as $group)
+                <div class="col-12 mt-5">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="w-25">Gruppo</th>
+                                <th>Alias</th>
+                                <th>Studenti</th>
+                                <th>Recuperi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="{{ $group->aliases->count() + 1 }}">
+                                    <p>Nome: {{ $group->nome }}</p>
+                                    <p>Giorno: {{ $group->giorno_settimana }}</p>
+                                    <p>Orario: {{ $group->orario }}</p>
+                                    <p>Tipologia: {{ $group->tipo }}</p>
+                                    <p>Primo allenatore: {{ $group->primoAllenatore->nome }}
+                                        {{ $group->primoAllenatore->cognome }}</p>
+                                    @if ($group->secondo_allenatore_id != null)
+                                        <p>Secondo allenatore: {{ $group->secondoAllenatore->nome }}
+                                            {{ $group->secondoAllenatore->cognome }}</p>
+                                        @if ($group->condiviso == 'true')
+                                            <p>Condiviso</p>
+                                        @endif
+                                    @endif
+                                    <p>Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
+                                    <p>Studenti:</p>
+                                    @foreach ($group->students as $student)
+                                        <p>{{ $student->nome }} {{ $student->cognome }}</p>
+                                    @endforeach
+                                    <div class="d-flex justify-content-center mt-5">
+                                        <a class="btn btn-warning" href="{{ route('groups.edit', $group) }}">Modifica</a>
+                                        <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="ms-2 btn btn-danger">Elimina</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @foreach ($group->aliases as $alias)
+                                <tr>
+                                    <td class="fw-bold w-25">{{ $alias->data_allenamento }}</td>
+                                    <td>
+                                        @foreach ($group->students as $student)
+                                            <div
+                                                class="{{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                                {{ $student->nome }} {{ $student->cognome }}
+                                            </div>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
+                                            @if (!in_array($recupero->id, $group->studenti_id))
+                                                <p class="mt-2">{{ $recupero->nome }} {{ $recupero->cognome }}</p>
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- STIPENDI --}}
+    <div class="container">
+        <div class="row">
+            <h2 class="mt-5 text-center">Stipendi Allenatori</h2>
+            @foreach ($trainers as $trainer)
+                <div class="col-12">
+                    <h2 class="mt-5 mb-4">{{ $trainer->nome }} {{ $trainer->cognome }}</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <p>Data Gruppo Alias</p>
+                                </th>
+                                <th class="d-flex justify-content-between">
+                                    <p>Tipo allenatore</p>
+                                    <p>Condiviso</p>
+                                </th>
+                                <th>
+                                    <p>Stipendio relativo alla prestazione (€)</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($trainer->primoAllenatoreAliases as $alias)
+                                <tr>
+                                    <td>{{ $alias->data_allenamento }}</td>
+                                    <td class="d-flex justify-content-between">
+                                        <p>Primo Allenatore</p>
+                                        <p>
+                                            @if ($alias->condiviso == 'true')
+                                                Si
+                                            @else
+                                                No
+                                            @endif
+                                        </p>
+                                    </td>
+                                    @if ($alias->condiviso == 'true')
+                                        <td>15.00 €</td>
+                                    @else
+                                        <td>22.50 €</td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                            @foreach ($trainer->secondoAllenatoreAliases as $alias)
+                                <tr>
+                                    <td>{{ $alias->data_allenamento }}</td>
+                                    <td class="d-flex justify-content-between">
+                                        <p>Secondo Allenatore</p>
+                                        <p>
+                                            @if ($alias->condiviso == 'true')
+                                                Si
+                                            @else
+                                                No
+                                            @endif
+                                        </p>
+                                    </td>
+                                    @if ($alias->condiviso == 'true')
+                                        <td>15.00 €</td>
+                                    @else
+                                        <td>7.50 €</td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <td colspan="3"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-right"><strong>Stipendio Totale:</strong></td>
+                                <td><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</x-layout>
+{{-- <h1>Admin Dashbord</h1>
     <div class="container">
         <div class="row">
             @foreach ($groups as $group)
@@ -102,157 +253,4 @@
                 </div>
             @endforeach
         </div>
-    </div>
-
-
-
-    <h1 class="mt-5">Admin Dashboard</h1>
-    <div class="container">
-        <div class="row">
-            @foreach ($groups as $group)
-                <div class="col-12 mt-5">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Gruppo</th>
-                                <th>Alias</th>
-                                <th>Studenti</th>
-                                <th>Recuperi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td rowspan="{{ $group->aliases->count() + 1 }}">
-                                    <p>Nome: {{ $group->nome }}</p>
-                                    <p>Giorno: {{ $group->giorno_settimana }}</p>
-                                    <p>Orario: {{ $group->orario }}</p>
-                                    <p>Tipologia: {{ $group->tipo }}</p>
-                                    <p>Primo allenatore: {{ $group->primoAllenatore->nome }}
-                                        {{ $group->primoAllenatore->cognome }}</p>
-                                    @if ($group->secondo_allenatore_id != null)
-                                        <p>Secondo allenatore: {{ $group->secondoAllenatore->nome }}
-                                            {{ $group->secondoAllenatore->cognome }}</p>
-                                        @if ($group->condiviso == 'true')
-                                            <p>Condiviso</p>
-                                        @endif
-                                    @endif
-                                    <p>Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
-                                    <p>Studenti:</p>
-                                    @foreach ($group->students as $student)
-                                        <p>{{ $student->nome }} {{ $student->cognome }}</p>
-                                    @endforeach
-                                    <div class="d-flex justify-content-center mt-5">
-                                        <a class="btn btn-warning"
-                                            href="{{ route('groups.edit', $group) }}">Modifica</a>
-                                        <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="ms-2 btn btn-danger">Elimina</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @foreach ($group->aliases as $alias)
-                                <tr>
-                                    <td class="fw-bold w-25">{{ $alias->data_allenamento }}</td>
-                                    <td>
-                                        @foreach ($group->students as $student)
-                                            <div
-                                                class="{{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger' }}">
-                                                {{ $student->nome }} {{ $student->cognome }}
-                                            </div>
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
-                                            @if (!in_array($recupero->id, $group->studenti_id))
-                                                <p class="mt-2">{{ $recupero->nome }} {{ $recupero->cognome }}</p>
-                                            @endif
-                                        @endforeach
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    {{-- STIPENDI --}}
-    <div class="container">
-        <div class="row">
-            <h1 class="mt-5">Stipendi Allenatori</h1>
-            @foreach ($trainers as $trainer)
-                <div class="col-12">
-                    <h2 class="mt-5 mb-4">{{ $trainer->nome }} {{ $trainer->cognome }}</h2>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <p>Data Gruppo Alias</p>
-                                </th>
-                                <th class="d-flex justify-content-between">
-                                    <p>Tipo allenatore</p>
-                                    <p>Condiviso</p>
-                                </th>
-                                <th>
-                                    <p>Stipendio relativo alla prestazione (€)</p>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($trainer->primoAllenatoreAliases as $alias)
-                                <tr>
-                                    <td>{{ $alias->data_allenamento }}</td>
-                                    <td class="d-flex justify-content-between">
-                                        <p>Primo Allenatore</p>
-                                        <p>
-                                            @if ($alias->condiviso == 'true')
-                                                Si
-                                            @else
-                                                No
-                                            @endif
-                                        </p>
-                                    </td>
-                                    @if ($alias->condiviso == 'true')
-                                        <td>15.00 €</td>
-                                    @else
-                                        <td>22.50 €</td>
-                                    @endif
-                                </tr>
-                            @endforeach
-                            @foreach ($trainer->secondoAllenatoreAliases as $alias)
-                                <tr>
-                                    <td>{{ $alias->data_allenamento }}</td>
-                                    <td class="d-flex justify-content-between">
-                                        <p>Secondo Allenatore</p>
-                                        <p>
-                                            @if ($alias->condiviso == 'true')
-                                                Si
-                                            @else
-                                                No
-                                            @endif
-                                        </p>
-                                    </td>
-                                    @if ($alias->condiviso == 'true')
-                                        <td>15.00 €</td>
-                                    @else
-                                        <td>7.50 €</td>
-                                    @endif
-                                </tr>
-                            @endforeach
-                            <tr>
-                                <td colspan="3"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="text-right"><strong>Stipendio Totale:</strong></td>
-                                <td><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</x-layout>
+    </div> --}}
