@@ -48,4 +48,28 @@ class Alias extends Model
     {
         return $this->belongsToMany(Student::class);
     }
+
+    public function compareStudents($groupId, $aliasId)
+    {
+        // Trova il gruppo e il gruppo alias
+        $group = Group::findOrFail($groupId);
+        $alias = Alias::findOrFail($aliasId);
+
+        // Recupera gli array studenti_id
+        $groupStudentIds = $group->studenti_id ?? [];
+        $aliasStudentIds = $alias->studenti_id ?? [];
+
+        // Ottieni gli ID che differiscono tra i due array
+        $diffIds = array_merge(
+            array_diff($groupStudentIds, $aliasStudentIds),
+            array_diff($aliasStudentIds, $groupStudentIds)
+        );
+
+        // Trova gli studenti con gli ID trovati
+        $students = Student::whereIn('id', $diffIds)->get();
+
+        // Restituisce gli studenti che differiscono
+        return $students;
+    }
+
 }

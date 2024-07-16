@@ -87,4 +87,64 @@ class GroupController extends Controller
 
         return redirect()->route('groups.create')->with('success', 'Gruppo creato con successo');
     }
+
+    public function edit(Group $group)
+    {
+        $trainers = Trainer::all();
+        $students = Student::all();
+        return view('groups.edit' , compact('group' , 'trainers' , 'students'));
+    }
+
+    public function update(Request $request , Group $group)
+    {
+        $group->update([
+            'nome' => $request->nome,
+            'giorno_settimana' => $request->giorno_settimana,
+            'orario' => $request->orario,
+            'campo' => $request->campo,
+            'tipo' => $request->tipo,
+            'primo_allenatore_id' => $request->primo_allenatore_id,
+            'secondo_allenatore_id' => $request->secondo_allenatore_id,
+            'condiviso' => $request->condiviso,
+            'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
+            'livello' => $request->livello,
+            'studenti_id' => $request->studenti_id,
+        ]);
+
+        $group->students()->sync($request->input('studenti_id'));
+
+        // Modifica dei gruppi alias
+        $dataInizio = Carbon::parse($group->data_inizio_corso);
+        foreach ($group->aliases as $alias) {
+            $alias->update([
+                'nome' => $request->nome,
+                'group_id' => $group->id,
+                // 'data_allenamento' => $dataInizio->copy(),
+                'orario' => $request->orario,
+                'campo' => $request->campo,
+                'tipo' => $request->tipo,
+                'primo_allenatore_id' => $request->primo_allenatore_id,
+                'secondo_allenatore_id' => $request->secondo_allenatore_id,
+                'condiviso' => $request->condiviso,
+                'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
+                'livello' => $request->livello,
+                'studenti_id' => $request->studenti_id,
+            ]);
+
+            $alias->students()->sync($request->input('studenti_id'));
+            // $dataInizio->addWeek();
+        }
+        return redirect(route('admin.dashboard'))->with('success' , 'Gruppo modificato con successo');
+    }
+
+    public function delete(Group $group)
+    {   $array_vuoto = [];
+        foreach ($group->aliases as $alias) {
+            $alias->students()->sync($array_vuoto);
+        }
+        $group->aliases()->delete();
+        $group->students()->sync($array_vuoto);
+        $group->delete();
+        return redirect(route('admin.dashboard'));
+    }
 }
