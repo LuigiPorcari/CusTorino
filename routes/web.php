@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GroupController;
@@ -11,10 +12,9 @@ use App\Http\Controllers\TrainerAuthController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
-Route::get('/', function () {
-    return view('homepage');
-});
 
+// Public routes
+Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
 // Admin routes
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('login.admin');

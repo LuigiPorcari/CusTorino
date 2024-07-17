@@ -49,10 +49,10 @@
                             @foreach ($group->aliases as $alias)
                                 <tr>
                                     <td class="fw-bold w-25">{{ $alias->data_allenamento }}</td>
-                                    <td>
+                                    <td class="p-0">
                                         @foreach ($group->students as $student)
                                             <div
-                                                class="{{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                                class="border-top py-1 {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
                                                 {{ $student->nome }} {{ $student->cognome }}
                                             </div>
                                         @endforeach

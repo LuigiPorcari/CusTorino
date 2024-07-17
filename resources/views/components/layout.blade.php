@@ -12,6 +12,6 @@
     <div class="min-vh-100">
         {{$slot}}
     </div>
-
+<x-modal/>
 </body>
 </html>
