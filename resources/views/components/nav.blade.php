@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('homepage') }}">CusTorino</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

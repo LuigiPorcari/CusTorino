@@ -34,7 +34,7 @@
                                     <p>Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
                                     <p>Studenti:</p>
                                     @foreach ($group->students as $student)
-                                        <p>{{ $student->nome }} {{ $student->cognome }}</p>
+                                        <p>{{ $student->nome }} {{ $student->cognome }} <br> Documentazione: @if($student->documentation == "true")OK @else NON OK @endif</p>
                                     @endforeach
                                     <div class="d-flex justify-content-center mt-5">
                                         <a class="btn btn-warning" href="{{ route('groups.edit', $group) }}">Modifica</a>
