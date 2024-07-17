@@ -25,12 +25,12 @@ class TrainerController extends Controller
     {
 
         $request->validate([
-            'student_ids' => 'required|array',
-            'student_ids.*' => 'required|integer|exists:students,id',
+            'studenti_ids' => 'required|array',
+            'studenti_ids.*' => 'required|integer|exists:students,id',
         ]);
 
         $alias = Alias::findOrFail($aliasId);
-        $studentIds = $request->student_ids;
+        $studentIds = $request->studenti_ids;
 
         // Rimuovi gli studenti selezionati dall'array studenti_id
         $studenti = $alias->studenti_id ?? [];
@@ -53,12 +53,12 @@ class TrainerController extends Controller
     public function recoveriesStudent(Request $request, $aliasId)
     {
         $request->validate([
-            'student_ids' => 'required|array',
-            'student_ids.*' => 'required|integer|exists:students,id',
+            'studenti_ids' => 'required|array',
+            'studenti_ids.*' => 'required|integer|exists:students,id',
         ]);
 
         $alias = Alias::findOrFail($aliasId);
-        $studentIds = $request->student_ids;
+        $studentIds = $request->studenti_ids;
 
         // Recupera l'array studenti_id dal gruppo alias
         $currentStudentIds = $alias->studenti_id ?? [];

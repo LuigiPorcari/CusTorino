@@ -2,7 +2,13 @@
     height: 45vh;
 }
 
-.boxes {
+.boxesTrainer {
+    height: 70px;
+    overflow: auto;
+    width: 100%;
+}
+
+.boxesGroup {
     height: 10%;
     overflow: auto;
     width: 100%;

@@ -93,7 +93,7 @@
                             name="livello" required min="1" max="10">
                     </div>
                     {{-- STUDENTI --}}
-                    <div class="mb-3 boxes container">
+                    <div class="mb-3 boxesGroup container">
                         <label class="form-label" for="studenti">Studenti</label>
                         <div class="row">
                             @foreach ($students as $student)

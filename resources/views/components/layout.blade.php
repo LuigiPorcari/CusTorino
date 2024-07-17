@@ -19,5 +19,4 @@
     {{-- SCRIPT FONTAWESOME --}}
     <script src="https://kit.fontawesome.com/cfb9a37921.js" crossorigin="anonymous"></script>
 </body>
-
 </html>
