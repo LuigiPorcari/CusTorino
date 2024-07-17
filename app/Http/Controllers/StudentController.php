@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alias;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,5 +58,15 @@ class StudentController extends Controller
         $alias->save();
 
         return redirect()->back()->with('success', 'Recupero segnato con successo.');
+    }
+
+    public function update(Request $request , Student $student)
+    {
+        $student = Auth::guard('student')->user();
+        $student->update([
+            'documentation' => $request->documentation,
+        ]);
+
+        return redirect()->back()->with('succes' , 'Documentazione aggiunta');
     }
 }

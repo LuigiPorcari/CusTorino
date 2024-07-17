@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,5 +49,11 @@ class Group extends Model
     public function students()
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function formatHours($hours)
+    {
+        $formattedTime = Carbon::parse($hours)->format('H:i');
+        return $formattedTime;
     }
 }

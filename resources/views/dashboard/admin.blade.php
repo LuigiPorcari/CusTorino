@@ -9,7 +9,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="w-25">Gruppo</th>
+                                <th class="colAdmin">Gruppo</th>
                                 <th>Alias</th>
                                 <th>Studenti</th>
                                 <th>Recuperi</th>
@@ -20,12 +20,12 @@
                                 <td rowspan="{{ $group->aliases->count() + 1 }}">
                                     <p>Nome: {{ $group->nome }}</p>
                                     <p>Giorno: {{ $group->giorno_settimana }}</p>
-                                    <p>Orario: {{ $group->orario }}</p>
+                                    <p>Orario: {{ $group->formatHours($group->orario) }}</p>
                                     <p>Tipologia: {{ $group->tipo }}</p>
-                                    <p>Primo allenatore: {{ $group->primoAllenatore->nome }}
+                                    <p>Primo allenatore: <br> {{ $group->primoAllenatore->nome }}
                                         {{ $group->primoAllenatore->cognome }}</p>
                                     @if ($group->secondo_allenatore_id != null)
-                                        <p>Secondo allenatore: {{ $group->secondoAllenatore->nome }}
+                                        <p>Secondo allenatore: <br> {{ $group->secondoAllenatore->nome }}
                                             {{ $group->secondoAllenatore->cognome }}</p>
                                         @if ($group->condiviso == 'true')
                                             <p>Condiviso</p>
@@ -36,19 +36,19 @@
                                     @foreach ($group->students as $student)
                                         <p>{{ $student->nome }} {{ $student->cognome }} <br> Documentazione: @if($student->documentation == "true")OK @else NON OK @endif</p>
                                     @endforeach
-                                    <div class="d-flex justify-content-center mt-5">
-                                        <a class="btn btn-warning" href="{{ route('groups.edit', $group) }}">Modifica</a>
+                                    <div class="d-flex flex-column align-items-center mt-5">
+                                        <a class="btn btn-warning mb-2" href="{{ route('groups.edit', $group) }}">Modifica</a>
                                         <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" class="ms-2 btn btn-danger">Elimina</button>
+                                            <button type="submit" class="ms-2 btn btn-danger me-2">Elimina</button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
                             @foreach ($group->aliases as $alias)
                                 <tr>
-                                    <td class="fw-bold w-25">{{ $alias->data_allenamento }}</td>
+                                    <td class="fw-bold w-25">{{$alias->formatData($alias->data_allenamento)}}</td>
                                     <td class="p-0">
                                         @foreach ($group->students as $student)
                                             <div
@@ -98,7 +98,7 @@
                         <tbody>
                             @foreach ($trainer->primoAllenatoreAliases as $alias)
                                 <tr>
-                                    <td>{{ $alias->data_allenamento }}</td>
+                                    <td>{{$alias->formatData($alias->data_allenamento)}}</td>
                                     <td class="d-flex justify-content-between">
                                         <p>Primo Allenatore</p>
                                         <p>
@@ -118,7 +118,7 @@
                             @endforeach
                             @foreach ($trainer->secondoAllenatoreAliases as $alias)
                                 <tr>
-                                    <td>{{ $alias->data_allenamento }}</td>
+                                    <td>{{$alias->formatData($alias->data_allenamento)}}</td>
                                     <td class="d-flex justify-content-between">
                                         <p>Secondo Allenatore</p>
                                         <p>

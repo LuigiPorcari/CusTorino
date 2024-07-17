@@ -43,6 +43,7 @@ Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('
 Route::get('/student/dashboard' , [StudentController::class , 'dashboard'])->name('student.dashboard');
 Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
 Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');
+Route::post('/student/update', [StudentController::class, 'update'])->name('student.updateDoc');
 
 //Groups routes
 Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');

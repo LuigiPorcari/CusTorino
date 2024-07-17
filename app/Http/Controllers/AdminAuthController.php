@@ -20,7 +20,7 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        
+
         if (Auth::guard('admin')->attempt($credentials)) {
             return view('homepage');
         }
@@ -49,7 +49,7 @@ class AdminAuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('admin.login');
+        return redirect()->route('homepage');
     }
 
     public function logout()

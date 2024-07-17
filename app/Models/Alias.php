@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,6 +71,18 @@ class Alias extends Model
 
         // Restituisce gli studenti che differiscono
         return $students;
+    }
+
+    public function formatData($date)
+    {
+        $formattedDate = Carbon::parse($date)->translatedFormat('d l F');
+        return $formattedDate;
+    }
+
+    public function formatHours($hours)
+    {
+        $formattedTime = Carbon::parse($hours)->format('H:i');
+        return $formattedTime;
     }
 
 }

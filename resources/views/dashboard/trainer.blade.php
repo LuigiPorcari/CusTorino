@@ -8,10 +8,11 @@
         <div class="row justify-content-center">
             @foreach ($aliasesPrimoAllenatore as $alias)
                 @if ($alias->condiviso == 'false')
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento) }}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             @if ($alias->secondo_allenatore_id != null)
                                 <p class="card-text text-center">Secondo allenatore:
                                     <br>{{ $alias->secondoAllenatore->nome }}
@@ -57,10 +58,11 @@
         <div class="row justify-content-center">
             @foreach ($aliasesSecondoAllenatore as $alias)
                 @if ($alias->condiviso == 'false')
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento) }}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             <p class="card-text text-center">Primo allenatore: <br>{{ $alias->primoAllenatore->nome }}
                                 {{ $alias->primoAllenatore->cognome }}</p>
                             <form method="POST" action="{{ route('student.absence', $alias->id) }}">
@@ -103,10 +105,11 @@
         <div class="row justify-content-center">
             @foreach ($aliasesPrimoAllenatore as $alias)
                 @if ($alias->condiviso == 'true')
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             <p class="card-text text-center">Altro allenatore:
                                 <br>{{ $alias->secondoAllenatore->nome }}
                                 {{ $alias->secondoAllenatore->cognome }}
@@ -144,10 +147,11 @@
             @endforeach
             @foreach ($aliasesSecondoAllenatore as $alias)
                 @if ($alias->condiviso == 'true')
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             <p class="card-text text-center">Altro allenatore: <br>{{ $alias->primoAllenatore->nome }}
                                 {{ $alias->primoAllenatore->cognome }}</p>
                             <form method="POST" action="{{ route('student.absence', $alias->id) }}">
@@ -191,10 +195,11 @@
         <div class="row justify-content-center">
             @foreach ($aliasesPrimoAllenatore as $alias)
                 @if ($alias->condiviso == 'false' && $alias->numero_massimo_partecipanti > count($alias->studenti_id))
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             @if ($alias->secondo_allenatore_id != null)
                                 <p class="card-text text-center">Secondo allenatore:
                                     <br>{{ $alias->secondoAllenatore->nome }}
@@ -248,10 +253,11 @@
         <div class="row justify-content-center">
             @foreach ($aliasesSecondoAllenatore as $alias)
                 @if ($alias->condiviso == 'false' && $alias->numero_massimo_partecipanti > count($alias->studenti_id))
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             <p class="card-text text-center">Primo allenatore: <br>{{ $alias->primoAllenatore->nome }}
                                 {{ $alias->primoAllenatore->cognome }}</p>
                             <form method="POST" action="{{ route('student.recoveries', $alias->id) }}">
@@ -301,10 +307,11 @@
         <div class="row justify-content-center">
             @foreach ($aliasesPrimoAllenatore as $alias)
                 @if ($alias->condiviso == 'true' && $alias->numero_massimo_partecipanti > count($alias->studenti_id))
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             <p class="card-text text-center">Altro allenatore: <br>{{ $alias->primoAllenatore->nome }}
                                 {{ $alias->primoAllenatore->cognome }}</p>
                             <form method="POST" action="{{ route('student.recoveries', $alias->id) }}">
@@ -346,10 +353,11 @@
             @endforeach
             @foreach ($aliasesSecondoAllenatore as $alias)
                 @if ($alias->condiviso == 'true' && $alias->numero_massimo_partecipanti > count($alias->studenti_id))
-                    <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm"">
+                    <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm"">
                         <div class="card-body d-flex flex-column justify-content-between align-items-center">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                            <p>{{ $alias->formatHours($alias->orario) }}</p>
                             <p class="card-text text-center">Altro allenatore: <br>{{ $alias->primoAllenatore->nome }}
                                 {{ $alias->primoAllenatore->cognome }}</p>
                             <form method="POST" action="{{ route('student.recoveries', $alias->id) }}">
@@ -399,10 +407,11 @@
         <h3 class="text-center mb-4">Gruppi in cui alleni</h3>
         <div class="row justify-content-center">
             @foreach ($aliasesPrimoAllenatore as $alias)
-                <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                        <p>{{ $alias->formatHours($alias->orario) }}</p>
                         <form method="POST" action="{{ route('alias.update', $alias->id) }}">
                             @csrf
                             {{-- PRIMO ALLENATORE --}}
@@ -452,10 +461,11 @@
                 </div>
             @endforeach
             @foreach ($aliasesSecondoAllenatore as $alias)
-                <div class="card col-3 mx-1 my-2 border rounded-4 shadow-sm">
+                <div class="card col-8 col-md-3col-3 mx-1 my-2 border rounded-4 shadow-sm">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ $alias->data_allenamento }}</h6>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{$alias->formatData($alias->data_allenamento)}}</h6>
+                        <p>{{ $alias->formatHours($alias->orario) }}</p>
                         <form method="POST" action="{{ route('alias.update', $alias->id) }}">
                             @csrf
                             {{-- PRIMO ALLENATORE --}}
