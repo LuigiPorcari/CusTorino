@@ -2,7 +2,7 @@
     <h1 class="mt-5 pt-4">Login Trainer</h1>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 mt-4">
+            <div class="col-12 col-md-8 mt-4 border p-4 rounded-4 shadow mb-5">
                 <form method="POST" action="{{route('login.trainer')}}">
                     @csrf
                     <div class="mb-3">

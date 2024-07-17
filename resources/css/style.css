@@ -1,3 +1,9 @@
-.homepageCol{
+.homepageCol {
     height: 45vh;
+}
+
+.boxes {
+    height: 10%;
+    overflow: auto;
+    width: 100%;
 }
