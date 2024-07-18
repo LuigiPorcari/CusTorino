@@ -1,7 +1,14 @@
 <x-layout documentTitle="Admin Dashbord">
     <div class="container mt-5">
         <h1 class="mt-5 pt-5 text-center">Admin Dashboard</h1>
-        <h2 class="text-center">Benvenuto, {{Auth::guard('admin')->user()->nome}} {{Auth::guard('admin')->user()->cognome}}</h2>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        <h2 class="text-center">Benvenuto, {{ Auth::guard('admin')->user()->nome }}
+            {{ Auth::guard('admin')->user()->cognome }}</h2>
         <h3 class="text-center mt-5 mb-0">Tabelle dei gruppi</h3>
         <div class="row">
             @foreach ($groups as $group)
@@ -34,11 +41,19 @@
                                     <p>Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
                                     <p>Studenti:</p>
                                     @foreach ($group->students as $student)
-                                        <p>{{ $student->nome }} {{ $student->cognome }} <br> Documentazione: @if($student->documentation == "true")OK @else NON OK @endif</p>
+                                        <p>{{ $student->nome }} {{ $student->cognome }} <br> Documentazione:
+                                            @if ($student->documentation == 'true')
+                                                OK
+                                            @else
+                                                NON OK
+                                            @endif
+                                        </p>
                                     @endforeach
                                     <div class="d-flex flex-column align-items-center mt-5">
-                                        <a class="btn btn-warning mb-2" href="{{ route('groups.edit', $group) }}">Modifica</a>
-                                        <a class="btn btn-warning mb-2" href="{{ route('edit.student', $group) }}">Modifica Corsisti</a>
+                                        <a class="btn btn-warning mb-2"
+                                            href="{{ route('groups.edit', $group) }}">Modifica</a>
+                                        <a class="btn btn-warning mb-2"
+                                            href="{{ route('edit.student', $group) }}">Modifica Corsisti</a>
                                         <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
                                             @csrf
                                             @method('delete')
@@ -49,7 +64,7 @@
                             </tr>
                             @foreach ($group->aliases as $alias)
                                 <tr>
-                                    <td class="fw-bold w-25">{{$alias->formatData($alias->data_allenamento)}}</td>
+                                    <td class="fw-bold w-25">{{ $alias->formatData($alias->data_allenamento) }}</td>
                                     <td class="p-0">
                                         @foreach ($group->students as $student)
                                             <div
@@ -61,10 +76,9 @@
                                     <td class="p-0">
                                         @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
                                             @if (!in_array($recupero->id, $group->studenti_id))
-                                            <div
-                                                class="border-top py-1">
-                                                {{ $recupero->nome }} {{ $recupero->cognome }}
-                                            </div>
+                                                <div class="border-top py-1">
+                                                    {{ $recupero->nome }} {{ $recupero->cognome }}
+                                                </div>
                                             @endif
                                         @endforeach
                                     </td>
@@ -102,7 +116,7 @@
                         <tbody>
                             @foreach ($trainer->primoAllenatoreAliases as $alias)
                                 <tr>
-                                    <td>{{$alias->formatData($alias->data_allenamento)}}</td>
+                                    <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
                                     <td class="d-flex justify-content-between">
                                         <p>Primo Allenatore</p>
                                         <p>
@@ -122,7 +136,7 @@
                             @endforeach
                             @foreach ($trainer->secondoAllenatoreAliases as $alias)
                                 <tr>
-                                    <td>{{$alias->formatData($alias->data_allenamento)}}</td>
+                                    <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
                                     <td class="d-flex justify-content-between">
                                         <p>Secondo Allenatore</p>
                                         <p>

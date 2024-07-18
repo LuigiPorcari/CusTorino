@@ -3,6 +3,12 @@
     {{-- Gruppi primo allenatore --}}
     <div class="container mt-5">
         <h1 class="mt-5 pt-5 text-center">Trainer Dashbord</h1>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <h2 class="mt-5 mb-4">Gruppi in cui sei primo allenatore</h2>
         <h3 class="text-center mb-4 text-danger">Segna assenze</h3>
         <div class="row justify-content-center">

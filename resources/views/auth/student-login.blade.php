@@ -1,5 +1,13 @@
 <x-layout documentTitle="Student Login">
     <h1 class="mt-5 pt-4">Login Corsista</h1>
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            @endforeach
+        </div>
+    @endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 mt-4 border p-4 rounded-4 shadow mb-5">

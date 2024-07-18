@@ -2,6 +2,12 @@
     <div class="container mt-5">
         <div class="row mt-5">
             <h1 class="mt-5">Student Dashbord</h1>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             {{-- Segna assenze --}}
             <h2 class="mt-5 mb-3">Gruppi dove ti alleni</h2>
             <div class="col-12 border rounded-4 shadow bg-white">
@@ -89,14 +95,14 @@
                                     <td>{{ $alias->formatHours($alias->orario) }}</td>
                                 </tr>
                             @empty
-                            <tr>
-                                <td>
-                                    <h2>Non ci sono gruppi adatti al tuo recupero</h2>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <h2>Non ci sono gruppi adatti al tuo recupero</h2>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             @endforelse
                         @else
                             <tr>

@@ -98,7 +98,7 @@ class GroupController extends Controller
 
             $dataInizio->addWeek();
         }
-        return redirect()->route('edit.student', $group)->with('success', 'Gruppo creato con successo');
+        return redirect()->route('edit.student', $group);
     }
 
     public function edit(Group $group)
