@@ -72,19 +72,22 @@ class Trainer extends Authenticatable
     public function getRecoverableStudent($alias)
     {
         $recoverableStudent = [];
-        $students =Student::all();
+        $students = Student::all();
         foreach ($students as $student) {
-            if (
-                !in_array($student->id, $alias->studenti_id) &&
-                $student->Nrecoveries > 0 &&
-                $student->level - 1 <= $alias->livello &&
-                $alias->livello <= $student->level + 2 &&
-                $student->gender == $alias->tipo
-            ) {
-                $recoverableStudent[] = $student;
+            $groups = $student->groups;
+            foreach ($groups as $group) {
+                if (
+                    $group->nome != $alias->nome &&
+                    !in_array($student->id, $alias->studenti_id) &&
+                    $student->Nrecoveries > 0 &&
+                    $student->level - 1 < $alias->livello &&
+                    $alias->livello < $student->level + 2 &&
+                    $student->gender == $alias->tipo
+                ) {
+                    $recoverableStudent[] = $student;
+                }
             }
         }
-
         return $recoverableStudent;
     }
 }

@@ -215,7 +215,7 @@
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $alias)
+                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
                                             <div class="col-12">
                                                 <label class="checkbox">
                                                     <input class="form-check-input me-1 ms-4" type="checkbox"
@@ -259,7 +259,7 @@
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $alias)
+                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
                                             <div class="col-12">
                                                 <label class="checkbox">
                                                     <input class="form-check-input me-1 ms-4" type="checkbox"
@@ -303,7 +303,7 @@
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $alias)
+                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
                                             <div class="col-12">
                                                 <label class="checkbox">
                                                     <input class="form-check-input me-1 ms-4" type="checkbox"
@@ -340,7 +340,7 @@
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $alias)
+                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
                                             <div class="col-12">
                                                 <label class="checkbox">
                                                     <input class="form-check-input me-1 ms-4" type="checkbox"
