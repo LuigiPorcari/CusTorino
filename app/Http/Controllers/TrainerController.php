@@ -7,20 +7,45 @@ use App\Models\Student;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class TrainerController extends Controller
 {
     public function dashboard()
     {
         $allenatore_id = Auth::guard('trainer')->user()->id;
-        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $allenatore_id)->get();
-        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $allenatore_id)->get();
+        $aliasesPrimoAllenatoreCond = Alias::where('primo_allenatore_id', $allenatore_id)->get();
+        $aliasesSecondoAllenatoreCond = Alias::where('secondo_allenatore_id', $allenatore_id)->get();
+        $aliasesPrimoAllenatore = [];
+        $aliasesSecondoAllenatore = [];
+        $aliasesCond = [];
+        foreach ($aliasesPrimoAllenatoreCond as $alias) {
+            if ($alias->condiviso == "false") {
+                $aliasesPrimoAllenatore[] = $alias;
+            }
+        }
+        foreach ($aliasesSecondoAllenatoreCond as $alias) {
+            if ($alias->condiviso == "false") {
+                $aliasesSecondoAllenatore[] = $alias;
+            }
+        }
+        foreach ($aliasesPrimoAllenatoreCond as $alias) {
+            if ($alias->condiviso == "true") {
+                $aliasesCond[] = $alias;
+            }
+        }
+        foreach ($aliasesSecondoAllenatoreCond as $alias) {
+            if ($alias->condiviso == "true") {
+                $aliasesCond[] = $alias;
+            }
+        }
+        $aliasesTrainer = array_merge($aliasesPrimoAllenatore, $aliasesSecondoAllenatore, $aliasesCond);
         $students = Student::all();
         $trainers = Trainer::all();
-        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers'));
+        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers' , 'aliasesCond' , 'aliasesTrainer'));
     }
 
-    public function studentAbsence(Request $request, $aliasId)
+    public function studentAbsence(Request $request, Alias $alias)
     {
 
         $request->validate([
@@ -28,7 +53,6 @@ class TrainerController extends Controller
             'studenti_ids.*' => 'required|integer|exists:students,id',
         ]);
 
-        $alias = Alias::findOrFail($aliasId);
         $studentIds = $request->studenti_ids;
 
         // Rimuovi gli studenti selezionati dall'array studenti_id
@@ -49,14 +73,13 @@ class TrainerController extends Controller
         return redirect()->back()->with('success', 'Assenze segnate con successo.');
     }
 
-    public function recoveriesStudent(Request $request, $aliasId)
+    public function recoveriesStudent(Request $request, Alias $alias)
     {
         $request->validate([
             'studenti_ids' => 'required|array',
             'studenti_ids.*' => 'required|integer|exists:students,id',
         ]);
 
-        $alias = Alias::findOrFail($aliasId);
         $studentIds = $request->studenti_ids;
 
         // Recupera l'array studenti_id dal gruppo alias

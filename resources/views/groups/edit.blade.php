@@ -93,19 +93,11 @@
                             name="livello" required min="1" max="10">
                     </div>
                     {{-- STUDENTI --}}
-                    <div class="mb-3 boxesGroup container">
+                    {{-- <div class="mb-3 boxesGroup container">
                         <label class="form-label" for="studenti">Studenti</label>
                         <div class="row">
                             @foreach ($students as $student)
                                 <div class="col-3">
-                                    {{-- <ul class="list-group">
-                                <li class="list-group-item">
-                                    <input @if ($group->students->contains($student)) checked @endif
-                                        class="form-check-input me-1" type="checkbox" value="{{ $student->id }}"
-                                        name="studenti_id[]">
-                                    {{ $student->nome }} {{ $student->cognome }}
-                                </li>
-                            </ul> --}}
                                     <label class="checkbox">
                                         <input @if ($group->students->contains($student)) checked @endif
                                             class="form-check-input me-1 ms-4" type="checkbox"
@@ -115,7 +107,7 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <button type="submit" class="btn btn-primary">Modifica Gruppo</button>
                     </div>
@@ -127,7 +119,7 @@
 
 
 
-<div class="boxes">
+{{-- <div class="boxes">
     <div class="row">
         <div class="span2">
             <label class="checkbox">
@@ -137,4 +129,4 @@
             </label>
         </div>
     </div>
-</div>
+</div> --}}

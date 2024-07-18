@@ -38,6 +38,7 @@
                                     @endforeach
                                     <div class="d-flex flex-column align-items-center mt-5">
                                         <a class="btn btn-warning mb-2" href="{{ route('groups.edit', $group) }}">Modifica</a>
+                                        <a class="btn btn-warning mb-2" href="{{ route('edit.student', $group) }}">Modifica Corsisti</a>
                                         <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
                                             @csrf
                                             @method('delete')
@@ -57,10 +58,13 @@
                                             </div>
                                         @endforeach
                                     </td>
-                                    <td>
+                                    <td class="p-0">
                                         @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
                                             @if (!in_array($recupero->id, $group->studenti_id))
-                                                <p class="mt-2">{{ $recupero->nome }} {{ $recupero->cognome }}</p>
+                                            <div
+                                                class="border-top py-1">
+                                                {{ $recupero->nome }} {{ $recupero->cognome }}
+                                            </div>
                                             @endif
                                         @endforeach
                                     </td>

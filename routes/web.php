@@ -51,3 +51,5 @@ Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
 Route::get('/groups/edit/{group}', [GroupController::class, 'edit'])->name('groups.edit');
 Route::post('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
 Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
+Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
+Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');

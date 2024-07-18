@@ -88,6 +88,7 @@ class Trainer extends Authenticatable
                 }
             }
         }
+        $recoverableStudent = array_unique($recoverableStudent);
         return $recoverableStudent;
     }
 }

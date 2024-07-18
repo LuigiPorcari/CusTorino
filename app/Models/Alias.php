@@ -75,7 +75,7 @@ class Alias extends Model
 
     public function formatData($date)
     {
-        $formattedDate = Carbon::parse($date)->translatedFormat('d l F');
+        $formattedDate = Carbon::parse($date)->translatedFormat('l d F');
         return $formattedDate;
     }
 

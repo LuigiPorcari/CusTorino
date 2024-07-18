@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
-use App\Models\Alias;
-use App\Models\Trainer;
-use App\Models\Student;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Alias;
+use App\Models\Group;
+use App\Models\Student;
+use App\Models\Trainer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
 {
@@ -18,21 +19,34 @@ class GroupController extends Controller
         return view('groups.create', compact('trainers', 'students'));
     }
 
+    public function editStudent(Group $group)
+    {
+        // FILTRO STUDENTI IMPLEMENTABILE
+        $students = Student::all();
+        $studentsAvaiable = [];
+        foreach ($students as $student) {
+            if ($student->gender == $group->tipo) {
+                $studentsAvaiable[] = $student;
+            }
+        }
+        return view('groups.createStudent', compact('group', 'studentsAvaiable'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'nome' => 'required|string',
             'giorno_settimana' => 'required|string',
             'orario' => 'required',
-            'campo' => 'required|integer',
+            'campo' => 'required|integer|min:1|max:4',
             'tipo' => 'required|string',
             'primo_allenatore_id' => 'required|integer|exists:trainers,id',
             'secondo_allenatore_id' => 'nullable|integer|exists:trainers,id',
             'condiviso' => 'required|string',
             'numero_massimo_partecipanti' => 'required|integer',
             'livello' => 'required|integer|min:1|max:10',
-            'studenti_id' => 'nullable|array',
-            'studenti_id.*' => 'integer|exists:students,id',
+            // 'studenti_id' => 'nullable|array',
+            // 'studenti_id.*' => 'integer|exists:students,id',
             'data_inizio_corso' => 'required|date',
             'data_fine_corso' => 'required|date|after_or_equal:data_inizio_corso',
         ]);
@@ -48,14 +62,14 @@ class GroupController extends Controller
             'condiviso' => $request->condiviso,
             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
             'livello' => $request->livello,
-            'studenti_id' => $request->studenti_id,
+            // 'studenti_id' => $request->studenti_id,
             'data_inizio_corso' => $request->data_inizio_corso,
             'data_fine_corso' => $request->data_fine_corso,
         ]);
 
-        foreach ($request->input('studenti_id') as $student) {
-            $group->students()->attach($student);
-        }
+        // foreach ($request->input('studenti_id') as $student) {
+        //     $group->students()->attach($student);
+        // }
 
         // Creazione dei gruppi alias
         $dataInizio = Carbon::parse($request->data_inizio_corso);
@@ -75,27 +89,26 @@ class GroupController extends Controller
                 'condiviso' => $request->condiviso,
                 'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
                 'livello' => $request->livello,
-                'studenti_id' => $request->studenti_id,
+                // 'studenti_id' => $request->studenti_id,
             ]);
 
-            foreach ($request->input('studenti_id') as $student) {
-                $alias->students()->attach($student);
-            }
+            // foreach ($request->input('studenti_id') as $student) {
+            //     $alias->students()->attach($student);
+            // }
 
             $dataInizio->addWeek();
         }
-
-        return redirect()->route('groups.create')->with('success', 'Gruppo creato con successo');
+        return redirect()->route('edit.student', $group)->with('success', 'Gruppo creato con successo');
     }
 
     public function edit(Group $group)
     {
         $trainers = Trainer::all();
         $students = Student::all();
-        return view('groups.edit' , compact('group' , 'trainers' , 'students'));
+        return view('groups.edit', compact('group', 'trainers', 'students'));
     }
 
-    public function update(Request $request , Group $group)
+    public function update(Request $request, Group $group)
     {
         $group->update([
             'nome' => $request->nome,
@@ -108,13 +121,13 @@ class GroupController extends Controller
             'condiviso' => $request->condiviso,
             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
             'livello' => $request->livello,
-            'studenti_id' => $request->studenti_id,
+            // 'studenti_id' => $request->studenti_id,
         ]);
 
-        $group->students()->sync($request->input('studenti_id'));
+        // $group->students()->sync($request->input('studenti_id'));
 
         // Modifica dei gruppi alias
-        $dataInizio = Carbon::parse($group->data_inizio_corso);
+        // $dataInizio = Carbon::parse($group->data_inizio_corso);
         foreach ($group->aliases as $alias) {
             $alias->update([
                 'nome' => $request->nome,
@@ -128,17 +141,56 @@ class GroupController extends Controller
                 'condiviso' => $request->condiviso,
                 'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
                 'livello' => $request->livello,
-                'studenti_id' => $request->studenti_id,
+                // 'studenti_id' => $request->studenti_id,
             ]);
 
-            $alias->students()->sync($request->input('studenti_id'));
+            // $alias->students()->sync($request->input('studenti_id'));
             // $dataInizio->addWeek();
         }
-        return redirect(route('admin.dashboard'))->with('success' , 'Gruppo modificato con successo');
+        return redirect(route('admin.dashboard'))->with('success', 'Gruppo modificato con successo');
+    }
+
+    public function createStudent(Request $request, Group $group)
+    {
+        // Definire le regole di base
+        $validator = Validator::make($request->all(), [
+            'studenti_id' => 'nullable|array',
+            'studenti_id.*' => 'required|integer|exists:students,id',
+        ]);
+
+        // Aggiungere una regola di validazione personalizzata per il numero massimo di partecipanti
+        $validator->after(function ($validator) use ($group) {
+            $studenti = $validator->getData()['studenti_id'] ?? [];
+            if (count($studenti) > $group->numero_massimo_partecipanti) {
+                $validator->errors()->add('studenti_id', 'Il numero massimo di partecipanti è stato superato.');
+            }
+        });
+
+        // Eseguire la validazione
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+
+        $group->update([
+            'studenti_id' => $request->studenti_id,
+        ]);
+
+        $group->students()->sync($request->input('studenti_id'));
+
+        // Modifica dei gruppi alias
+        foreach ($group->aliases as $alias) {
+            $alias->update([
+                'studenti_id' => $request->studenti_id,
+            ]);
+            $alias->students()->sync($request->input('studenti_id'));
+        }
+        return redirect(route('admin.dashboard'))->with('success', 'Gruppo creato con successo');
     }
 
     public function delete(Group $group)
-    {   $array_vuoto = [];
+    {
+        $array_vuoto = [];
         foreach ($group->aliases as $alias) {
             $alias->students()->sync($array_vuoto);
         }
