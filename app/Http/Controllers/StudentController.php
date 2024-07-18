@@ -11,8 +11,34 @@ class StudentController extends Controller
 {
     public function dashboard()
     {
-        $aliases = Alias::all();
-        return view('dashboard.student', compact('aliases'));
+        $student = Auth::guard('student')->user();
+        // $aliases = Alias::all();
+        // Recupera gli alias recuperabili
+        $recoverableAliases = $this->getRecoverableAliases($student);
+        return view('dashboard.student', compact('recoverableAliases'));
+    }
+
+    private function getRecoverableAliases($student)
+    {
+        $allAliases = Alias::all();
+        $recoverableAliases = [];
+
+        foreach ($allAliases as $alias) {
+            foreach ($student->groups as $group) {
+                if (
+                    $group->nome != $alias->nome &&
+                    !in_array($student->id, $alias->studenti_id) &&
+                    $student->level - 1 <= $alias->livello &&
+                    $alias->livello <= $student->level + 2 &&
+                    $student->gender == $alias->tipo &&
+                    count($alias->studenti_id) < $alias->numero_massimo_partecipanti
+                ) {
+                    $recoverableAliases[] = $alias;
+                }
+            }
+        }
+
+        return $recoverableAliases;
     }
     public function markAbsence($aliasId)
     {
@@ -60,13 +86,13 @@ class StudentController extends Controller
         return redirect()->back()->with('success', 'Recupero segnato con successo.');
     }
 
-    public function update(Request $request , Student $student)
+    public function update(Request $request, Student $student)
     {
         $student = Auth::guard('student')->user();
         $student->update([
             'documentation' => $request->documentation,
         ]);
 
-        return redirect()->back()->with('succes' , 'Documentazione aggiunta');
+        return redirect()->back()->with('succes', 'Documentazione aggiunta');
     }
 }

@@ -55,15 +55,9 @@
                     </thead>
                     <tbody>
                         @if (Auth::guard('student')->user()->Nrecoveries > 0)
-                            @foreach ($aliases as $alias)
+                            {{-- @foreach ($aliases as $alias)
                                 @foreach (Auth::guard('student')->user()->groups as $group)
-                                    @if (
-                                        $group->nome != $alias->nome &&
-                                            !in_array(Auth::guard('student')->user()->id, $alias->studenti_id) &&
-                                            Auth::guard('student')->user()->level - 1 < $alias->livello &&
-                                            $alias->livello < Auth::guard('student')->user()->level + 2 &&
-                                            Auth::guard('student')->user()->gender == $alias->tipo &&
-                                            count($alias->studenti_id) < $alias->numero_massimo_partecipanti)
+                                    @if ($group->nome != $alias->nome && !in_array(Auth::guard('student')->user()->id, $alias->studenti_id) && Auth::guard('student')->user()->level - 1 <= $alias->livello && $alias->livello <= Auth::guard('student')->user()->level + 2 && Auth::guard('student')->user()->gender == $alias->tipo && count($alias->studenti_id) < $alias->numero_massimo_partecipanti)
                                         <tr>
                                             <th scope="row">
                                                 <form action="{{ route('student.recAbsence', $alias->id) }}"
@@ -79,7 +73,31 @@
                                         </tr>
                                     @endif
                                 @endforeach
-                            @endforeach
+                            @endforeach --}}
+                            @forelse ($recoverableAliases as $alias)
+                                <tr>
+                                    <th scope="row">
+                                        <form action="{{ route('student.recAbsence', $alias->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger btn-sm">Recupera
+                                                Assenza</button>
+                                        </form>
+                                    </th>
+                                    <td>{{ $alias->nome }}</td>
+                                    <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
+                                    <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                </tr>
+                            @empty
+                            <tr>
+                                <td>
+                                    <h2>Non ci sono gruppi adatti al tuo recupero</h2>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            @endforelse
                         @else
                             <tr>
                                 <td>
@@ -100,7 +118,7 @@
             <div class="row">
                 <h3>Hai mandato i documenti?</h3>
                 <div class="col-3 mt-3 border rounded-4 shadow">
-                    <form method="POST" action="{{route('student.updateDoc')}}">
+                    <form method="POST" action="{{ route('student.updateDoc') }}">
                         @csrf
                         {{-- DOCUMENTAZIONE --}}
                         <div class="my-3">

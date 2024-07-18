@@ -12,10 +12,9 @@ class TrainerController extends Controller
 {
     public function dashboard()
     {
-        $primo_allenatore_id = Auth::guard('trainer')->user()->id;
-        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $primo_allenatore_id)->get();
-        $secondo_allenatore_id = Auth::guard('trainer')->user()->id;
-        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $secondo_allenatore_id)->get();
+        $allenatore_id = Auth::guard('trainer')->user()->id;
+        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $allenatore_id)->get();
+        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $allenatore_id)->get();
         $students = Student::all();
         $trainers = Trainer::all();
         return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers'));
@@ -81,7 +80,7 @@ class TrainerController extends Controller
         return redirect()->back()->with('success', 'Recuperi registrati con successo.');
     }
 
-    public function aliasUpdate(Request $request , $aliasId)
+    public function aliasUpdate(Request $request, $aliasId)
     {
         $alias = Alias::findOrFail($aliasId);
         $alias->update([

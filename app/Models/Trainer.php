@@ -18,11 +18,15 @@ class Trainer extends Authenticatable
 
 
     protected $fillable = [
-        'nome', 'cognome', 'email', 'password',
+        'nome',
+        'cognome',
+        'email',
+        'password',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     protected $table = 'trainers';
@@ -63,5 +67,24 @@ class Trainer extends Authenticatable
         }
 
         return $stipendio;
+    }
+
+    public function getRecoverableStudent($alias)
+    {
+        $recoverableStudent = [];
+        $students =Student::all();
+        foreach ($students as $student) {
+            if (
+                !in_array($student->id, $alias->studenti_id) &&
+                $student->Nrecoveries > 0 &&
+                $student->level - 1 <= $alias->livello &&
+                $alias->livello <= $student->level + 2 &&
+                $student->gender == $alias->tipo
+            ) {
+                $recoverableStudent[] = $student;
+            }
+        }
+
+        return $recoverableStudent;
     }
 }
