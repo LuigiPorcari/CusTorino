@@ -185,7 +185,7 @@ class GroupController extends Controller
             ]);
             $alias->students()->sync($request->input('studenti_id'));
         }
-        return redirect(route('admin.dashboard'))->with('success', 'Gruppo creato con successo');
+        return redirect(route('admin.dashboard'))->with('success', 'Operazione avvenuta con successo');
     }
 
     public function delete(Group $group)
@@ -197,6 +197,6 @@ class GroupController extends Controller
         $group->aliases()->delete();
         $group->students()->sync($array_vuoto);
         $group->delete();
-        return redirect(route('admin.dashboard'));
+        return redirect(route('admin.dashboard'))->with('success', 'Gruppo cancellato');
     }
 }

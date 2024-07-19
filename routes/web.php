@@ -12,44 +12,49 @@ use App\Http\Controllers\TrainerAuthController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
-
-// Public routes
+//! Rotte per gli amministratori
+Route::group(['middleware' => ['auth:admin']], function () {
+    // Admin routes
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    //Groups routes
+    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
+    Route::get('/groups/edit/{group}', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::post('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
+    Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
+    Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
+    Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
+});
+//! Rotte per gli allenatori
+Route::group(['middleware' => ['auth:trainer']], function () {
+    // Trainer routes
+    Route::post('/trainer/logout', [TrainerAuthController::class, 'logout'])->name('trainer.logout');
+    Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
+    Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
+    Route::post('/trainer/student-recoveries/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('student.recoveries');
+    Route::post('/trainer/trainer-absence/{alias}', [TrainerController::class, 'aliasUpdate'])->name('alias.update');
+});
+//! Rotte per gli studenti
+Route::group(['middleware' => ['auth:student']], function () {
+    // Student routes
+    Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
+    Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');
+    Route::post('/student/update', [StudentController::class, 'update'])->name('student.updateDoc');
+});
+//! Public routes
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
-// Admin routes
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('login.admin');
 Route::get('/admin/register', [AdminAuthController::class, 'showRegistrationForm'])->name('admin.register');
 Route::post('/admin/register', [AdminAuthController::class, 'register'])->name('register.admin');
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-Route::get('/admin/dashboard' , [AdminController::class , 'dashboard'])->name('admin.dashboard');
-
-// Trainer routes
-Route::get('/trainer/login', [TrainerAuthController::class, 'showLoginForm'])->name('trainer.login');
-Route::post('/trainer/login', [TrainerAuthController::class, 'login'])->name('login.trainer');
-Route::get('/trainer/register', [TrainerAuthController::class, 'showRegistrationForm'])->name('trainer.register');
-Route::post('/trainer/register', [TrainerAuthController::class, 'register'])->name('register.trainer');
-Route::post('/trainer/logout', [TrainerAuthController::class, 'logout'])->name('trainer.logout');
-Route::get('/trainer/dashboard' , [TrainerController::class , 'dashboard'])->name('trainer.dashboard');
-Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
-Route::post('/trainer/student-recoveries/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('student.recoveries');
-Route::post('/trainer/trainer-absence/{alias}', [TrainerController::class, 'aliasUpdate'])->name('alias.update');
-
-// Student routes
 Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');
 Route::post('/student/login', [StudentAuthController::class, 'login'])->name('login.student');
 Route::get('/student/register', [StudentAuthController::class, 'showRegistrationForm'])->name('student.register');
 Route::post('/student/register', [StudentAuthController::class, 'register'])->name('register.student');
-Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
-Route::get('/student/dashboard' , [StudentController::class , 'dashboard'])->name('student.dashboard');
-Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
-Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');
-Route::post('/student/update', [StudentController::class, 'update'])->name('student.updateDoc');
-
-//Groups routes
-Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
-Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
-Route::get('/groups/edit/{group}', [GroupController::class, 'edit'])->name('groups.edit');
-Route::post('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
-Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
-Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
-Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
+Route::get('/trainer/login', [TrainerAuthController::class, 'showLoginForm'])->name('trainer.login');
+Route::post('/trainer/login', [TrainerAuthController::class, 'login'])->name('login.trainer');
+Route::get('/trainer/register', [TrainerAuthController::class, 'showRegistrationForm'])->name('trainer.register');
+Route::post('/trainer/register', [TrainerAuthController::class, 'register'])->name('register.trainer');

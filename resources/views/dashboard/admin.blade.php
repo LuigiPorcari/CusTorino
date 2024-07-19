@@ -26,7 +26,37 @@
                             <tr>
                                 <td rowspan="{{ $group->aliases->count() + 1 }}">
                                     <p>Nome: {{ $group->nome }}</p>
-                                    <p>Giorno: {{ $group->giorno_settimana }}</p>
+                                    <p>Giorno:
+                                        @switch($group->giorno_settimana)
+                                            @case('monday')
+                                            Lunedì
+                                        @break
+
+                                        @case('tuesday')
+                                            Martedì
+                                        @break
+
+                                        @case('wednesday')
+                                            Mercoledì
+                                        @break
+
+                                        @case('thursday,')
+                                            Giovedì
+                                        @break
+
+                                        @case('friday')
+                                            Venerdì
+                                        @break
+
+                                        @case('saturday')
+                                            Sabato
+                                        @break
+
+                                        @case('sunday')
+                                            Domenica
+                                        @break
+                                    @endswitch
+                                    </p>
                                     <p>Orario: {{ $group->formatHours($group->orario) }}</p>
                                     <p>Tipologia: {{ $group->tipo }}</p>
                                     <p>Primo allenatore: <br> {{ $group->primoAllenatore->nome }}
