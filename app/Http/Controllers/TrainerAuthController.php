@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alias;
+use App\Models\Group;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class TrainerAuthController extends Controller
 {
@@ -54,5 +56,20 @@ class TrainerAuthController extends Controller
     {
         Auth::guard('trainer')->logout();
         return redirect('/');
+    }
+
+    public function destroy($id)
+    {
+        $trainer = Trainer::findOrFail($id);
+
+        // Aggiornare o rimuovere i record dipendenti
+        Alias::where('primo_allenatore_id', $id)->update(['primo_allenatore_id' => null]);
+        Alias::where('secondo_allenatore_id', $id)->update(['secondo_allenatore_id' => null]);
+        Group::where('primo_allenatore_id', $id)->update(['primo_allenatore_id' => null]);
+        Group::where('secondo_allenatore_id', $id)->update(['secondo_allenatore_id' => null]);
+
+        $trainer->delete();
+
+        return redirect()->route('homepage')->with('success', 'Trainer eliminato con successo.');
     }
 }

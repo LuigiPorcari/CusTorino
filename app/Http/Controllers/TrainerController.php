@@ -73,35 +73,58 @@ class TrainerController extends Controller
         return redirect()->back()->with('success', 'Assenze segnate con successo.');
     }
 
-    public function recoveriesStudent(Request $request, Alias $alias)
+    public function editStudent(Alias $alias)
     {
-        $request->validate([
-            'studenti_ids' => 'required|array',
-            'studenti_ids.*' => 'required|integer|exists:students,id',
-        ]);
-
-        $studentIds = $request->studenti_ids;
-
-        // Recupera l'array studenti_id dal gruppo alias
-        $currentStudentIds = $alias->studenti_id ?? [];
-
-
-        foreach ($studentIds as $studentId) {
-            if (!in_array($studentId, $currentStudentIds)) {
-                $currentStudentIds[] = $studentId;
-                // Decrementa Nrecoveries dello studente
-                $student = Student::find($studentId);
-                $student->decrement('Nrecoveries');
-            }
-        }
-
-        // Aggiorna l'array studenti_id del gruppo alias
-        $alias->studenti_id = $currentStudentIds;
-        $alias->save();
-        // Aggiungi gli studenti selezionati alla relazione N-N
-        $alias->students()->sync($alias->studenti_id);
-        return redirect()->back()->with('success', 'Recuperi registrati con successo.');
+        return view('student.studentEditTrainer', compact('alias'));
     }
+
+    public function recoveriesStudent(Request $request, Alias $alias)
+{
+    // Definire le regole di base
+
+    $validator = Validator::make($request->all(), [
+        'studenti_id' => 'nullable|array',
+        'studenti_id.*' => 'required|integer|exists:students,id',
+    ]);
+
+    // Aggiungere una regola di validazione personalizzata per il numero massimo di partecipanti
+    $validator->after(function ($validator) use ($alias) {
+        $studenti = $validator->getData()['studenti_id'] ?? [];
+        $numeroTot = count($studenti) + count($alias->studenti_id);
+        if ($numeroTot > $alias->numero_massimo_partecipanti) {
+            $validator->errors()->add('studenti_id', 'Il numero massimo di partecipanti è stato superato.');
+        }
+    });
+
+
+    // Eseguire la validazione
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    $studentIds = $request->studenti_id ?? [];
+
+    // Recupera l'array studenti_id dal gruppo alias
+    $currentStudentIds = $alias->studenti_id ?? [];
+
+    foreach ($studentIds as $studentId) {
+        if (!in_array($studentId, $currentStudentIds)) {
+            $currentStudentIds[] = $studentId;
+            // Decrementa Nrecoveries dello studente
+            $student = Student::find($studentId);
+            $student->decrement('Nrecoveries');
+        }
+    }
+
+    // Aggiorna l'array studenti_id del gruppo alias
+    $alias->studenti_id = $currentStudentIds;
+    $alias->save();
+
+    // Aggiungi gli studenti selezionati alla relazione N-N
+    $alias->students()->syncWithoutDetaching($studentIds);
+
+    return redirect()->route('trainer.dashboard')->with('success', 'Recuperi registrati con successo.');
+}
 
     public function aliasUpdate(Request $request, $aliasId)
     {

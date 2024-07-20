@@ -39,7 +39,14 @@
                             <li class="d-flex justify-content-center">
                                 <form action="{{ route('admin.logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                    <button type="submit" class="btn btn-warning mb-2">Logout</button>
+                                </form>
+                            </li>
+                            <li class="d-flex justify-content-center">
+                                <form action="{{ route('admin.destroy', Auth::guard('admin')->user()->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Elimina utente</button>
                                 </form>
                             </li>
                         @elseif(Auth::guard('trainer')->check())
@@ -47,7 +54,14 @@
                             <li class="d-flex justify-content-center">
                                 <form action="{{ route('trainer.logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                    <button type="submit" class="btn btn-warning mb-2">Logout</button>
+                                </form>
+                            </li>
+                            <li class="d-flex justify-content-center">
+                                <form action="{{ route('trainer.destroy', Auth::guard('trainer')->user()->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Elimina utente</button>
                                 </form>
                             </li>
                         @elseif(Auth::guard('student')->check())
@@ -55,7 +69,14 @@
                             <li class="d-flex justify-content-center">
                                 <form action="{{ route('student.logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                    <button type="submit" class="btn btn-warning mb-2">Logout</button>
+                                </form>
+                            </li>
+                            <li class="d-flex justify-content-center">
+                                <form action="{{ route('student.destroy', Auth::guard('student')->user()->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Elimina utente</button>
                                 </form>
                             </li>
                         @endif

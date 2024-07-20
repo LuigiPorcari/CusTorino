@@ -29,38 +29,40 @@
                                     <p>Giorno:
                                         @switch($group->giorno_settimana)
                                             @case('monday')
-                                            Lunedì
-                                        @break
+                                                Lunedì
+                                            @break
 
-                                        @case('tuesday')
-                                            Martedì
-                                        @break
+                                            @case('tuesday')
+                                                Martedì
+                                            @break
 
-                                        @case('wednesday')
-                                            Mercoledì
-                                        @break
+                                            @case('wednesday')
+                                                Mercoledì
+                                            @break
 
-                                        @case('thursday,')
-                                            Giovedì
-                                        @break
+                                            @case('thursday,')
+                                                Giovedì
+                                            @break
 
-                                        @case('friday')
-                                            Venerdì
-                                        @break
+                                            @case('friday')
+                                                Venerdì
+                                            @break
 
-                                        @case('saturday')
-                                            Sabato
-                                        @break
+                                            @case('saturday')
+                                                Sabato
+                                            @break
 
-                                        @case('sunday')
-                                            Domenica
-                                        @break
-                                    @endswitch
+                                            @case('sunday')
+                                                Domenica
+                                            @break
+                                        @endswitch
                                     </p>
                                     <p>Orario: {{ $group->formatHours($group->orario) }}</p>
                                     <p>Tipologia: {{ $group->tipo }}</p>
-                                    <p>Primo allenatore: <br> {{ $group->primoAllenatore->nome }}
-                                        {{ $group->primoAllenatore->cognome }}</p>
+                                    @if ($group->primo_allenatore_id != null)
+                                        <p>Primo allenatore: <br> {{ $group->primoAllenatore->nome }}
+                                            {{ $group->primoAllenatore->cognome }}</p>
+                                    @endif
                                     @if ($group->secondo_allenatore_id != null)
                                         <p>Secondo allenatore: <br> {{ $group->secondoAllenatore->nome }}
                                             {{ $group->secondoAllenatore->cognome }}</p>
@@ -98,7 +100,7 @@
                                     <td class="p-0">
                                         @foreach ($group->students as $student)
                                             <div
-                                                class="border-top py-1 {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                                class="border-bottom py-2 {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
                                                 {{ $student->nome }} {{ $student->cognome }}
                                             </div>
                                         @endforeach
@@ -106,7 +108,7 @@
                                     <td class="p-0">
                                         @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
                                             @if (!in_array($recupero->id, $group->studenti_id))
-                                                <div class="border-top py-1">
+                                                <div class="border-bottom py-2">
                                                     {{ $recupero->nome }} {{ $recupero->cognome }}
                                                 </div>
                                             @endif

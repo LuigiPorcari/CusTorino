@@ -59,4 +59,17 @@ class StudentAuthController extends Controller
         Auth::guard('student')->logout();
         return redirect('/');
     }
+
+    public function destroy($id)
+{
+    $student = Student::findOrFail($id);
+
+    // Rimuovere i record dipendenti nella tabella pivot alias_student
+    $student->aliases()->detach();
+    $student->groups()->detach();
+
+    $student->delete();
+
+    return redirect()->route('homepage')->with('success', 'Studente eliminato con successo.');
+}
 }

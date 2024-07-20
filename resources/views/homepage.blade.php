@@ -3,6 +3,12 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="mt-5">Benvenuto nella Homepage</h1>
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <a class="btn btn-primary" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
             </div>
         </div>

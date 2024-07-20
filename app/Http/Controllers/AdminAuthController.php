@@ -57,4 +57,12 @@ class AdminAuthController extends Controller
         Auth::guard('admin')->logout();
         return redirect('/');
     }
+
+    public function destroy($id)
+    {
+        $admin = Admin::findOrFail($id);
+        $admin->delete();
+
+        return redirect()->route('homepage')->with('success', 'Admin eliminato con successo.');
+    }
 }

@@ -17,6 +17,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // Admin routes
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::delete('/admin/delete/{id}', [AdminAuthController::class, 'destroy'])->name('admin.destroy');
     //Groups routes
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
     Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
@@ -30,15 +31,19 @@ Route::group(['middleware' => ['auth:admin']], function () {
 Route::group(['middleware' => ['auth:trainer']], function () {
     // Trainer routes
     Route::post('/trainer/logout', [TrainerAuthController::class, 'logout'])->name('trainer.logout');
+    Route::delete('/trainer/delete/{id}', [TrainerAuthController::class, 'destroy'])->name('trainer.destroy');
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
     Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
     Route::post('/trainer/student-recoveries/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('student.recoveries');
     Route::post('/trainer/trainer-absence/{alias}', [TrainerController::class, 'aliasUpdate'])->name('alias.update');
+    Route::get('/trainer/create/student/{alias}', [TrainerController::class, 'editStudent'])->name('editStudent.trainer');
+    Route::post('/trainer/update/student/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('createStudent.trainer');
 });
 //! Rotte per gli studenti
 Route::group(['middleware' => ['auth:student']], function () {
     // Student routes
     Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
+    Route::delete('/student/delete/{id}', [StudentAuthController::class, 'destroy'])->name('student.destroy');
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
     Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');

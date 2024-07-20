@@ -29,7 +29,7 @@
                             <div class="boxesTrainer container mt-2">
                                 <div class="row justify-content-center">
                                     @csrf
-                                    @foreach ($alias->students as $student)
+                                    @forelse ($alias->students as $student)
                                         <div class="col-12">
                                             <label class="checkbox">
                                                 <input class="form-check-input me-1 ms-4" type="checkbox"
@@ -37,7 +37,9 @@
                                                 {{ $student->nome }} {{ $student->cognome }}
                                             </label>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <p class="text-center fs-3">Sono tutti assenti</p>
+                                    @endforelse
                                 </div>
                             </div>
                             <div class="d-flex flex-column align-items-center">
@@ -65,8 +67,12 @@
                         <h6 class="card-subtitle mb-2 text-body-secondary">
                             {{ $alias->formatData($alias->data_allenamento) }}</h6>
                         <p>{{ $alias->formatHours($alias->orario) }}</p>
-                        <p class="card-text text-center">Primo allenatore: <br>{{ $alias->primoAllenatore->nome }}
-                            {{ $alias->primoAllenatore->cognome }}</p>
+                        @if ($alias->primo_allenatore_id != null)
+                            <p class="card-text text-center">Primo allenatore:
+                                <br>{{ $alias->primoAllenatore->nome }}
+                                {{ $alias->primoAllenatore->cognome }}
+                            </p>
+                        @endif
                         <form method="POST" action="{{ route('student.absence', $alias) }}">
                             @csrf
                             <div class="boxesTrainer container mt-2">
@@ -108,7 +114,7 @@
                             {{ $alias->formatData($alias->data_allenamento) }}</h6>
                         <p>{{ $alias->formatHours($alias->orario) }}</p>
                         <p class="card-text text-center">Altro allenatore:
-                            @if ($alias->primoAllenatore->nome != Auth::guard('trainer')->user()->nome)
+                            @if ($alias->primoAllenatore != null && $alias->primoAllenatore->nome != Auth::guard('trainer')->user()->nome)
                                 <br>{{ $alias->primoAllenatore->nome }}
                                 {{ $alias->primoAllenatore->cognome }}
                             @elseif($alias->secondoAllenatore != null)
@@ -165,30 +171,12 @@
                                     {{ $alias->secondoAllenatore->cognome }}
                                 </p>
                             @endif
-                            <form method="POST" action="{{ route('student.recoveries', $alias) }}">
-                                <div class="boxesTrainer container mt-2">
-                                    <div class="row justify-content-center">
-                                        @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
-                                            <div class="col-12">
-                                                <label class="checkbox">
-                                                    <input class="form-check-input me-1 ms-4" type="checkbox"
-                                                        value="{{ $student->id }}" name="studenti_ids[]">
-                                                    {{ $student->nome }} {{ $student->cognome }}
-                                                </label>
-                                            </div>
-                                        @empty
-                                            <div class="col-12">
-                                                <p class="text-center">Non ci sono corsisti che possono recuperare in
-                                                    questo gruppo</p>
-                                            </div>
-                                        @endforelse
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column align-items-center">
-                                    <button type="submit" class="btn btn-primary mt-3">Conferma recuperi</button>
-                                </div>
-                            </form>
+                            @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
+                                <p class="text-center">Non ci sono Studenti che possono recuperare in questa data</p>
+                            @else
+                                <a class="btn btn-primary" href="{{ route('editStudent.trainer', $alias) }}">Segna
+                                    recuperi</a>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -212,9 +200,13 @@
                             <h6 class="card-subtitle mb-2 text-body-secondary">
                                 {{ $alias->formatData($alias->data_allenamento) }}</h6>
                             <p>{{ $alias->formatHours($alias->orario) }}</p>
-                            <p class="card-text text-center">Primo allenatore: <br>{{ $alias->primoAllenatore->nome }}
-                                {{ $alias->primoAllenatore->cognome }}</p>
-                            <form method="POST" action="{{ route('student.recoveries', $alias) }}">
+                            @if ($alias->primo_allenatore_id != null)
+                                <p class="card-text text-center">Primo allenatore:
+                                    <br>{{ $alias->primoAllenatore->nome }}
+                                    {{ $alias->primoAllenatore->cognome }}
+                                </p>
+                            @endif
+                            {{-- <form method="POST" action="{{ route('student.recoveries', $alias) }}">
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
@@ -237,7 +229,13 @@
                                 <div class="d-flex flex-column align-items-center">
                                     <button type="submit" class="btn btn-primary mt-3">Conferma recuperi</button>
                                 </div>
-                            </form>
+                            </form> --}}
+                            @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
+                                <p class="text-center">Non ci sono Studenti che possono recuperare in questa data</p>
+                            @else
+                                <a class="btn btn-primary" href="{{ route('editStudent.trainer', $alias) }}">Segna
+                                    recuperi</a>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -261,7 +259,8 @@
                             <h6 class="card-subtitle mb-2 text-body-secondary">
                                 {{ $alias->formatData($alias->data_allenamento) }}</h6>
                             <p>{{ $alias->formatHours($alias->orario) }}</p>
-                            <p class="card-text text-center">Altro allenatore: @if ($alias->primoAllenatore->nome != Auth::guard('trainer')->user()->nome)
+                            <p class="card-text text-center">Altro allenatore:
+                                @if ($alias->primoAllenatore != null && $alias->primoAllenatore->nome != Auth::guard('trainer')->user()->nome)
                                     <br>{{ $alias->primoAllenatore->nome }}
                                     {{ $alias->primoAllenatore->cognome }}
                                 @elseif($alias->secondoAllenatore != null)
@@ -269,7 +268,7 @@
                                     {{ $alias->secondoAllenatore->cognome }}
                                 @endif
                             </p>
-                            <form method="POST" action="{{ route('student.recoveries', $alias) }}">
+                            {{-- <form method="POST" action="{{ route('student.recoveries', $alias) }}">
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
@@ -292,7 +291,13 @@
                                 <div class="d-flex flex-column align-items-center">
                                     <button type="submit" class="btn btn-primary mt-3">Conferma recuperi</button>
                                 </div>
-                            </form>
+                            </form> --}}
+                            @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
+                                <p class="text-center">Non ci sono Studenti che possono recuperare in questa data</p>
+                            @else
+                                <a class="btn btn-primary" href="{{ route('editStudent.trainer', $alias) }}">Segna
+                                    recuperi</a>
+                            @endif
                         </div>
                     </div>
                 @endif
