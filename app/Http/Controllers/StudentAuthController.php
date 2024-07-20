@@ -66,6 +66,7 @@ class StudentAuthController extends Controller
 
     // Rimuovere i record dipendenti nella tabella pivot alias_student
     $student->aliases()->detach();
+    // Rimuovere i record dipendenti nella tabella pivot group_student
     $student->groups()->detach();
 
     $student->delete();
