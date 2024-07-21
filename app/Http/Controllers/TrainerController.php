@@ -14,35 +14,58 @@ class TrainerController extends Controller
     public function dashboard()
     {
         $allenatore_id = Auth::guard('trainer')->user()->id;
-        $aliasesPrimoAllenatoreCond = Alias::where('primo_allenatore_id', $allenatore_id)->get();
-        $aliasesSecondoAllenatoreCond = Alias::where('secondo_allenatore_id', $allenatore_id)->get();
-        $aliasesPrimoAllenatore = [];
-        $aliasesSecondoAllenatore = [];
-        $aliasesCond = [];
-        foreach ($aliasesPrimoAllenatoreCond as $alias) {
-            if ($alias->condiviso == "false") {
-                $aliasesPrimoAllenatore[] = $alias;
-            }
-        }
-        foreach ($aliasesSecondoAllenatoreCond as $alias) {
-            if ($alias->condiviso == "false") {
-                $aliasesSecondoAllenatore[] = $alias;
-            }
-        }
-        foreach ($aliasesPrimoAllenatoreCond as $alias) {
-            if ($alias->condiviso == "true") {
-                $aliasesCond[] = $alias;
-            }
-        }
-        foreach ($aliasesSecondoAllenatoreCond as $alias) {
-            if ($alias->condiviso == "true") {
-                $aliasesCond[] = $alias;
-            }
-        }
-        $aliasesTrainer = array_merge($aliasesPrimoAllenatore, $aliasesSecondoAllenatore, $aliasesCond);
+        // $aliasesPrimoAllenatoreCond = Alias::where('primo_allenatore_id', $allenatore_id)->get();
+        // $aliasesSecondoAllenatoreCond = Alias::where('secondo_allenatore_id', $allenatore_id)->get();
+        // $aliasesPrimoAllenatore = [];
+        // $aliasesSecondoAllenatore = [];
+        // $aliasesCond = [];
+        // foreach ($aliasesPrimoAllenatoreCond as $alias) {
+        //     if ($alias->condiviso == "false") {
+        //         $aliasesPrimoAllenatore[] = $alias;
+        //     }
+        // }
+        // foreach ($aliasesSecondoAllenatoreCond as $alias) {
+        //     if ($alias->condiviso == "false") {
+        //         $aliasesSecondoAllenatore[] = $alias;
+        //     }
+        // }
+        // foreach ($aliasesPrimoAllenatoreCond as $alias) {
+        //     if ($alias->condiviso == "true") {
+        //         $aliasesCond[] = $alias;
+        //     }
+        // }
+        // foreach ($aliasesSecondoAllenatoreCond as $alias) {
+        //     if ($alias->condiviso == "true") {
+        //         $aliasesCond[] = $alias;
+        //     }
+        // }
+        // $aliasesTrainer = array_merge($aliasesPrimoAllenatore, $aliasesSecondoAllenatore, $aliasesCond);
+        //! Recupera le paginazioni in base alle condizioni specifiche
+        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $allenatore_id)
+            ->where('condiviso', 'false')
+            ->paginate(9, ['*'], 'primo_allenatore_page');
+
+        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $allenatore_id)
+            ->where('condiviso', 'false')
+            ->paginate(9, ['*'], 'secondo_allenatore_page');
+
+        $aliasesCond = Alias::where(function ($query) use ($allenatore_id) {
+            $query->where('primo_allenatore_id', $allenatore_id)
+                ->orWhere('secondo_allenatore_id', $allenatore_id);
+        })
+            ->where('condiviso', 'true')
+            ->paginate(9, ['*'], 'cond_page');
+
+        // Combina i risultati paginati per aliasesTrainer
+        $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
+            $query->where('primo_allenatore_id', $allenatore_id)
+                ->orWhere('secondo_allenatore_id', $allenatore_id);
+        })
+            ->paginate(9, ['*'], 'cond_page');
+            
         $students = Student::all();
         $trainers = Trainer::all();
-        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers' , 'aliasesCond' , 'aliasesTrainer'));
+        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers', 'aliasesCond', 'aliasesTrainer'));
     }
 
     public function studentAbsence(Request $request, Alias $alias)
@@ -79,52 +102,52 @@ class TrainerController extends Controller
     }
 
     public function recoveriesStudent(Request $request, Alias $alias)
-{
-    // Definire le regole di base
+    {
+        // Definire le regole di base
 
-    $validator = Validator::make($request->all(), [
-        'studenti_id' => 'nullable|array',
-        'studenti_id.*' => 'required|integer|exists:students,id',
-    ]);
+        $validator = Validator::make($request->all(), [
+            'studenti_id' => 'nullable|array',
+            'studenti_id.*' => 'required|integer|exists:students,id',
+        ]);
 
-    // Aggiungere una regola di validazione personalizzata per il numero massimo di partecipanti
-    $validator->after(function ($validator) use ($alias) {
-        $studenti = $validator->getData()['studenti_id'] ?? [];
-        $numeroTot = count($studenti) + count($alias->studenti_id);
-        if ($numeroTot > $alias->numero_massimo_partecipanti) {
-            $validator->errors()->add('studenti_id', 'Il numero massimo di partecipanti è stato superato.');
+        // Aggiungere una regola di validazione personalizzata per il numero massimo di partecipanti
+        $validator->after(function ($validator) use ($alias) {
+            $studenti = $validator->getData()['studenti_id'] ?? [];
+            $numeroTot = count($studenti) + count($alias->studenti_id);
+            if ($numeroTot > $alias->numero_massimo_partecipanti) {
+                $validator->errors()->add('studenti_id', 'Il numero massimo di partecipanti è stato superato.');
+            }
+        });
+
+
+        // Eseguire la validazione
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-    });
 
+        $studentIds = $request->studenti_id ?? [];
 
-    // Eseguire la validazione
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
+        // Recupera l'array studenti_id dal gruppo alias
+        $currentStudentIds = $alias->studenti_id ?? [];
 
-    $studentIds = $request->studenti_id ?? [];
-
-    // Recupera l'array studenti_id dal gruppo alias
-    $currentStudentIds = $alias->studenti_id ?? [];
-
-    foreach ($studentIds as $studentId) {
-        if (!in_array($studentId, $currentStudentIds)) {
-            $currentStudentIds[] = $studentId;
-            // Decrementa Nrecoveries dello studente
-            $student = Student::find($studentId);
-            $student->decrement('Nrecoveries');
+        foreach ($studentIds as $studentId) {
+            if (!in_array($studentId, $currentStudentIds)) {
+                $currentStudentIds[] = $studentId;
+                // Decrementa Nrecoveries dello studente
+                $student = Student::find($studentId);
+                $student->decrement('Nrecoveries');
+            }
         }
+
+        // Aggiorna l'array studenti_id del gruppo alias
+        $alias->studenti_id = $currentStudentIds;
+        $alias->save();
+
+        // Aggiungi gli studenti selezionati alla relazione N-N
+        $alias->students()->syncWithoutDetaching($studentIds);
+
+        return redirect()->route('trainer.dashboard')->with('success', 'Recuperi registrati con successo.');
     }
-
-    // Aggiorna l'array studenti_id del gruppo alias
-    $alias->studenti_id = $currentStudentIds;
-    $alias->save();
-
-    // Aggiungi gli studenti selezionati alla relazione N-N
-    $alias->students()->syncWithoutDetaching($studentIds);
-
-    return redirect()->route('trainer.dashboard')->with('success', 'Recuperi registrati con successo.');
-}
 
     public function aliasUpdate(Request $request, $aliasId)
     {

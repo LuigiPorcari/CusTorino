@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Alias;
+use App\Models\Group;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -74,14 +75,14 @@ class Trainer extends Authenticatable
         $recoverableStudent = [];
         $students = Student::all();
         foreach ($students as $student) {
-            $groups = $student->groups;
+            $groups = Group::where('nome', $alias->nome)->get();
             foreach ($groups as $group) {
                 if (
-                    $group->nome != $alias->nome &&
-                    !in_array($student->id, $alias->studenti_id) &&
+                    !in_array($student->id, $group->studenti_id) &&
+                    !in_array($student->id, $group->studenti_id) &&
                     $student->Nrecoveries > 0 &&
-                    $student->level - 1 < $alias->livello &&
-                    $alias->livello < $student->level + 2 &&
+                    $student->level - 1 <= $alias->livello &&
+                    $alias->livello <= $student->level + 2 &&
                     $student->gender == $alias->tipo
                 ) {
                     $recoverableStudent[] = $student;

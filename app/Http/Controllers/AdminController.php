@@ -11,9 +11,9 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $groups = Group::all();
+        $groups = Group::paginate(1);
         $aliases = Alias::all();
-        $trainers = Trainer::all();
+        $trainers = Trainer::paginate(5);
         return view('dashboard.admin', compact('groups' , 'aliases' , 'trainers'));
     }
 }

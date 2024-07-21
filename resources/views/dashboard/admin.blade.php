@@ -10,7 +10,7 @@
         <h2 class="text-center">Benvenuto, {{ Auth::guard('admin')->user()->nome }}
             {{ Auth::guard('admin')->user()->cognome }}</h2>
         <h3 class="text-center mt-5 mb-0">Tabelle dei gruppi</h3>
-        <div class="row">
+        <div class="row justify-content-center">
             @foreach ($groups as $group)
                 <div class="col-12 mt-5">
                     <table class="table table-bordered">
@@ -71,6 +71,7 @@
                                         @endif
                                     @endif
                                     <p>Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
+                                    <p>Livello: {{ $group->livello }}</p>
                                     <p>Studenti:</p>
                                     @foreach ($group->students as $student)
                                         <p>{{ $student->nome }} {{ $student->cognome }} <br> Documentazione:
@@ -120,12 +121,15 @@
                     </table>
                 </div>
             @endforeach
+            <div class="col-8">
+                {{ $groups->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 
     {{-- STIPENDI --}}
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
             <h2 class="mt-5 text-center">Stipendi Allenatori</h2>
             @foreach ($trainers as $trainer)
                 <div class="col-12">
@@ -197,6 +201,11 @@
                     </table>
                 </div>
             @endforeach
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+                {{ $trainers->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 </x-layout>

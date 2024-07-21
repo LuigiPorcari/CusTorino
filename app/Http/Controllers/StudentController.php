@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alias;
+use App\Models\Group;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,9 +25,10 @@ class StudentController extends Controller
         $recoverableAliases = [];
 
         foreach ($allAliases as $alias) {
-            foreach ($student->groups as $group) {
+            $groups = Group::where('nome', $alias->nome)->get();
+            foreach ($groups as $group) {
                 if (
-                    $group->nome != $alias->nome &&
+                    !in_array($student->id, $group->studenti_id) &&
                     !in_array($student->id, $alias->studenti_id) &&
                     $student->level - 1 <= $alias->livello &&
                     $alias->livello <= $student->level + 2 &&

@@ -53,6 +53,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesPrimoAllenatore->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
     {{-- Gruppi secondo allenatore --}}
@@ -99,6 +102,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesSecondoAllenatore->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
     {{-- Gruppi condivisi --}}
@@ -148,6 +154,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesCond->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 
@@ -185,6 +194,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesPrimoAllenatore->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
     {{-- Gruppi secondo allenatore --}}
@@ -244,6 +256,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesSecondoAllenatore->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
     {{-- Gruppi condivisi --}}
@@ -306,6 +321,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesCond->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 
@@ -373,6 +391,9 @@
                     <p class="fs-2">Non ci sono gruppi disponibbili</p>
                 </div>
             @endforelse
+            <div class="col-12 mt-2">
+                {{ $aliasesTrainer->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 </x-layout>

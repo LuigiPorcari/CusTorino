@@ -25,7 +25,9 @@ class GroupController extends Controller
         $students = Student::all();
         $studentsAvaiable = [];
         foreach ($students as $student) {
-            if ($student->gender == $group->tipo) {
+            if ($student->gender == $group->tipo &&
+            $student->level - 1 <= $group->livello &&
+            $group->livello <= $student->level + 2) {
                 $studentsAvaiable[] = $student;
             }
         }

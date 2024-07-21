@@ -9,7 +9,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-                <a class="btn btn-primary" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
+                {{-- <a class="btn btn-primary" href="{{ route('admin.register') }}">Registra nuovo Admin</a> --}}
             </div>
         </div>
     </div>
