@@ -11,62 +11,36 @@ use Illuminate\Support\Facades\Validator;
 
 class TrainerController extends Controller
 {
-    public function dashboard()
-    {
-        $allenatore_id = Auth::guard('trainer')->user()->id;
-        // $aliasesPrimoAllenatoreCond = Alias::where('primo_allenatore_id', $allenatore_id)->get();
-        // $aliasesSecondoAllenatoreCond = Alias::where('secondo_allenatore_id', $allenatore_id)->get();
-        // $aliasesPrimoAllenatore = [];
-        // $aliasesSecondoAllenatore = [];
-        // $aliasesCond = [];
-        // foreach ($aliasesPrimoAllenatoreCond as $alias) {
-        //     if ($alias->condiviso == "false") {
-        //         $aliasesPrimoAllenatore[] = $alias;
-        //     }
-        // }
-        // foreach ($aliasesSecondoAllenatoreCond as $alias) {
-        //     if ($alias->condiviso == "false") {
-        //         $aliasesSecondoAllenatore[] = $alias;
-        //     }
-        // }
-        // foreach ($aliasesPrimoAllenatoreCond as $alias) {
-        //     if ($alias->condiviso == "true") {
-        //         $aliasesCond[] = $alias;
-        //     }
-        // }
-        // foreach ($aliasesSecondoAllenatoreCond as $alias) {
-        //     if ($alias->condiviso == "true") {
-        //         $aliasesCond[] = $alias;
-        //     }
-        // }
-        // $aliasesTrainer = array_merge($aliasesPrimoAllenatore, $aliasesSecondoAllenatore, $aliasesCond);
-        //! Recupera le paginazioni in base alle condizioni specifiche
-        $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $allenatore_id)
-            ->where('condiviso', 'false')
-            ->paginate(9, ['*'], 'primo_allenatore_page');
+    // public function dashboard()
+    // {
+    //     $allenatore_id = Auth::guard('trainer')->user()->id;
+    //     //! Recupera le paginazioni in base alle condizioni specifiche
+    //     $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $allenatore_id)
+    //         ->where('condiviso', 'false')
+    //         ->paginate(9, ['*'], 'primo_allenatore_page');
 
-        $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $allenatore_id)
-            ->where('condiviso', 'false')
-            ->paginate(9, ['*'], 'secondo_allenatore_page');
+    //     $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $allenatore_id)
+    //         ->where('condiviso', 'false')
+    //         ->paginate(9, ['*'], 'secondo_allenatore_page');
 
-        $aliasesCond = Alias::where(function ($query) use ($allenatore_id) {
-            $query->where('primo_allenatore_id', $allenatore_id)
-                ->orWhere('secondo_allenatore_id', $allenatore_id);
-        })
-            ->where('condiviso', 'true')
-            ->paginate(9, ['*'], 'cond_page');
+    //     $aliasesCond = Alias::where(function ($query) use ($allenatore_id) {
+    //         $query->where('primo_allenatore_id', $allenatore_id)
+    //             ->orWhere('secondo_allenatore_id', $allenatore_id);
+    //     })
+    //         ->where('condiviso', 'true')
+    //         ->paginate(9, ['*'], 'cond_page');
 
-        // Combina i risultati paginati per aliasesTrainer
-        $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
-            $query->where('primo_allenatore_id', $allenatore_id)
-                ->orWhere('secondo_allenatore_id', $allenatore_id);
-        })
-            ->paginate(9, ['*'], 'cond_page');
-            
-        $students = Student::all();
-        $trainers = Trainer::all();
-        return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers', 'aliasesCond', 'aliasesTrainer'));
-    }
+    //     // Combina i risultati paginati per aliasesTrainer
+    //     $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
+    //         $query->where('primo_allenatore_id', $allenatore_id)
+    //             ->orWhere('secondo_allenatore_id', $allenatore_id);
+    //     })
+    //         ->paginate(9, ['*'], 'cond_page');
+
+    //     $students = Student::all();
+    //     $trainers = Trainer::all();
+    //     return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers', 'aliasesCond', 'aliasesTrainer'));
+    // }
 
     public function studentAbsence(Request $request, Alias $alias)
     {
@@ -146,7 +120,7 @@ class TrainerController extends Controller
         // Aggiungi gli studenti selezionati alla relazione N-N
         $alias->students()->syncWithoutDetaching($studentIds);
 
-        return redirect()->route('trainer.dashboard')->with('success', 'Recuperi registrati con successo.');
+        return redirect()->route('trainer.details', compact('alias'))->with('success', 'Recuperi registrati con successo.');
     }
 
     public function aliasUpdate(Request $request, $aliasId)
@@ -158,5 +132,51 @@ class TrainerController extends Controller
             'condiviso' => $request->condiviso,
         ]);
         return redirect()->back()->with('success', 'Presenze allenatori modificati con successo.');
+    }
+
+    public function dashboard(Request $request)
+    {
+        $allenatore_id = Auth::guard('trainer')->user()->id;
+
+        // Ottieni le date di allenamento uniche
+        $dates = Alias::where(function ($query) use ($allenatore_id) {
+            $query->where('primo_allenatore_id', $allenatore_id)
+                ->orWhere('secondo_allenatore_id', $allenatore_id);
+        })->distinct('data_allenamento')->pluck('data_allenamento')->sortBy(function ($date) {
+            return \Carbon\Carbon::parse($date);
+        });
+
+        // Instanzia un oggetto Alias per utilizzare i metodi di formattazione
+        $alias = new Alias();
+
+        // Formatta le date
+        $availableDates = $dates->map(function ($date) use ($alias) {
+            return [
+                'formatted' => $alias->formatData($date),
+                'original' => $date
+            ];
+        });
+
+        // Filtro per nome e data
+        $query = Alias::where(function ($query) use ($allenatore_id) {
+            $query->where('primo_allenatore_id', $allenatore_id)
+                ->orWhere('secondo_allenatore_id', $allenatore_id);
+        });
+
+        if ($request->filled('alias_name')) {
+            $query->where('nome', 'like', '%' . $request->alias_name . '%');
+        }
+
+        if ($request->filled('alias_date')) {
+            $query->whereDate('data_allenamento', $request->alias_date);
+        }
+        $aliasesTrainer = $query->orderBy('data_allenamento', 'asc')->paginate(9);
+        return view('dashboard.trainer', compact('aliasesTrainer', 'availableDates'));
+    }
+
+    public function showDetails(Alias $alias)
+    {
+        $trainers = Trainer::all();
+        return view('trainer.details', compact('alias' , 'trainers'));
     }
 }

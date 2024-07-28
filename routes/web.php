@@ -17,6 +17,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // Admin routes
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard/group/details/{group}', [AdminController::class, 'groupDetails'])->name('admin.group.details');
+    Route::get('/admin/dashboard/trainer', [AdminController::class, 'dashboardTrainer'])->name('admin.dashboard.trainer');
+    Route::get('/admin/dashboard/trainer/details/{trainer}', [AdminController::class, 'trainerDetails'])->name('admin.trainer.details');
+    Route::get('/admin/dashboard/student', [AdminController::class, 'dashboardStudent'])->name('admin.dashboard.student');
+    Route::post('/admin/dashboard/update/{student}', [AdminController::class, 'updateStudent'])->name('admin.update.student');
     Route::delete('/admin/delete/{id}', [AdminAuthController::class, 'destroy'])->name('admin.destroy');
     //Groups routes
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
@@ -26,6 +31,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
+
 });
 //! Rotte per gli allenatori
 Route::group(['middleware' => ['auth:trainer']], function () {
@@ -38,6 +44,7 @@ Route::group(['middleware' => ['auth:trainer']], function () {
     Route::post('/trainer/trainer-absence/{alias}', [TrainerController::class, 'aliasUpdate'])->name('alias.update');
     Route::get('/trainer/create/student/{alias}', [TrainerController::class, 'editStudent'])->name('editStudent.trainer');
     Route::post('/trainer/update/student/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('createStudent.trainer');
+    Route::get('/trainer/alias/{alias}', [TrainerController::class, 'showDetails'])->name('trainer.details');
 });
 //! Rotte per gli studenti
 Route::group(['middleware' => ['auth:student']], function () {

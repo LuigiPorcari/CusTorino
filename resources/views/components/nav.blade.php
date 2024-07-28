@@ -43,11 +43,15 @@
                                 </form>
                             </li>
                             <li class="d-flex justify-content-center">
-                                <form action="{{ route('admin.destroy', Auth::guard('admin')->user()->id) }}" method="POST">
+                                {{-- <form action="{{ route('admin.destroy', Auth::guard('admin')->user()->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Elimina utente</button>
-                                </form>
+                                </form> --}}
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModalAdmin">
+                                    Elimina utente
+                                </button>
                             </li>
                         @elseif(Auth::guard('trainer')->check())
                             {{-- Logica Trainer --}}
@@ -58,7 +62,8 @@
                                 </form>
                             </li>
                             <li class="d-flex justify-content-center">
-                                <form action="{{ route('trainer.destroy', Auth::guard('trainer')->user()->id) }}" method="POST">
+                                <form action="{{ route('trainer.destroy', Auth::guard('trainer')->user()->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Elimina utente</button>
@@ -73,7 +78,8 @@
                                 </form>
                             </li>
                             <li class="d-flex justify-content-center">
-                                <form action="{{ route('student.destroy', Auth::guard('student')->user()->id) }}" method="POST">
+                                <form action="{{ route('student.destroy', Auth::guard('student')->user()->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Elimina utente</button>
@@ -104,15 +110,16 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
                         Accedi
                     </button>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#registerModal">
-                        Registrati
-                    </button>
+                    <a class="btn btn-primary mx-2" href="{{ route('student.register') }}">Registrati</a>
                 </div>
             @endif
             @if (Auth::guard('admin')->check())
+                {{-- Logica Student --}}
+                <a class="btn btn-primary me-2" href="{{ route('student.register') }}">Registra nuovo Corsista</a>
+                {{-- Logica Trainer --}}
+                <a class="btn btn-primary me-2" href="{{ route('trainer.register') }}">Registra nuovo Trainer</a>
                 {{-- Logica Admin --}}
-                    <a class="btn btn-primary" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
+                <a class="btn btn-primary" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
             @endif
         </div>
 </nav>

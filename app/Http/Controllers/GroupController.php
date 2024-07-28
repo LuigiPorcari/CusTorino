@@ -149,7 +149,7 @@ class GroupController extends Controller
             // $alias->students()->sync($request->input('studenti_id'));
             // $dataInizio->addWeek();
         }
-        return redirect(route('admin.dashboard'))->with('success', 'Gruppo modificato con successo');
+        return redirect(route('admin.group.details' , compact('group')))->with('success', 'Gruppo modificato con successo');
     }
 
     public function createStudent(Request $request, Group $group)
@@ -187,7 +187,7 @@ class GroupController extends Controller
             ]);
             $alias->students()->sync($request->input('studenti_id'));
         }
-        return redirect(route('admin.dashboard'))->with('success', 'Operazione avvenuta con successo');
+        return redirect(route('admin.group.details' , compact('group')))->with('success', 'Operazione avvenuta con successo');
     }
 
     public function delete(Group $group)

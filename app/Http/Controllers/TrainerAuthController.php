@@ -49,7 +49,7 @@ class TrainerAuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('trainer.login');
+        return redirect()->route('homepage');
     }
 
     public function logout()

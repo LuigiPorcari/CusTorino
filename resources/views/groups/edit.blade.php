@@ -28,9 +28,9 @@
                     <div class="mb-3">
                         <label class="form-label" for="orario">Orario</label>
                         <select class="form-control" id="orario" name="orario" required>
-                            <option @if ($group->orario == '18:30') selected @endif value="18:30">18:30</option>
-                            <option @if ($group->orario == '20:00') selected @endif value="20:00">20:00</option>
-                            <option @if ($group->orario == '21:30') selected @endif value="21:30">21:30</option>
+                            <option @if ($group->orario == '18:30:00') selected @endif value="18:30">18:30</option>
+                            <option @if ($group->orario == '20:00:00') selected @endif value="20:00">20:00</option>
+                            <option @if ($group->orario == '21:30:00') selected @endif value="21:30">21:30</option>
                         </select>
                     </div>
                     {{-- CAMPO --}}

@@ -10,14 +10,44 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    public function dashboard()
+    // public function dashboard()
+    // {
+    //     $student = Auth::guard('student')->user();
+    //     // $aliases = Alias::all();
+    //     // Recupera gli alias recuperabili
+    //     $recoverableAliases = $this->getRecoverableAliases($student);
+    //     return view('dashboard.student', compact('recoverableAliases'));
+    // }
+    public function dashboard(Request $request)
     {
         $student = Auth::guard('student')->user();
-        // $aliases = Alias::all();
-        // Recupera gli alias recuperabili
+
+        // Recupera le date disponibili per gli alias dove lo studente è presente
+        $availableTrainingDates = $student->aliases()
+            ->select('data_allenamento')
+            ->distinct()
+            ->orderBy('data_allenamento')
+            ->get()
+            ->map(function ($alias) {
+                return [
+                    'raw' => $alias->data_allenamento,
+                    'formatted' => $alias->formatData($alias->data_allenamento)
+                ];
+            });
+
+        $trainingDate = $request->input('training_date');
+
+        $trainingAliasesQuery = $student->aliases();
+        if ($trainingDate) {
+            $trainingAliasesQuery->whereDate('data_allenamento', $trainingDate);
+        }
+        $trainingAliases = $trainingAliasesQuery->get();
+
         $recoverableAliases = $this->getRecoverableAliases($student);
-        return view('dashboard.student', compact('recoverableAliases'));
+
+        return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates'));
     }
+
 
     private function getRecoverableAliases($student)
     {

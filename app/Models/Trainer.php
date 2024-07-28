@@ -78,7 +78,7 @@ class Trainer extends Authenticatable
             $groups = Group::where('nome', $alias->nome)->get();
             foreach ($groups as $group) {
                 if (
-                    !in_array($student->id, $group->studenti_id) &&
+                    !in_array($student->id, $alias->studenti_id) &&
                     !in_array($student->id, $group->studenti_id) &&
                     $student->Nrecoveries > 0 &&
                     $student->level - 1 <= $alias->livello &&

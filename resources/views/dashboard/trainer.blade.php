@@ -1,7 +1,7 @@
-<x-layout documentTitle="Trainer Dashbord">
-    {{-- ! ASSENZE --}}
-    {{-- Gruppi primo allenatore --}}
-    <div class="container mt-5">
+{{-- <x-layout documentTitle="Trainer Dashbord"> --}}
+{{-- ! ASSENZE --}}
+{{-- Gruppi primo allenatore --}}
+{{-- <div class="container mt-5">
         <h1 class="mt-5 pt-5 text-center">Trainer Dashbord</h1>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible">
@@ -57,9 +57,9 @@
                 {{ $aliasesPrimoAllenatore->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
-    {{-- Gruppi secondo allenatore --}}
-    <div class="container mt-5">
+    </div> --}}
+{{-- Gruppi secondo allenatore --}}
+{{-- <div class="container mt-5">
         <h2 class="mt-5 mb-4">Gruppi in cui sei secondo allenatore</h2>
         <h3 class="text-center mb-4 text-danger">Segna assenze</h3>
         <div class="row justify-content-center">
@@ -106,9 +106,9 @@
                 {{ $aliasesSecondoAllenatore->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
-    {{-- Gruppi condivisi --}}
-    <div class="container mt-5">
+    </div> --}}
+{{-- Gruppi condivisi --}}
+{{-- <div class="container mt-5">
         <h2 class="mt-5 mb-4">Gruppi condivisi</h2>
         <h3 class="text-center mb-4 text-danger">Segna assenze</h3>
         <div class="row justify-content-center">
@@ -158,11 +158,11 @@
                 {{ $aliasesCond->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    {{-- ! RECUPERI --}}
-    {{-- Gruppi primo allenatore --}}
-    <div class="container mt-5">
+{{-- ! RECUPERI --}}
+{{-- Gruppi primo allenatore --}}
+{{-- <div class="container mt-5">
         <h2 class="mt-5 mb-4">Gruppi in cui sei primo allenatore</h2>
         <h3 class="text-center mb-4 text-danger">Registra recuperi</h3>
         <div class="row justify-content-center">
@@ -198,9 +198,9 @@
                 {{ $aliasesPrimoAllenatore->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
-    {{-- Gruppi secondo allenatore --}}
-    <div class="container mt-5">
+    </div> --}}
+{{-- Gruppi secondo allenatore --}}
+{{-- <div class="container mt-5">
         <h2 class="mt-5 mb-4">Gruppi in cui sei secondo allenatore</h2>
         <h3 class="text-center mb-4 text-danger">Registra recuperi</h3>
         <div class="row justify-content-center">
@@ -217,32 +217,8 @@
                                     <br>{{ $alias->primoAllenatore->nome }}
                                     {{ $alias->primoAllenatore->cognome }}
                                 </p>
-                            @endif
-                            {{-- <form method="POST" action="{{ route('student.recoveries', $alias) }}">
-                                <div class="boxesTrainer container mt-2">
-                                    <div class="row justify-content-center">
-                                        @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
-                                            <div class="col-12">
-                                                <label class="checkbox">
-                                                    <input class="form-check-input me-1 ms-4" type="checkbox"
-                                                        value="{{ $student->id }}" name="studenti_ids[]">
-                                                    {{ $student->nome }} {{ $student->cognome }}
-                                                </label>
-                                            </div>
-                                        @empty
-                                            <div class="col-12">
-                                                <p class="text-center">Non ci sono corsisti che possono recuperare in
-                                                    questo gruppo</p>
-                                            </div>
-                                        @endforelse
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column align-items-center">
-                                    <button type="submit" class="btn btn-primary mt-3">Conferma recuperi</button>
-                                </div>
-                            </form> --}}
-                            @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
+                            @endif --}}
+{{-- @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
                                 <p class="text-center">Non ci sono Studenti che possono recuperare in questa data</p>
                             @else
                                 <a class="btn btn-primary" href="{{ route('editStudent.trainer', $alias) }}">Segna
@@ -260,9 +236,9 @@
                 {{ $aliasesSecondoAllenatore->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
-    {{-- Gruppi condivisi --}}
-    <div class="container mt-5">
+    </div> --}}
+{{-- Gruppi condivisi --}}
+{{-- <div class="container mt-5">
         <h2 class="mt-5 mb-4">Gruppi condivisi</h2>
         <h3 class="text-center mb-4 text-danger">Registra recuperi</h3>
         <div class="row justify-content-center">
@@ -282,32 +258,8 @@
                                     <br>{{ $alias->secondoAllenatore->nome }}
                                     {{ $alias->secondoAllenatore->cognome }}
                                 @endif
-                            </p>
-                            {{-- <form method="POST" action="{{ route('student.recoveries', $alias) }}">
-                                <div class="boxesTrainer container mt-2">
-                                    <div class="row justify-content-center">
-                                        @csrf
-                                        @forelse (Auth::guard('trainer')->user()->getRecoverableStudent($alias) as $student)
-                                            <div class="col-12">
-                                                <label class="checkbox">
-                                                    <input class="form-check-input me-1 ms-4" type="checkbox"
-                                                        value="{{ $student->id }}" name="studenti_ids[]">
-                                                    {{ $student->nome }} {{ $student->cognome }}
-                                                </label>
-                                            </div>
-                                        @empty
-                                            <div class="col-12">
-                                                <p class="text-center">Non ci sono corsisti che possono recuperare in
-                                                    questo gruppo</p>
-                                            </div>
-                                        @endforelse
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column align-items-center">
-                                    <button type="submit" class="btn btn-primary mt-3">Conferma recuperi</button>
-                                </div>
-                            </form> --}}
-                            @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
+                            </p> --}}
+{{-- @if (empty(Auth::guard('trainer')->user()->getRecoverableStudent($alias)))
                                 <p class="text-center">Non ci sono Studenti che possono recuperare in questa data</p>
                             @else
                                 <a class="btn btn-primary" href="{{ route('editStudent.trainer', $alias) }}">Segna
@@ -325,10 +277,10 @@
                 {{ $aliasesCond->links('pagination::bootstrap-5') }}
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    {{-- ! ASSENZE ALLENATORI --}}
-    <div class="container mt-5 mb-4">
+{{-- ! ASSENZE ALLENATORI --}}
+{{-- <div class="container mt-5 mb-4">
         <h2 class="mt-5 mb-4 text-danger">Modifica presenze allenatori</h2>
         <h3 class="text-center mb-4">Gruppi in cui alleni</h3>
         <div class="row justify-content-center">
@@ -340,9 +292,9 @@
                             {{ $alias->formatData($alias->data_allenamento) }}</h6>
                         <p>{{ $alias->formatHours($alias->orario) }}</p>
                         <form method="POST" action="{{ route('alias.update', $alias) }}">
-                            @csrf
-                            {{-- PRIMO ALLENATORE --}}
-                            <div class="mb-3">
+                            @csrf --}}
+{{-- PRIMO ALLENATORE --}}
+{{-- <div class="mb-3">
                                 <label class="form-label" for="primo_allenatore_id">Primo Allenatore</label>
                                 <select class="form-control" id="primo_allenatore_id" name="primo_allenatore_id"
                                     required>
@@ -352,9 +304,9 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
-                            {{-- SECONDO ALLENATORE --}}
-                            <div class="mb-3">
+                            </div> --}}
+{{-- SECONDO ALLENATORE --}}
+{{-- <div class="mb-3">
                                 <label class="form-label" for="secondo_allenatore_id">Secondo Allenatore</label>
                                 <select class="form-control" id="secondo_allenatore_id" name="secondo_allenatore_id">
                                     @if ($alias->secondo_allenatore_id == null)
@@ -368,9 +320,9 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
-                            {{-- CONDIVISO --}}
-                            <div class="mb-3">
+                            </div> --}}
+{{-- CONDIVISO --}}
+{{-- <div class="mb-3">
                                 <label class="form-label" for="condiviso">Condiviso</label>
                                 <select class="form-control" id="condiviso" name="condiviso" required>
                                     @if ($alias->condiviso == 'true')
@@ -395,5 +347,67 @@
                 {{ $aliasesTrainer->links('pagination::bootstrap-5') }}
             </div>
         </div>
+    </div>
+</x-layout> --}}
+<x-layout documentTitle="Trainer Dashboard">
+    {{-- Gruppi allenati --}}
+    <div class="container mt-5">
+        <h1 class="mt-5 pt-5 text-center">Trainer Dashboard</h1>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        <h2 class="mt-5 mb-4">Gruppi in cui alleni</h2>
+        <div class="mb-4">
+            <form method="GET" action="{{ route('trainer.dashboard') }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="alias_name" class="form-control" placeholder="Nome Alias"
+                            value="{{ request('alias_name') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <select name="alias_date" class="form-control">
+                            <option value="">Seleziona una Data</option>
+                            @foreach ($availableDates as $date)
+                                <option value="{{ $date['original'] }}" {{ request('alias_date') == $date['original'] ? 'selected' : '' }}>
+                                    {{ $date['formatted'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Filtra</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome Alias</th>
+                    <th>Data Alias</th>
+                    <th>Dettagli</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($aliasesTrainer as $alias)
+                    <tr>
+                        <td>{{ $alias->nome }}</td>
+                        <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
+                        <td>
+                            <a href="{{ route('trainer.details', $alias) }}" class="btn btn-info">Visualizza
+                                Dettagli</a>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center">Non ci sono gruppi disponibili</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+        {{ $aliasesTrainer->links('pagination::bootstrap-5') }}
     </div>
 </x-layout>
