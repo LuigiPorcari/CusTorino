@@ -31,7 +31,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
-
+    //Students routes
+    Route::delete('/student/delete/{id}', [StudentAuthController::class, 'destroy'])->name('student.destroy');
 });
 //! Rotte per gli allenatori
 Route::group(['middleware' => ['auth:trainer']], function () {
@@ -50,7 +51,7 @@ Route::group(['middleware' => ['auth:trainer']], function () {
 Route::group(['middleware' => ['auth:student']], function () {
     // Student routes
     Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
-    Route::delete('/student/delete/{id}', [StudentAuthController::class, 'destroy'])->name('student.destroy');
+
     Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
     Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');

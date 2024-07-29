@@ -90,21 +90,6 @@
                         <input type="number" class="form-control" id="livello" name="livello" required min="1"
                             max="10">
                     </div>
-                    {{-- STUDENTI --}}
-                    {{-- <div class="mb-3 boxesGroup container">
-                        <label class="form-label" for="studenti">Studenti</label>
-                        <div class="row">
-                            @foreach ($students as $student)
-                                <div class="col-3">
-                                    <label class="checkbox">
-                                        <input class="form-check-input me-1 ms-4" type="checkbox"
-                                            value="{{ $student->id }}" name="studenti_id[]">
-                                        {{ $student->nome }} {{ $student->cognome }}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div> --}}
                     {{-- DATA INIZIO CORSO --}}
                     <div class="mb-3">
                         <label class="form-label" for="data_inizio_corso">Data Inizio Corso</label>
@@ -118,7 +103,7 @@
                             required>
                     </div>
                     <div class="mb-3 d-flex flex-column align-items-center">
-                        <button type="submit" class="btn btn-primary">Continua <i class="ms-1 fa-solid fa-arrow-right"></i></button>
+                        <button type="submit" class="btn btn-primary">Crea gruppo</button>
                     </div>
                 </form>
             </div>

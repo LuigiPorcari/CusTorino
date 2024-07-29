@@ -81,13 +81,17 @@
                                 <div class="d-flex flex-column align-items-center mt-5">
                                     <a class="btn btn-warning mb-2"
                                         href="{{ route('groups.edit', $group) }}">Modifica</a>
-                                    <a class="btn btn-warning mb-2" href="{{ route('edit.student', $group) }}">Inserisci-Modifica
+                                    <a class="btn btn-warning mb-2"
+                                        href="{{ route('edit.student', $group) }}">Inserisci-Modifica
                                         Corsisti</a>
-                                    <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
+                                    {{-- <form method="POST" action="{{ route('groups.delete', compact('group')) }}">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" class="ms-2 btn btn-danger me-2">Elimina</button>
-                                    </form>
+                                    </form> --}}
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModalGroup">
+                                        Elimina
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -115,6 +119,28 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModalGroup" tabindex="-1" aria-labelledby="deleteModalGroupLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Sicuro di voler eliminare questo Gruppo?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <form action="{{ route('groups.delete', compact('group')) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger mx-2 px-3">Si</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

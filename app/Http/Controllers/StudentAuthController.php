@@ -47,8 +47,8 @@ class StudentAuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'gender' => $request->gender,
-            'level' => $request->level,
-            'documentation' => $request->documentation,
+            // 'level' => $request->level,
+            // 'documentation' => $request->documentation,
         ]);
 
         return redirect()->route('student.login');
@@ -71,6 +71,6 @@ class StudentAuthController extends Controller
 
     $student->delete();
 
-    return redirect()->route('homepage')->with('success', 'Studente eliminato con successo.');
+    return redirect()->route('admin.dashboard.student')->with('success', 'Studente eliminato con successo.');
 }
 }

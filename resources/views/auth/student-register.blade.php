@@ -39,12 +39,12 @@
                         </div>
                     </div>
                     {{-- LIVELLO --}}
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label class="form-label">Livello</label>
                         <input type="number" class="form-control" name="level" min="1" max="10">
-                    </div>
+                    </div> --}}
                     {{-- DOCUMENTAZIONE --}}
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" value="true" id="documentationOk"
                                 name="documentation">
@@ -59,7 +59,7 @@
                                 Documentazione NON OK
                             </label>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- PASSWORD --}}
                     <div class="mb-3">
                         <label class="form-label" for="password">Password</label>

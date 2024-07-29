@@ -32,6 +32,7 @@
                 </div>
             </form>
         </div>
+        <small>Una volta modificati i valori per uno studente premere conferma</small>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -40,6 +41,7 @@
                     <th>Documentazione</th>
                     <th>Livello</th>
                     <th>Modifica</th>
+                    <th>Elimina</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,26 +59,52 @@
                                 </select>
                             </td>
                             <td>
-                                @if ($student->level != null)
-                                    <input value="{{ $student->level }}" type="number" class="form-control"
-                                        name="level" min="1" max="10">
-                                @else
-                                    <input value="" type="number" class="form-control" name="level"
-                                        min="1" max="10">
-                                @endif
+                                <input placeholder="@if ($student->level == null) N.C. @endif" value="{{ $student->level }}" type="number" class="form-control" name="level"
+                                    min="1" max="10">
                             </td>
                             <td>
-                                <button type="submint" class="btn btn-warning">Conferma</button>
+                                <button type="submit" class="btn btn-warning">Conferma</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal{{ $student->id }}">Elimina</button>
                             </td>
                         </tr>
                     </form>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">Non ci sono studenti disponibili</td>
+                        <td colspan="6" class="text-center">Non ci sono studenti disponibili</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
         {{ $students->links('pagination::bootstrap-5') }}
     </div>
+
+    <!-- Modali di conferma eliminazione per ogni studente -->
+    @foreach ($students as $student)
+        <div class="modal fade" id="deleteModal{{ $student->id }}" tabindex="-1"
+            aria-labelledby="deleteModalLabel{{ $student->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalLabel{{ $student->id }}">Sicuro di voler eliminare
+                            lo studente {{ $student->nome }} {{ $student->cognome }}?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center">
+                        <form action="{{ route('student.destroy', $student->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger mx-2 px-3">Si</button>
+                        </form>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </x-layout>

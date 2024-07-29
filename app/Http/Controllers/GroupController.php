@@ -25,9 +25,7 @@ class GroupController extends Controller
         $students = Student::all();
         $studentsAvaiable = [];
         foreach ($students as $student) {
-            if ($student->gender == $group->tipo &&
-            $student->level - 1 <= $group->livello &&
-            $group->livello <= $student->level + 2) {
+            if ($student->gender == $group->tipo) {
                 $studentsAvaiable[] = $student;
             }
         }
@@ -47,8 +45,6 @@ class GroupController extends Controller
             'condiviso' => 'required|string',
             'numero_massimo_partecipanti' => 'required|integer',
             'livello' => 'required|integer|min:1|max:10',
-            // 'studenti_id' => 'nullable|array',
-            // 'studenti_id.*' => 'integer|exists:students,id',
             'data_inizio_corso' => 'required|date',
             'data_fine_corso' => 'required|date|after_or_equal:data_inizio_corso',
         ]);
@@ -64,14 +60,12 @@ class GroupController extends Controller
             'condiviso' => $request->condiviso,
             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
             'livello' => $request->livello,
-            // 'studenti_id' => $request->studenti_id,
             'data_inizio_corso' => $request->data_inizio_corso,
             'data_fine_corso' => $request->data_fine_corso,
         ]);
 
-        // foreach ($request->input('studenti_id') as $student) {
-        //     $group->students()->attach($student);
-        // }
+        $group->studenti_id = []; // Imposta l'array vuoto se necessario
+        $group->save();
 
         // Creazione dei gruppi alias
         $dataInizio = Carbon::parse($request->data_inizio_corso);
@@ -91,16 +85,12 @@ class GroupController extends Controller
                 'condiviso' => $request->condiviso,
                 'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
                 'livello' => $request->livello,
-                // 'studenti_id' => $request->studenti_id,
             ]);
-
-            // foreach ($request->input('studenti_id') as $student) {
-            //     $alias->students()->attach($student);
-            // }
-
             $dataInizio->addWeek();
+            $alias->studenti_id = []; // Imposta l'array vuoto se necessario
+            $alias->save();
         }
-        return redirect()->route('edit.student', $group);
+        return redirect()->route('admin.dashboard')->with('success', 'Gruppo creato con successo');
     }
 
     public function edit(Group $group)
@@ -123,18 +113,13 @@ class GroupController extends Controller
             'condiviso' => $request->condiviso,
             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
             'livello' => $request->livello,
-            // 'studenti_id' => $request->studenti_id,
         ]);
 
-        // $group->students()->sync($request->input('studenti_id'));
-
         // Modifica dei gruppi alias
-        // $dataInizio = Carbon::parse($group->data_inizio_corso);
         foreach ($group->aliases as $alias) {
             $alias->update([
                 'nome' => $request->nome,
                 'group_id' => $group->id,
-                // 'data_allenamento' => $dataInizio->copy(),
                 'orario' => $request->orario,
                 'campo' => $request->campo,
                 'tipo' => $request->tipo,
@@ -143,13 +128,9 @@ class GroupController extends Controller
                 'condiviso' => $request->condiviso,
                 'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
                 'livello' => $request->livello,
-                // 'studenti_id' => $request->studenti_id,
             ]);
-
-            // $alias->students()->sync($request->input('studenti_id'));
-            // $dataInizio->addWeek();
         }
-        return redirect(route('admin.group.details' , compact('group')))->with('success', 'Gruppo modificato con successo');
+        return redirect(route('admin.group.details', compact('group')))->with('success', 'Gruppo modificato con successo');
     }
 
     public function createStudent(Request $request, Group $group)
@@ -187,7 +168,7 @@ class GroupController extends Controller
             ]);
             $alias->students()->sync($request->input('studenti_id'));
         }
-        return redirect(route('admin.group.details' , compact('group')))->with('success', 'Operazione avvenuta con successo');
+        return redirect(route('admin.group.details', compact('group')))->with('success', 'Operazione avvenuta con successo');
     }
 
     public function delete(Group $group)
