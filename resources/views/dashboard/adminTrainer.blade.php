@@ -54,4 +54,5 @@
             </tbody>
         </table>
         {{ $trainers->links('pagination::bootstrap-5') }}
+    </div>
 </x-layout>
