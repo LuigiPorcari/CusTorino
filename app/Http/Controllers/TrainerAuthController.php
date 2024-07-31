@@ -14,7 +14,7 @@ class TrainerAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.trainer-login');
+        return view('auth.trainer.trainer-login');
     }
 
     public function login(Request $request)
@@ -30,7 +30,7 @@ class TrainerAuthController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.trainer-register');
+        return view('auth.trainer.trainer-register');
     }
 
     public function register(Request $request)

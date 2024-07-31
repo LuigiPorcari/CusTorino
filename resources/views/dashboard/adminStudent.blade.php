@@ -32,7 +32,7 @@
                 </div>
             </form>
         </div>
-        <small>Una volta modificati i valori per uno studente premere conferma</small>
+        <small>Una volta modificati i valori per uno studente premere conferma <br> Modificare uno studente per volta</small>
         <table class="table table-bordered">
             <thead>
                 <tr>

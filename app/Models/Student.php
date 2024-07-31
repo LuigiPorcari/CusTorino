@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 
 class Student extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, CanResetPassword;
     use TwoFactorAuthenticatable;
 
     protected $guard = 'student';
@@ -35,5 +36,5 @@ class Student extends Authenticatable
     {
         return $this->belongsToMany(Alias::class);
     }
-    
+
 }

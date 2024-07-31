@@ -22,6 +22,9 @@
                         <label class="form-label">Password</label>
                         <input type="password" class="form-control" name="password">
                     </div>
+                    <div class="my-3 text-center">
+                        <a class="text-decoration-none" href="{{ route('students.password.request') }}">Password dimenticata?</a>
+                    </div>
                     <div class=" d-flex flex-column align-items-center">
                         <button type="submit" class="btn btn-primary">Accedi</button>
                     </div>

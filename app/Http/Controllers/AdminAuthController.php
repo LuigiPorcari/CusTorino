@@ -14,7 +14,7 @@ class AdminAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.admin-login');
+        return view('auth.admin.admin-login');
     }
 
     public function login(Request $request)
@@ -30,7 +30,7 @@ class AdminAuthController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.admin-register');
+        return view('auth.admin.admin-register');
     }
 
     public function register(Request $request)

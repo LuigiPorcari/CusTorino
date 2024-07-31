@@ -8,10 +8,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
 
 class Trainer extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, CanResetPassword;
     use HasFactory;
     use TwoFactorAuthenticatable;
 

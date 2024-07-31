@@ -37,6 +37,9 @@
                                 <a class="btn btn-primary mb-2" href="{{ route('groups.create') }}">Crea gruppi</a>
                             </li>
                             <li class="d-flex justify-content-center">
+                                <a class="btn btn-primary mb-2" href="{{ route('admin.password.change') }}">Cambia Password</a>
+                            </li>
+                            <li class="d-flex justify-content-center">
                                 <form action="{{ route('admin.logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-warning mb-2">Logout</button>
@@ -50,6 +53,9 @@
                         @elseif(Auth::guard('trainer')->check())
                             {{-- Logica Trainer --}}
                             <li class="d-flex justify-content-center">
+                                <a class="btn btn-primary mb-2" href="{{ route('trainer.password.change') }}">Cambia Password</a>
+                            </li>
+                            <li class="d-flex justify-content-center">
                                 <form action="{{ route('trainer.logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-warning mb-2">Logout</button>
@@ -62,6 +68,9 @@
                             </li>
                         @elseif(Auth::guard('student')->check())
                             {{-- Logica Student --}}
+                            <li class="d-flex justify-content-center">
+                                <a class="btn btn-primary mb-2" href="{{ route('student.password.change') }}">Cambia Password</a>
+                            </li>
                             <li class="d-flex justify-content-center">
                                 <form action="{{ route('student.logout') }}" method="POST">
                                     @csrf

@@ -7,9 +7,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center">
-                <a class="btn btn-primary mx-2" href="{{ route('student.login') }}">Corsista</a>
-                <a class="btn btn-primary mx-2" href="{{ route('trainer.login') }}">Trainer</a>
-                <a class="btn btn-primary mx-2" href="{{ route('admin.login') }}">Admin</a>
+                <a class="btn btn-primary mx-2" href="{{ route('students.login') }}">Corsista</a>
+                <a class="btn btn-primary mx-2" href="{{ route('trainers.login') }}">Trainer</a>
+                <a class="btn btn-primary mx-2" href="{{ route('admins.login') }}">Admin</a>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

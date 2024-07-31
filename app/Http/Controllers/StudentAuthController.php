@@ -13,7 +13,7 @@ class StudentAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.student-login');
+        return view('auth.student.student-login');
     }
 
     public function login(Request $request)
@@ -29,7 +29,7 @@ class StudentAuthController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.student-register');
+        return view('auth.student.student-register');
     }
 
     public function register(Request $request)
@@ -51,7 +51,7 @@ class StudentAuthController extends Controller
             // 'documentation' => $request->documentation,
         ]);
 
-        return redirect()->route('student.login');
+        return redirect()->route('students.login');
     }
 
     public function logout()
