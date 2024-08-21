@@ -1,0 +1,17 @@
+.homepageCol {
+    height: 45vh;
+}
+
+.boxesTrainer {
+    height: 200px;
+    overflow: auto;
+    width: 100%;
+}
+
+.colAdmin{
+    width: 20%;
+}
+
+.cardTrainer{
+    min-height: 75vh;
+}
