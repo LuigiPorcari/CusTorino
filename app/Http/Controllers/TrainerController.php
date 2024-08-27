@@ -13,37 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class TrainerController extends Controller
 {
-    // public function dashboard()
-    // {
-    //     $allenatore_id = Auth::guard('trainer')->user()->id;
-    //     //! Recupera le paginazioni in base alle condizioni specifiche
-    //     $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $allenatore_id)
-    //         ->where('condiviso', 'false')
-    //         ->paginate(9, ['*'], 'primo_allenatore_page');
-
-    //     $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $allenatore_id)
-    //         ->where('condiviso', 'false')
-    //         ->paginate(9, ['*'], 'secondo_allenatore_page');
-
-    //     $aliasesCond = Alias::where(function ($query) use ($allenatore_id) {
-    //         $query->where('primo_allenatore_id', $allenatore_id)
-    //             ->orWhere('secondo_allenatore_id', $allenatore_id);
-    //     })
-    //         ->where('condiviso', 'true')
-    //         ->paginate(9, ['*'], 'cond_page');
-
-    //     // Combina i risultati paginati per aliasesTrainer
-    //     $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
-    //         $query->where('primo_allenatore_id', $allenatore_id)
-    //             ->orWhere('secondo_allenatore_id', $allenatore_id);
-    //     })
-    //         ->paginate(9, ['*'], 'cond_page');
-
-    //     $students = Student::all();
-    //     $trainers = Trainer::all();
-    //     return view('dashboard.trainer', compact('aliasesPrimoAllenatore', 'aliasesSecondoAllenatore', 'students', 'trainers', 'aliasesCond', 'aliasesTrainer'));
-    // }
-
     public function studentAbsence(Request $request, Alias $alias)
     {
 
@@ -59,9 +28,6 @@ class TrainerController extends Controller
         foreach ($studentIds as $studentId) {
             if (($key = array_search($studentId, $studenti)) !== false) {
                 unset($studenti[$key]);
-                // Incrementa Nrecoveries dello studente
-                $student = User::find($studentId);
-                $student->increment('Nrecuperi');
             }
         }
         $alias->studenti_id = array_values($studenti); // Reindex the array
@@ -109,9 +75,6 @@ class TrainerController extends Controller
         foreach ($studentIds as $studentId) {
             if (!in_array($studentId, $currentStudentIds)) {
                 $currentStudentIds[] = $studentId;
-                // Decrementa Nrecoveries dello studente
-                $student = User::find($studentId);
-                $student->decrement('Nrecuperi');
             }
         }
 
@@ -140,13 +103,20 @@ class TrainerController extends Controller
     {
         $allenatore_id = Auth::user()->id;
 
-        // Ottieni le date di allenamento uniche
+        // Calcola la data odierna meno 15 giorni
+        $dateThreshold = \Carbon\Carbon::now()->subDays(15)->toDateString();
+
+        // Ottieni le date di allenamento uniche che non sono inferiori alla data odierna meno 15 giorni
         $dates = Alias::where(function ($query) use ($allenatore_id) {
             $query->where('primo_allenatore_id', $allenatore_id)
                 ->orWhere('secondo_allenatore_id', $allenatore_id);
-        })->distinct('data_allenamento')->pluck('data_allenamento')->sortBy(function ($date) {
-            return \Carbon\Carbon::parse($date);
-        });
+        })
+            ->whereDate('data_allenamento', '>=', $dateThreshold) // Filtro per data
+            ->distinct('data_allenamento')
+            ->pluck('data_allenamento')
+            ->sortBy(function ($date) {
+                return \Carbon\Carbon::parse($date);
+            });
 
         // Instanzia un oggetto Alias per utilizzare i metodi di formattazione
         $alias = new Alias();
@@ -163,7 +133,8 @@ class TrainerController extends Controller
         $query = Alias::where(function ($query) use ($allenatore_id) {
             $query->where('primo_allenatore_id', $allenatore_id)
                 ->orWhere('secondo_allenatore_id', $allenatore_id);
-        });
+        })
+            ->whereDate('data_allenamento', '>=', $dateThreshold); // Filtro per data
 
         if ($request->filled('alias_name')) {
             $query->where('nome', 'like', '%' . $request->alias_name . '%');
@@ -172,15 +143,18 @@ class TrainerController extends Controller
         if ($request->filled('alias_date')) {
             $query->whereDate('data_allenamento', $request->alias_date);
         }
+
         $aliasesTrainer = $query->orderBy('data_allenamento', 'asc')->paginate(9);
+
         return view('dashboard.trainer', compact('aliasesTrainer', 'availableDates'));
     }
+
 
     public function showDetails(Alias $alias)
     {
         $trainers = User::where('is_trainer', 1)->get();
         $group = Group::find($alias->group_id);
         $students = $group->users;
-        return view('trainer.details', compact('alias', 'trainers' , 'students'));
+        return view('trainer.details', compact('alias', 'trainers', 'students'));
     }
 }

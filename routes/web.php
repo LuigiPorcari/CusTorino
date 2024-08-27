@@ -14,6 +14,9 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
+//!ROTTE REGISTRAZIONE ADMIN
+Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
+Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 //!ROTTA HOME
 Route::get('/', [PublicController::class, 'homepage'])->name('homepage');
 //!ROTTE LOGIN UTENTI
@@ -35,9 +38,11 @@ Route::middleware('auth')->group(function () {
 });
 //!MIDDLEWERE ADMIN
 Route::middleware(CheckAdmin::class)->group(function () {
+    //!ROTTE CAMBIO RUOLI TRAINER E CORSISTA
+    Route::post('/admin/user/{trainer}/make-trainer-student', [AdminController::class, 'makeTrainerAndStudent'])->name('admin.user.make-trainer-student');
     //!ROTTE REGISTRAZIONE ADMIN
-    Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
-    Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
+    // Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
+    // Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
     //!ROTTA ELIMINA ADMIN
     Route::delete('/admin/delete/{id}', [LoginController::class, 'destroyAdmin'])->name('admin.destroy');
     //!ROTTA ADMIN ELIMINA CORSISTA
@@ -59,6 +64,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/dashboard/trainer', [AdminController::class, 'dashboardTrainer'])->name('admin.dashboard.trainer');
     Route::get('/admin/dashboard/trainer/details/{trainer}', [AdminController::class, 'trainerDetails'])->name('admin.trainer.details');
+    Route::get('/admin/dashboard/student/details/{student}', [AdminController::class, 'studentDetails'])->name('admin.student.details');
     Route::get('/admin/dashboard/student', [AdminController::class, 'dashboardStudent'])->name('admin.dashboard.student');
     Route::post('/admin/dashboard/update/{student}', [AdminController::class, 'updateStudent'])->name('admin.update.student');
 });

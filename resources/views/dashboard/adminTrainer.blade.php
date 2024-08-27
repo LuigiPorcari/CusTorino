@@ -33,19 +33,31 @@
                     <th>Cognome</th>
                     <th>Stipendio Tot:</th>
                     <th>Dettagli</th>
+                    <th>Questo Trainer è un Corsista?</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($trainers as $trainer)
-                    <tr>
-                        <td>{{ $trainer->name }}</td>
-                        <td>{{ $trainer->cognome }}</td>
-                        <td>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</td>
-                        <td>
-                            <a href="{{ route('admin.trainer.details', $trainer) }}" class="btn btn-info">Visualizza
-                                Dettagli</a>
-                        </td>
-                    </tr>
+                    <form method="POST" action="{{ route('admin.user.make-trainer-student', $trainer) }}">
+                        @csrf
+                        <tr>
+                            <td>{{ $trainer->name }}</td>
+                            <td>{{ $trainer->cognome }}</td>
+                            <td>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</td>
+                            <td>
+                                <a href="{{ route('admin.trainer.details', $trainer) }}" class="btn btn-info">Visualizza
+                                    Dettagli</a>
+                            </td>
+                            <td class="d-flex">
+                                <select class="form-control" name="is_corsista">
+                                    <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI</option>
+                                    <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO
+                                    </option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Modifica</button>
+                            </td>
+                        </tr>
+                    </form>
                 @empty
                     <tr>
                         <td colspan="3" class="text-center">Non ci sono trainer disponibili</td>

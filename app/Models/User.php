@@ -32,6 +32,7 @@ class User extends Authenticatable
         'pagamento',
         'NrecuperiTemp',
         'Nrecuperi',
+        'universitario'
     ];
 
     protected $casts = [
@@ -39,7 +40,7 @@ class User extends Authenticatable
         'is_trainer' => 'boolean',
         'is_corsista' => 'boolean',
         'pagamento' => 'boolean',
-        'visita_medica' => 'date',
+        'visita_medica' => 'boolean',
     ];
 
     /**
@@ -129,9 +130,9 @@ class User extends Authenticatable
                 if (
                     !in_array($student->id, $alias->studenti_id) &&
                     !in_array($student->id, $group->studenti_id) &&
-                    $student->Nrecuperi > 0 &&
-                    $student->livello - 1 <= $alias->livello &&
-                    $alias->livello <= $student->livello + 2 &&
+                    // $student->Nrecuperi > 0 &&
+                    // $student->livello - 1 <= $alias->livello &&
+                    // $alias->livello <= $student->livello + 2 &&
                     $student->genere == $alias->tipo
                 ) {
                     $recoverableStudent[] = $student;

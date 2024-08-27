@@ -20,9 +20,10 @@ return new class extends Migration {
             // Campi per i corsisti
             $table->string('livello')->nullable();
             $table->string('genere')->nullable();
-            $table->boolean('cus_card')->default(false);
-            $table->boolean('visita_medica')->default(false);
-            $table->boolean('pagamento')->default(false);
+            $table->boolean('cus_card')->default(0);
+            $table->boolean('visita_medica')->default(0);
+            $table->boolean('pagamento')->default(0);
+            $table->boolean('universitario')->default(0);
             $table->integer('NrecuperiTemp')->default(0);
             $table->integer('Nrecuperi')->default(0);
         });
@@ -47,6 +48,7 @@ return new class extends Migration {
             $table->dropColumn('cus_card');
             $table->dropColumn('visita_medica');
             $table->dropColumn('pagamento');
+            $table->dropColumn('universitario');
             $table->dropColumn('NrecuperiTemp');
             $table->dropColumn('Nrecuperi');
         });

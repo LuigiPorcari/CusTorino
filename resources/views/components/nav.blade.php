@@ -24,7 +24,8 @@
                                 </li>
                             @endif
                             <li class="d-flex justify-content-center">
-                                <a class="btn btn-primary mb-2" href="{{ route('password.change') }}">Cambia Password</a>
+                                <a class="btn btn-primary mb-2" href="{{ route('password.change') }}">Cambia
+                                    Password</a>
                             </li>
                             <li class="d-flex justify-content-center">
                                 <form action="{{ route('logout') }}" method="POST">
@@ -53,21 +54,28 @@
                 </li>
                 @if (Auth::check())
                     {{-- Mostra la dashboard basata sul ruolo dell'utente --}}
-                    <li class="nav-item">
-                        @if (Auth::user()->is_admin)
+                    @if (Auth::user()->is_admin)
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
-                        @elseif (Auth::user()->is_trainer)
+                        </li>
+                    @endif
+                    @if (Auth::user()->is_trainer)
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('trainer.dashboard') }}">Dashboard Trainer</a>
-                        @elseif (Auth::user()->is_corsista)
+                        </li>
+                    @endif
+                    @if (Auth::user()->is_corsista)
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('student.dashboard') }}">Dashboard Corsista</a>
-                        @endif
-                    </li>
+                        </li>
+                    @endif
                 @endif
             </ul>
             @if (!Auth::check())
                 <div>
                     <a class="btn btn-primary" href="{{ route('login') }}">Accedi</a>
-                    <a class="btn btn-primary mx-2" href="{{ route('corsista.register') }}">Registrati come Corsista</a>
+                    <a class="btn btn-primary mx-2" href="{{ route('corsista.register') }}">Registrati come
+                        Corsista</a>
                 </div>
             @endif
             @if (Auth::check() && Auth::user()->is_admin)
