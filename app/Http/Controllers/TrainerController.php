@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Alias;
 use App\Models\Group;
-use App\Models\Student;
-use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -152,9 +151,14 @@ class TrainerController extends Controller
 
     public function showDetails(Alias $alias)
     {
+        $threeDaysCheck = 1;
+        // Controlla se la data dell'alias è antecedente a più di tre giorni dalla data odierna
+        if (Carbon::parse($alias->data_allenamento)->lt(Carbon::now()->subDays(3))) {
+            $threeDaysCheck = 0;
+        }
         $trainers = User::where('is_trainer', 1)->get();
         $group = Group::find($alias->group_id);
         $students = $group->users;
-        return view('trainer.details', compact('alias', 'trainers', 'students'));
+        return view('trainer.details', compact('alias', 'trainers', 'students' , 'threeDaysCheck'));
     }
 }
