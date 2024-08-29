@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 border rounded-4 shadow p-4">
                 <input type="text" id="searchInput" class="form-control mb-3" placeholder="Cerca studenti...">
-                <form method="POST" action="{{ route('createStudent.trainer', $alias) }}">
+                <form method="POST" action="{{ route('student.recoveries', $alias) }}">
                     @csrf
                     <div id="studentsList" class="list-group">
                         @foreach (Auth::user()->getRecoverableStudent($alias) as $student)

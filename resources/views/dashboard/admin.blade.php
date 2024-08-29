@@ -1,4 +1,4 @@
-<x-layout documentTitle="Admin Group Dashbord">
+<x-layout documentTitle="Admin Group Dashboard">
     <ul class="nav nav-tabs mt-5 pt-3">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
@@ -23,8 +23,9 @@
             <form method="GET" action="{{ route('admin.dashboard') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" name="group_name" class="form-control" placeholder="Nome Gruppo"
-                            value="{{ request('group_name') }}">
+                        <!-- Campo di input di tipo search -->
+                        <input type="search" name="group_name" class="form-control" placeholder="Nome Gruppo"
+                            value="{{ request('group_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary">Filtra</button>

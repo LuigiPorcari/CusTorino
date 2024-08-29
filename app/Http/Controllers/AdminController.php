@@ -19,34 +19,66 @@ class AdminController extends Controller
         return view('dashboard.admin', compact('groups'));
     }
 
-    public function groupDetails(Group $group)
+    public function groupDetails(Group $group, Request $request)
     {
-        return view('dashboard.adminGroupDetails', compact('group'));
+        // Filtro per data
+        $aliasQuery = $group->aliases()->orderBy('data_allenamento', 'asc');
+
+        if ($request->filled('data_allenamento')) {
+            $aliasQuery->whereDate('data_allenamento', $request->data_allenamento);
+        }
+
+        $aliases = $aliasQuery->get();
+
+        // Ottieni tutte le date uniche degli alias per il filtro
+        $availableDates = $group->aliases()
+            ->select('data_allenamento')
+            ->orderBy('data_allenamento', 'asc')
+            ->distinct()
+            ->get();
+
+        return view('dashboard.adminGroupDetails', compact('group', 'aliases', 'availableDates'));
     }
 
     public function dashboardTrainer(Request $request)
     {
-        // Trainer: Filtro per nome
+        // Trainer: Filtro per nome e cognome combinati
         $trainerQuery = User::where('is_trainer', 1);
+
         if ($request->filled('trainer_name')) {
-            $trainerQuery->where('name', 'like', '%' . $request->trainer_name . '%')
-                ->orWhere('cognome', 'like', '%' . $request->trainer_name . '%');
+            $searchTerm = $request->input('trainer_name');
+            $trainerQuery->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('cognome', 'like', '%' . $searchTerm . '%')
+                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $searchTerm . '%']);
+            });
         }
+
         $trainers = $trainerQuery->paginate(10);
+
         return view('dashboard.adminTrainer', compact('trainers'));
     }
 
+
     public function dashboardStudent(Request $request)
     {
-        // Studenti: Filtro per nome
+        // Studenti: Filtro per nome e cognome combinati
         $studentQuery = User::where('is_corsista', 1);
+
         if ($request->filled('student_name')) {
-            $studentQuery->where('name', 'like', '%' . $request->student_name . '%')
-                ->orWhere('cognome', 'like', '%' . $request->student_name . '%');
+            $searchTerm = $request->input('student_name');
+            $studentQuery->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('cognome', 'like', '%' . $searchTerm . '%')
+                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $searchTerm . '%']);
+            });
         }
+
         $students = $studentQuery->paginate(10);
+
         return view('dashboard.adminStudent', compact('students'));
     }
+
 
     public function trainerDetails(User $trainer)
     {
@@ -55,8 +87,6 @@ class AdminController extends Controller
 
     public function updateStudent(Request $request, User $student)
     {
-        //Calocola valore inserito
-        $enteredValor = $request->Nrecuperi - $student->Nrecuperi;
         //Modifica Corsista
         $student->update([
             'livello' => $request->level,
@@ -67,11 +97,6 @@ class AdminController extends Controller
             'is_trainer' => $request->is_trainer,
             'Nrecuperi' => $request->Nrecuperi,
         ]);
-        // Calcola il nuovo valore di NrecuperiTemp utilizzando il valore aggiornato di Nrecuperi
-        $newNrecuperiTemp = $student->NrecuperiTemp - $enteredValor;
-
-        // Aggiorna il valore di NrecuperiTemp nel modello
-        $student->update(['NrecuperiTemp' => $newNrecuperiTemp]);
 
         return redirect(route('admin.dashboard.student'))->with('success', 'Corsista modificato con successo');
     }

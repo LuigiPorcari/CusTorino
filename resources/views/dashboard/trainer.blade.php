@@ -13,14 +13,15 @@
             <form method="GET" action="{{ route('trainer.dashboard') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" name="alias_name" class="form-control" placeholder="Nome Alias"
-                            value="{{ request('alias_name') }}">
+                        <input type="search" name="alias_name" class="form-control" placeholder="Nome Alias"
+                            value="{{ request('alias_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
-                        <select name="alias_date" class="form-control">
-                            <option value="">Seleziona una Data</option>
+                        <select name="alias_date" class="form-control" onchange="this.form.submit()">
+                            <option value="">Tutte le date</option>
                             @foreach ($availableDates as $date)
-                                <option value="{{ $date['original'] }}" {{ request('alias_date') == $date['original'] ? 'selected' : '' }}>
+                                <option value="{{ $date['original'] }}"
+                                    {{ request('alias_date') == $date['original'] ? 'selected' : '' }}>
                                     {{ $date['formatted'] }}
                                 </option>
                             @endforeach
@@ -46,7 +47,7 @@
                         <td>{{ $alias->nome }}</td>
                         <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
                         <td>
-                            <a href="{{ route('trainer.details', $alias) }}" class="btn btn-info">Visualizza
+                            <a href="{{ route('alias.details', $alias) }}" class="btn btn-info">Visualizza
                                 Dettagli</a>
                         </td>
                     </tr>

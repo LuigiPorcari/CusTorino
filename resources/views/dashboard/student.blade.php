@@ -8,107 +8,173 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            {{-- Segna assenze --}}
-            <h2 class="mt-2 mb-3">Gruppi dove ti alleni</h2>
-            {{-- Filtra per data --}}
-            <form method="GET" action="{{ route('student.dashboard') }}" class="mb-4">
-                <div class="row justify-content-start">
-                    <div class="col-md-3 col-12">
-                        <label for="training_date" class="form-label">Data in cui sarai assente</label>
-                        <select id="training_date" name="training_date" class="form-select">
-                            <option value="">Seleziona una data</option>
-                            @foreach ($availableTrainingDates as $date)
-                                <option value="{{ $date['raw'] }}"
-                                    {{ request('training_date') == $date['raw'] ? 'selected' : '' }}>
-                                    {{ $date['formatted'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3 align-self-end">
-                        <button type="submit" class="btn btn-primary">Filtra</button>
+
+            <div class="row">
+                {{-- Segna assenze --}}
+                <div class="col-12 col-md-6">
+                    <h2 class="mt-2 mb-3">Gruppi dove ti alleni</h2>
+                    {{-- Filtra per data --}}
+                    <form method="GET" action="{{ route('student.dashboard') }}" class="mb-4">
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <label for="training_date" class="form-label">Data in cui sarai assente</label>
+                                <select id="training_date" name="training_date" class="form-select" onchange="this.form.submit()">
+                                    <option value="">Tutte le date</option>
+                                    @foreach ($availableTrainingDates as $date)
+                                        <option value="{{ $date['raw'] }}" {{ request('training_date') == $date['raw'] ? 'selected' : '' }}>
+                                            {{ $date['formatted'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="col-12 border rounded-4 shadow bg-white">
+                        <table class="table table-hover mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Pulsante Assenza</th>
+                                    <th scope="col">Gruppo</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Orario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($trainingAliases as $alias)
+                                    <tr>
+                                        <th scope="row">
+                                            <!-- Bottone che apre la modale per Segna Assenza -->
+                                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#absenceConfirmationModal-{{ $alias->id }}">
+                                                Segna Assenza
+                                            </button>
+                                        </th>
+                                        <td>{{ $alias->nome }}</td>
+                                        <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
+                                        <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4">
+                                            <h2>Non sei ancora iscritto ad un gruppo</h2>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </form>
-            <div class="col-12 border rounded-4 shadow bg-white">
-                <table class="table table-hover mt-3">
-                    <thead>
-                        <tr>
-                            <th scope="col">Pulsante Assenza</th>
-                            <th scope="col">Gruppo</th>
-                            <th scope="col">Data</th>
-                            <th scope="col">Orario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($trainingAliases as $alias)
-                            <tr>
-                                <th scope="row">
-                                    <form action="{{ route('student.markAbsence', $alias->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">Segna Assenza</button>
-                                    </form>
-                                </th>
-                                <td>{{ $alias->nome }}</td>
-                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>{{ $alias->formatHours($alias->orario) }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4">
-                                    <h2>Non sei ancora iscritto ad un gruppo</h2>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            {{-- Segna nuova presenza --}}
-            <h2 class="mt-5 mb-3">Gruppi dove puoi recuperare</h2>
-            <div class="col-12 border rounded-4 shadow bg-white">
-                <table class="table table-hover mt-3">
-                    <thead>
-                        <tr>
-                            <th scope="col">Pulsante Recupero</th>
-                            <th scope="col">Gruppo</th>
-                            <th scope="col">Data</th>
-                            <th scope="col">Orario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Auth::user()->Nrecuperi > 0)
-                            @forelse ($recoverableAliases as $alias)
+
+                {{-- Segna nuova presenza --}}
+                <div class="col-12 col-md-6">
+                    <h2 class="mt-2 mb-3">Gruppi dove puoi recuperare</h2>
+                    {{-- Filtro per data di recupero --}}
+                    <form method="GET" action="{{ route('student.dashboard') }}" class="mb-4">
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <label for="recovery_date" class="form-label">Data per il recupero</label>
+                                <select id="recovery_date" name="recovery_date" class="form-select" onchange="this.form.submit()">
+                                    <option value="">Tutte le date</option>
+                                    @foreach ($availableRecoveryDates as $date)
+                                        <option value="{{ $date['raw'] }}" {{ request('recovery_date') == $date['raw'] ? 'selected' : '' }}>
+                                            {{ $date['formatted'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-12 border rounded-4 shadow bg-white">
+                        <table class="table table-hover mt-3">
+                            <thead>
                                 <tr>
-                                    <th scope="row">
-                                        <form action="{{ route('student.recAbsence', $alias->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger btn-sm">Recupera
-                                                Assenza</button>
-                                        </form>
-                                    </th>
-                                    <td>{{ $alias->nome }}</td>
-                                    <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                    <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                    <th scope="col">Pulsante Recupero</th>
+                                    <th scope="col">Gruppo</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Orario</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4">
-                                        <h2>Non ci sono gruppi adatti al tuo recupero</h2>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        @else
-                            <tr>
-                                <td colspan="4">
-                                    <h2>Non hai gettoni recupero</h2>
-                                </td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                @if (Auth::user()->Nrecuperi > 0)
+                                    @forelse ($recoverableAliases as $alias)
+                                        <tr>
+                                            <th scope="row">
+                                                <!-- Bottone che apre la modale per Recupera Assenza -->
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#recoveryConfirmationModal-{{ $alias->id }}">
+                                                    Recupera Assenza
+                                                </button>
+                                            </th>
+                                            <td>{{ $alias->nome }}</td>
+                                            <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
+                                            <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4">
+                                                <h2>Non ci sono gruppi adatti al tuo recupero</h2>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                @else
+                                    <tr>
+                                        <td colspan="4">
+                                            <h2>Non hai gettoni recupero</h2>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    @foreach ($trainingAliases as $alias)
+        <!-- Modale di conferma per Segna Assenza -->
+        <div class="modal fade" id="absenceConfirmationModal-{{ $alias->id }}" tabindex="-1" aria-labelledby="absenceConfirmationModalLabel-{{ $alias->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="absenceConfirmationModalLabel-{{ $alias->id }}">Conferma Segna Assenza</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Sei sicuro di voler segnare l'assenza per il gruppo {{ $alias->nome }} in data {{ $alias->formatData($alias->data_allenamento) }}?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <form action="{{ route('student.markAbsence', $alias->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Conferma</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach ($recoverableAliases as $alias)
+        <!-- Modale di conferma per Recupera Assenza -->
+        <div class="modal fade" id="recoveryConfirmationModal-{{ $alias->id }}" tabindex="-1" aria-labelledby="recoveryConfirmationModalLabel-{{ $alias->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="recoveryConfirmationModalLabel-{{ $alias->id }}">Conferma Recupero Assenza</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Sei sicuro di voler recuperare l'assenza per il gruppo {{ $alias->nome }} in data {{ $alias->formatData($alias->data_allenamento) }}?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <form action="{{ route('student.recAbsence', $alias->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Conferma</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </x-layout>

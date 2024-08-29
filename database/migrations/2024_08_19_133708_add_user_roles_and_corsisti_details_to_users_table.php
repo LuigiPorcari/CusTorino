@@ -24,7 +24,6 @@ return new class extends Migration {
             $table->boolean('visita_medica')->default(0);
             $table->boolean('pagamento')->default(0);
             $table->boolean('universitario')->default(0);
-            $table->integer('NrecuperiTemp')->default(0);
             $table->integer('Nrecuperi')->default(0);
         });
     }
@@ -49,7 +48,6 @@ return new class extends Migration {
             $table->dropColumn('visita_medica');
             $table->dropColumn('pagamento');
             $table->dropColumn('universitario');
-            $table->dropColumn('NrecuperiTemp');
             $table->dropColumn('Nrecuperi');
         });
     }

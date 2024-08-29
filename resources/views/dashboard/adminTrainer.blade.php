@@ -17,8 +17,8 @@
             <form method="GET" action="{{ route('admin.dashboard.trainer') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" name="trainer_name" class="form-control" placeholder="Nome Trainer"
-                            value="{{ request('trainer_name') }}">
+                        <input type="search" name="trainer_name" class="form-control" placeholder="Nome Trainer"
+                            value="{{ request('trainer_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary">Filtra</button>

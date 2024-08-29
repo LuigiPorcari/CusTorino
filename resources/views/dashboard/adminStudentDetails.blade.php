@@ -76,21 +76,11 @@
                                     </option>
                                 </select>
                             </div>
-                            <!-- Numero di Recuperi Temporanei -->
-                            <div class="mb-3">
-                                <label class="form-label"><strong>Recuperi Temporanei:</strong></label>
-                                <p class="form-control">{{ $student->NrecuperiTemp }}</p>
-                            </div>
                             <!-- Numero di Recuperi -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Recuperi:</strong></label>
-                                @if ($student->NrecuperiTemp > 0)
-                                    <input value="{{ $student->Nrecuperi }}" type="number" class="form-control"
-                                        name="Nrecuperi" min="0"
-                                        max="{{ $student->Nrecuperi + $student->NrecuperiTemp }}">
-                                @else
-                                    <p class="form-control">{{ $student->Nrecuperi }}</p>
-                                @endif
+                                <input value="{{ $student->Nrecuperi }}" type="number" class="form-control"
+                                    name="Nrecuperi" min="0">
                             </div>
                             <div class="mb-3 d-flex justify-content-center">
                                 <button type="submit" class="btn btn-warning me-1">Salva Modifiche</button>

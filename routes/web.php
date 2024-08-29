@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AliasController;
 use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckAdminOrTrainer;
 use App\Http\Middleware\CheckStudent;
 use App\Http\Middleware\CheckTrainer;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +30,15 @@ Route::post('/register/corsista', [RegisterController::class, 'registerCorsista'
 //!ROTTE RESET PASSWORD
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+//!MIDDLEWERE ADMIN + TRAINER
+Route::middleware([CheckAdminOrTrainer::class])->group(function () {
+    //!ROTTE MODIFICA ALIAS
+    Route::post('/alias/student-absence/{alias}', [AliasController::class, 'studentAbsence'])->name('student.absence');
+    Route::post('/alias/student-recoveries/{alias}', [AliasController::class, 'recoveriesStudent'])->name('student.recoveries');
+    Route::post('/alias/trainer-absence/{alias}', [AliasController::class, 'aliasUpdate'])->name('alias.update');
+    Route::get('/alias/details/{alias}', [AliasController::class, 'showDetails'])->name('alias.details');
+    Route::get('/alias/edit/student/{alias}', [AliasController::class, 'editStudent'])->name('student.edit');
+});
 //!MIDDLEWERE UTENTE LOGGATO
 Route::middleware('auth')->group(function () {
     //!ROTTE CAMBIO PASSWORD
@@ -74,11 +85,6 @@ Route::middleware(CheckTrainer::class)->group(function () {
     Route::delete('/trainer/delete/{id}', [LoginController::class, 'destroyTrainer'])->name('trainer.destroy');
     //!ROTTE DASHBOARD TRAINER
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
-    Route::get('/trainer/alias/{alias}', [TrainerController::class, 'showDetails'])->name('trainer.details');
-    Route::post('/trainer/student-absence/{alias}', [TrainerController::class, 'studentAbsence'])->name('student.absence');
-    Route::post('/trainer/trainer-absence/{alias}', [TrainerController::class, 'aliasUpdate'])->name('alias.update');
-    Route::get('/trainer/create/student/{alias}', [TrainerController::class, 'editStudent'])->name('editStudent.trainer');
-    Route::post('/trainer/update/student/{alias}', [TrainerController::class, 'recoveriesStudent'])->name('createStudent.trainer');
 });
 //!MIDDLEWERE CORSISTA
 Route::middleware(CheckStudent::class)->group(function () {

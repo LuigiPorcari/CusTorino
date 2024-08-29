@@ -10,6 +10,40 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
+    // public function dashboard(Request $request)
+    // {
+    //     $student = Auth::user();
+
+    //     // Recupera le date disponibili per gli alias dove lo studente è presente
+    //     $availableTrainingDates = $student->aliases()
+    //         ->select('data_allenamento')
+    //         ->distinct()
+    //         ->orderBy('data_allenamento')
+    //         ->get()
+    //         ->map(function ($alias) {
+    //             return [
+    //                 'raw' => $alias->data_allenamento,
+    //                 'formatted' => $alias->formatData($alias->data_allenamento)
+    //             ];
+    //         })
+    //         ->unique('raw')
+    //         ->values();
+
+    //     $trainingDate = $request->input('training_date');
+
+    //     $trainingAliasesQuery = $student->aliases();
+    //     if ($trainingDate) {
+    //         $trainingAliasesQuery->whereDate('data_allenamento', $trainingDate);
+    //     }
+    //     $trainingAliases = $trainingAliasesQuery->get()->sortBy('data_allenamento');
+
+    //     $recoverableAliases = $this->getRecoverableAliases($student);
+
+    //     // Ordinare $recoverableAliases per data crescente
+    //     $recoverableAliases = collect($recoverableAliases)->sortBy('data_allenamento');
+
+    //     return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates'));
+    // }
     public function dashboard(Request $request)
     {
         $student = Auth::user();
@@ -30,20 +64,41 @@ class StudentController extends Controller
             ->values();
 
         $trainingDate = $request->input('training_date');
-
         $trainingAliasesQuery = $student->aliases();
         if ($trainingDate) {
             $trainingAliasesQuery->whereDate('data_allenamento', $trainingDate);
         }
         $trainingAliases = $trainingAliasesQuery->get()->sortBy('data_allenamento');
 
+        // Recupera gli alias recuperabili
         $recoverableAliases = $this->getRecoverableAliases($student);
 
-        // Ordinare $recoverableAliases per data crescente
-        $recoverableAliases = collect($recoverableAliases)->sortBy('data_allenamento');
+        // Estrai le date valide per il recupero
+        $availableRecoveryDates = $recoverableAliases->pluck('data_allenamento')
+            ->unique()
+            ->map(function ($date) {
+                return [
+                    'raw' => $date,
+                    'formatted' => Alias::where('data_allenamento', $date)->first()->formatData($date)
+                ];
+            })
+            ->unique('raw')
+            ->values();
 
-        return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates'));
+        $recoveryDate = $request->input('recovery_date');
+        if ($recoveryDate) {
+            $recoverableAliases = $recoverableAliases->filter(function ($alias) use ($recoveryDate) {
+                return $alias->data_allenamento == $recoveryDate;
+            });
+        }
+
+        // Ordinare $recoverableAliases per data crescente
+        $recoverableAliases = $recoverableAliases->sortBy('data_allenamento');
+
+        return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates', 'availableRecoveryDates'));
     }
+
+
 
 
     private function getRecoverableAliases($student)
@@ -84,7 +139,7 @@ class StudentController extends Controller
         // Verifica se l'orario attuale è prima della scadenza
         if ($now->lte($deadline) && $student->cus_card && $student->visita_medica && $student->pagamento) {
             // Incrementa il contatore delle assenze dello studente
-            $student->increment('NrecuperiTemp');
+            $student->increment('Nrecuperi');
         }
         // Rimuovi lo studente dalla relazione N-N con l'alias
         $alias->users()->detach($student->id);

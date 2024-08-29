@@ -101,7 +101,7 @@
                             @endif
                             <p class="card-text text-center">Condiviso</p>
                         @endif
-                        @if ($threeDaysCheck)
+                        @if ($threeDaysCheck || Auth::user()->is_admin)
                             <form method="POST" action="{{ route('student.absence', $alias) }}">
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
@@ -163,13 +163,13 @@
                             @endif
                             <p class="card-text text-center">Condiviso</p>
                         @endif
-                        @if ($threeDaysCheck)
+                        @if ($threeDaysCheck || Auth::user()->is_admin)
                             @if ($alias->studenti_id == null || $alias->numero_massimo_partecipanti > count($alias->studenti_id))
                                 @if (empty(Auth::user()->getRecoverableStudent($alias)))
                                     <p class="text-center">Non ci sono Studenti che possono recuperare in questa data
                                     </p>
                                 @else
-                                    <a class="btn btn-primary" href="{{ route('editStudent.trainer', $alias) }}">Segna
+                                    <a class="btn btn-primary" href="{{ route('student.edit', $alias) }}">Segna
                                         recuperi</a>
                                 @endif
                             @else
@@ -191,7 +191,7 @@
                         <h6 class="card-subtitle mb-2 text-body-secondary">
                             {{ $alias->formatData($alias->data_allenamento) }}</h6>
                         <p>{{ $alias->formatHours($alias->orario) }}</p>
-                        @if ($threeDaysCheck)
+                        @if ($threeDaysCheck || Auth::user()->is_admin)
                             <form method="POST" action="{{ route('alias.update', $alias) }}">
                                 @csrf
                                 {{-- PRIMO ALLENATORE --}}

@@ -23,8 +23,8 @@
             <form method="GET" action="{{ route('admin.dashboard.student') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="text" name="student_name" class="form-control" placeholder="Nome Studente"
-                            value="{{ request('student_name') }}">
+                        <input type="search" name="student_name" class="form-control" placeholder="Nome Studente"
+                            value="{{ request('student_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary">Filtra</button>
@@ -45,7 +45,8 @@
                     <tr>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->cognome }}</td>
-                        <td><a class="btn btn-primary" href="{{route('admin.student.details' , $student)}}">Visualizza dettagli</a></td>
+                        <td><a class="btn btn-primary" href="{{ route('admin.student.details', $student) }}">Visualizza
+                                dettagli</a></td>
                     </tr>
                 @empty
                     <tr>

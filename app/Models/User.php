@@ -30,7 +30,6 @@ class User extends Authenticatable
         'cus_card',
         'visita_medica',
         'pagamento',
-        'NrecuperiTemp',
         'Nrecuperi',
         'universitario'
     ];
