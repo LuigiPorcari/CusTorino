@@ -61,4 +61,9 @@ class TrainerController extends Controller
         return view('dashboard.trainer', compact('aliasesTrainer', 'availableDates'));
     }
 
+    public function salary()
+    {
+        return view('dashboard.trainerSalary');
+    }
+
 }

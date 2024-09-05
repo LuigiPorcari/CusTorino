@@ -43,6 +43,20 @@
                                     </span>
                                 @enderror
                             </div>
+                            <!-- Genere -->
+                            <div class="form-group mb-3">
+                                <label class="mb-1" for="genere">Genere</label>
+                                <select id="genere" class="form-control @error('genere') is-invalid @enderror"
+                                    name="genere" required>
+                                    <option value="M">Maschio</option>
+                                    <option value="F">Femmina</option>
+                                </select>
+                                @error('genere')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                             <!-- Password -->
                             <div class="form-group mb-3">
                                 <label class="mb-1" for="password">Password</label>

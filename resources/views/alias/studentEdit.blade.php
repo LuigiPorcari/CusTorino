@@ -23,8 +23,9 @@
                             </label>
                         @endforeach
                     </div>
-                    <div class="mb-3 text-center">
-                        <button type="submit" class="btn btn-primary mt-3">Conferma recuperi</button>
+                    <div class="mb-3 text-center d-flex justify-content-center">
+                        <a class="btn btn-primary me-1 mt-3" href="{{route('alias.details', $alias)}}">Indietro</a>
+                        <button type="submit" class="btn btn-primary mt-3 ms-1">Conferma recuperi</button>
                     </div>
                 </form>
             </div>

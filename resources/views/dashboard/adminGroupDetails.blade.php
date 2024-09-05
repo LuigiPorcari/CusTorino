@@ -99,10 +99,14 @@
                             <a class="btn btn-warning mb-2" href="{{ route('groups.edit', $group) }}">Modifica</a>
                             <a class="btn btn-warning mb-2"
                                 href="{{ route('edit.student', $group) }}">Inserisci-Modifica Corsisti</a>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal"
                                 data-bs-target="#deleteModalGroup">
                                 Elimina
                             </button>
+                            <!-- Pulsante di Ritorno -->
+                            <div class="text-center">
+                                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary">Torna alla lista Gruppi</a>
+                            </div>
                         </div>
                     </div>
                 </div>

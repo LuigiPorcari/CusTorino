@@ -1,9 +1,16 @@
 <x-layout documentTitle="Admin Trainer Details">
+    <ul class="nav nav-tabs mt-5 pt-3">
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Gruppi</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ route('trainer.salary') }}">Stipendio</a>
+        </li>
+    </ul>
     <div class="container mt-5">
         <div class="row">
-            <h1 class="mt-5">Dettagli pagamenti {{ $trainer->name }} {{ $trainer->cognome }}</h1>
+            <h1 class="mt-1 mb-5">Dettagli pagamenti</h1>
             <div class="col-12">
-                <h2 class="mt-5 mb-4">{{ $trainer->name }} {{ $trainer->cognome }}</h2>
                 <!-- Tabella per mostrare assenze e presenze -->
                 <table class="table table-bordered mb-5">
                     <thead>
@@ -14,8 +21,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ Auth::user()->countAttendanceTrainer($trainer) }}</td>
-                            <td>{{ Auth::user()->countAbsenceTrainer($trainer) }}</td>
+                            <td>{{ Auth::user()->countAttendanceTrainer(Auth::user()) }}</td>
+                            <td>{{ Auth::user()->countAbsenceTrainer(Auth::user()) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -38,7 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($trainer->primoAllenatoreAliases as $alias)
+                        @foreach (Auth::user()->primoAllenatoreAliases as $alias)
                             <tr>
                                 <td>{{ $alias->nome }}</td>
                                 <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
@@ -59,7 +66,7 @@
                                 @endif
                             </tr>
                         @endforeach
-                        @foreach ($trainer->secondoAllenatoreAliases as $alias)
+                        @foreach (Auth::user()->secondoAllenatoreAliases as $alias)
                             <tr>
                                 <td>{{ $alias->nome }}</td>
                                 <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
@@ -85,15 +92,10 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="text-right"><strong>Stipendio Totale:</strong></td>
-                            <td><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
+                            <td><strong>{{ Auth::user()->calcolaStipendioAllenatore(Auth::user()->id) }} €</strong></td>
                         </tr>
                     </tbody>
                 </table>
-                <!-- Pulsante di Ritorno -->
-                <div class="text-center">
-                    <a href="{{ route('admin.dashboard.trainer') }}" class="btn btn-primary">Torna alla lista
-                        Trainer</a>
-                </div>
             </div>
         </div>
     </div>

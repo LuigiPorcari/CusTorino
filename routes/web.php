@@ -85,6 +85,7 @@ Route::middleware(CheckTrainer::class)->group(function () {
     Route::delete('/trainer/delete/{id}', [LoginController::class, 'destroyTrainer'])->name('trainer.destroy');
     //!ROTTE DASHBOARD TRAINER
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
+    Route::get('/trainer/dashboard/salary', [TrainerController::class, 'salary'])->name('trainer.salary');
 });
 //!MIDDLEWERE CORSISTA
 Route::middleware(CheckStudent::class)->group(function () {

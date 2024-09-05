@@ -72,35 +72,6 @@
                 <h3 class="mb-4 text-center">Segna Assenze</h3>
                 <div class="card mx-1 my-2 border rounded-4 shadow-sm cardTrainer">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                        <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">
-                            {{ $alias->formatData($alias->data_allenamento) }}</h6>
-                        <p>{{ $alias->formatHours($alias->orario) }}</p>
-                        @if ($alias->condiviso == 'false')
-                            @if ($alias->primo_allenatore_id != null)
-                                <p class="card-text text-center">Primo allenatore: <br>
-                                    {{ $alias->primoAllenatore->name }}
-                                    {{ $alias->primoAllenatore->cognome }}</p>
-                            @endif
-                            @if ($alias->secondo_allenatore_id != null)
-                                <p class="card-text text-center">Secondo allenatore: <br>
-                                    {{ $alias->secondoAllenatore->name }}
-                                    {{ $alias->secondoAllenatore->cognome }}</p>
-                            @endif
-                        @endif
-                        @if ($alias->condiviso == 'true')
-                            @if ($alias->primo_allenatore_id != null)
-                                <p class="card-text text-center">Allenatore condiviso: <br>
-                                    {{ $alias->primoAllenatore->name }}
-                                    {{ $alias->primoAllenatore->cognome }}</p>
-                            @endif
-                            @if ($alias->secondo_allenatore_id != null)
-                                <p class="card-text text-center">Allenatore condiviso: <br>
-                                    {{ $alias->secondoAllenatore->name }}
-                                    {{ $alias->secondoAllenatore->cognome }}</p>
-                            @endif
-                            <p class="card-text text-center">Condiviso</p>
-                        @endif
                         @if ($threeDaysCheck || Auth::user()->is_admin)
                             <form method="POST" action="{{ route('student.absence', $alias) }}">
                                 <div class="boxesTrainer container mt-2">
@@ -134,35 +105,6 @@
                 <h3 class="mb-4 text-center">Segna Recuperi</h3>
                 <div class="card mx-1 my-2 border rounded-4 shadow-sm cardTrainer">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                        <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">
-                            {{ $alias->formatData($alias->data_allenamento) }}</h6>
-                        <p>{{ $alias->formatHours($alias->orario) }}</p>
-                        @if ($alias->condiviso == 'false')
-                            @if ($alias->primo_allenatore_id != null)
-                                <p class="card-text text-center">Primo allenatore: <br>
-                                    {{ $alias->primoAllenatore->name }}
-                                    {{ $alias->primoAllenatore->cognome }}</p>
-                            @endif
-                            @if ($alias->secondo_allenatore_id != null)
-                                <p class="card-text text-center">Secondo allenatore: <br>
-                                    {{ $alias->secondoAllenatore->name }}
-                                    {{ $alias->secondoAllenatore->cognome }}</p>
-                            @endif
-                        @endif
-                        @if ($alias->condiviso == 'true')
-                            @if ($alias->primo_allenatore_id != null)
-                                <p class="card-text text-center">Allenatore condiviso: <br>
-                                    {{ $alias->primoAllenatore->name }}
-                                    {{ $alias->primoAllenatore->cognome }}</p>
-                            @endif
-                            @if ($alias->secondo_allenatore_id != null)
-                                <p class="card-text text-center">Allenatore condiviso: <br>
-                                    {{ $alias->secondoAllenatore->name }}
-                                    {{ $alias->secondoAllenatore->cognome }}</p>
-                            @endif
-                            <p class="card-text text-center">Condiviso</p>
-                        @endif
                         @if ($threeDaysCheck || Auth::user()->is_admin)
                             @if ($alias->studenti_id == null || $alias->numero_massimo_partecipanti > count($alias->studenti_id))
                                 @if (empty(Auth::user()->getRecoverableStudent($alias)))
@@ -187,10 +129,6 @@
                 <h3 class="mb-4 text-center">Assenza Allenatore</h3>
                 <div class="card mx-1 my-2 border rounded-4 shadow-sm cardTrainer">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                        <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">
-                            {{ $alias->formatData($alias->data_allenamento) }}</h6>
-                        <p>{{ $alias->formatHours($alias->orario) }}</p>
                         @if ($threeDaysCheck || Auth::user()->is_admin)
                             <form method="POST" action="{{ route('alias.update', $alias) }}">
                                 @csrf
@@ -247,6 +185,16 @@
                     </div>
                 </div>
             </div>
+            <!-- Pulsante di Ritorno -->
+            @if (Auth::user()->is_admin)
+                <div class="text-center">
+                    <a class="btn btn-primary" href="{{ route('admin.group.details', $alias->group) }}">Indietro</a>
+                </div>
+            @else
+                <div class="text-center">
+                    <a class="btn btn-primary" href="{{ route('trainer.dashboard') }}">Indietro</a>
+                </div>
+            @endif
         </div>
     </div>
 </x-layout>

@@ -51,6 +51,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'cognome' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'genere' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -60,6 +61,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'is_trainer' => true,
+            'genere' => $request->genere,
         ]);
 
         return redirect()->route('login');

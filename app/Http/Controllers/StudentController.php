@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Alias;
 use App\Models\Group;
@@ -10,47 +11,15 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    // public function dashboard(Request $request)
-    // {
-    //     $student = Auth::user();
-
-    //     // Recupera le date disponibili per gli alias dove lo studente è presente
-    //     $availableTrainingDates = $student->aliases()
-    //         ->select('data_allenamento')
-    //         ->distinct()
-    //         ->orderBy('data_allenamento')
-    //         ->get()
-    //         ->map(function ($alias) {
-    //             return [
-    //                 'raw' => $alias->data_allenamento,
-    //                 'formatted' => $alias->formatData($alias->data_allenamento)
-    //             ];
-    //         })
-    //         ->unique('raw')
-    //         ->values();
-
-    //     $trainingDate = $request->input('training_date');
-
-    //     $trainingAliasesQuery = $student->aliases();
-    //     if ($trainingDate) {
-    //         $trainingAliasesQuery->whereDate('data_allenamento', $trainingDate);
-    //     }
-    //     $trainingAliases = $trainingAliasesQuery->get()->sortBy('data_allenamento');
-
-    //     $recoverableAliases = $this->getRecoverableAliases($student);
-
-    //     // Ordinare $recoverableAliases per data crescente
-    //     $recoverableAliases = collect($recoverableAliases)->sortBy('data_allenamento');
-
-    //     return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates'));
-    // }
     public function dashboard(Request $request)
     {
         $student = Auth::user();
+        $today = Carbon::today();
 
         // Recupera le date disponibili per gli alias dove lo studente è presente
         $availableTrainingDates = $student->aliases()
             ->select('data_allenamento')
+            ->whereDate('data_allenamento', '>=', $today) // Filtra per date future o odierne
             ->distinct()
             ->orderBy('data_allenamento')
             ->get()
@@ -64,14 +33,17 @@ class StudentController extends Controller
             ->values();
 
         $trainingDate = $request->input('training_date');
-        $trainingAliasesQuery = $student->aliases();
+        $trainingAliasesQuery = $student->aliases()->whereDate('data_allenamento', '>=', $today); // Filtra per date future o odierne
         if ($trainingDate) {
             $trainingAliasesQuery->whereDate('data_allenamento', $trainingDate);
         }
         $trainingAliases = $trainingAliasesQuery->get()->sortBy('data_allenamento');
 
         // Recupera gli alias recuperabili
-        $recoverableAliases = $this->getRecoverableAliases($student);
+        $recoverableAliases = $this->getRecoverableAliases($student)
+            ->filter(function ($alias) use ($today) {
+                return Carbon::parse($alias->data_allenamento)->gte($today); // Filtra per date future o odierne
+            });
 
         // Estrai le date valide per il recupero
         $availableRecoveryDates = $recoverableAliases->pluck('data_allenamento')
@@ -97,8 +69,6 @@ class StudentController extends Controller
 
         return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates', 'availableRecoveryDates'));
     }
-
-
 
 
     private function getRecoverableAliases($student)
@@ -131,9 +101,9 @@ class StudentController extends Controller
         $student = Auth::user();
         $alias = Alias::findOrFail($aliasId);
         // Ottieni la data e l'orario dell'alias
-        $aliasDateTime = \Carbon\Carbon::parse($alias->data_allenamento . ' ' . $alias->orario);
+        $aliasDateTime = Carbon::parse($alias->data_allenamento . ' ' . $alias->orario);
         // Ottieni l'orario attuale
-        $now = \Carbon\Carbon::now();
+        $now = Carbon::now();
         // Calcola la data e l'orario limite per l'incremento (12 ore prima dell'alias)
         $deadline = $aliasDateTime->copy()->subHours(12);
         // Verifica se l'orario attuale è prima della scadenza
@@ -141,6 +111,7 @@ class StudentController extends Controller
             // Incrementa il contatore delle assenze dello studente
             $student->increment('Nrecuperi');
         }
+
         // Rimuovi lo studente dalla relazione N-N con l'alias
         $alias->users()->detach($student->id);
         // Aggiorna l'array degli studenti nell'alias
@@ -150,7 +121,8 @@ class StudentController extends Controller
         }
         $alias->studenti_id = array_values($studenti); // Rimuove eventuali buchi nell'array
         $alias->save();
-        return redirect()->back()->with('success', 'Assenza segnata con successo.');
+        $string = Auth::user()->canMarkAbsence($alias);
+        return redirect()->back()->with('success', $string . 'Assenza segnata con successo.');
     }
 
     public function recAbsence($aliasId)
@@ -173,7 +145,7 @@ class StudentController extends Controller
         $alias->studenti_id = array_values($studenti); // Rimuove eventuali buchi nell'array
         $alias->save();
 
-        return redirect()->back()->with('success', 'Recupero segnato con successo.');
+        return redirect()->back()->with('success1', 'Ti è stato tolto un gettone<br>Il numero di gettoni che ti rimangono è ' . $student->Nrecuperi .'<br>Recupero segnato con successo.');
     }
 
     public function update(Request $request, User $student)

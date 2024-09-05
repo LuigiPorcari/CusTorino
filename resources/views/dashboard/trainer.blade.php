@@ -1,14 +1,22 @@
 <x-layout documentTitle="Trainer Dashboard">
+    <ul class="nav nav-tabs mt-5 pt-3">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('trainer.dashboard') }}">Gruppi</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('trainer.salary') }}">Stipendio</a>
+        </li>
+    </ul>
     {{-- Gruppi allenati --}}
     <div class="container mt-5">
         <h1 class="mt-5 pt-5 text-center">Trainer Dashboard</h1>
+        <h2 class="mt-5 mb-4">Gruppi in cui alleni</h2>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <h2 class="mt-5 mb-4">Gruppi in cui alleni</h2>
         <div class="mb-4">
             <form method="GET" action="{{ route('trainer.dashboard') }}">
                 <div class="row">

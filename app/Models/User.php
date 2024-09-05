@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -91,6 +93,16 @@ class User extends Authenticatable
         return $this->hasMany(Alias::class, 'secondo_allenatore_id');
     }
 
+    public function primoAllenatoreGroups()
+    {
+        return $this->hasMany(Group::class, 'primo_allenatore_id');
+    }
+
+    public function secondoAllenatoreGroups()
+    {
+        return $this->hasMany(Group::class, 'secondo_allenatore_id');
+    }
+
     public function calcolaStipendioAllenatore($trainerId)
     {
         $trainer = User::findOrFail($trainerId);
@@ -122,7 +134,7 @@ class User extends Authenticatable
     public function getRecoverableStudent($alias)
     {
         $recoverableStudent = [];
-        $students = User::where('is_corsista' , 1)->get();
+        $students = User::where('is_corsista', 1)->get();
         foreach ($students as $student) {
             $groups = Group::where('nome', $alias->nome)->get();
             foreach ($groups as $group) {
@@ -145,5 +157,104 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function canMarkAbsence($alias)
+    {
+        $string = "";
+        // Ottieni la data e l'orario dell'alias
+        $aliasDateTime = Carbon::parse($alias->data_allenamento . ' ' . $alias->orario);
+        // Ottieni l'orario attuale
+        $now = Carbon::now();
+        // Calcola la data e l'orario limite per l'incremento (12 ore prima dell'alias)
+        $deadline = $aliasDateTime->copy()->subHours(12);
+        // Verifica che lo studente abbia la carta CUS, la visita medica e il pagamento effettuato
+        if (!Auth::user()->cus_card) {
+            $string .= 'Non guadagnerai un gettone perchè non hai una carta CUS valida.<br>';
+        }
+        if (!Auth::user()->visita_medica) {
+            $string .= 'Non guadagnerai un gettone perchè la tua visita medica non è completa.<br>';
+        }
+        if (!Auth::user()->pagamento) {
+            $string .= 'Non guadagnerai un gettone perchè non hai completato il pagamento.<br>';
+        }
+        // Verifica se l'assenza è richiesta con almeno 12 ore di anticipo
+        if ($now->gt($deadline)) {
+            $string .= 'Non guadagnerai un gettone perchè il termine delle 12 ore è già passato.<br>';
+        }
+        // Verifica che tutte le condizioni siano soddisfatte
+        if (empty($string) && $now->lte($deadline)) {
+            $string = 'Guadagnerai un gettone.<br>';
+        }
+        return $string;
+    }
+
+    public function countAbsences()
+    {
+        $countAbsences = 0;
+        $student = Auth::user();
+        // Itera attraverso tutti i gruppi a cui lo studente è iscritto
+        foreach ($student->groups as $group) {
+            // Itera attraverso tutti gli alias associati al gruppo
+            foreach ($group->aliases as $alias) {
+                // Verifica se lo studente non è presente nell'alias (assenza)
+                if (!in_array($student->id, $alias->studenti_id)) {
+                    $countAbsences += 1;
+                }
+            }
+        }
+        return $countAbsences;
+    }
+
+    public function countAbsenceTrainer($trainer)
+    {
+        $countAbsenceTrainer = 0;
+        // Itera attraverso tutti i gruppi in cui il trainer è primo allenatore
+        foreach ($trainer->primoAllenatoreGroups as $group) {
+            // Itera attraverso tutti gli alias associati al gruppo
+            foreach ($group->aliases as $alias) {
+                // Verifica se il trainer è presente nell'alias (presenza)
+                if ($alias->primo_allenatore_id != $trainer->id) {
+                    $countAbsenceTrainer += 1;
+                }
+            }
+        }
+        // Itera attraverso tutti i gruppi in cui il trainer è secondo allenatore
+        foreach ($trainer->secondoAllenatoreGroups as $group) {
+            // Itera attraverso tutti gli alias associati al gruppo
+            foreach ($group->aliases as $alias) {
+                // Verifica se il trainer è presente nell'alias (presenza)
+                if ($alias->secondo_allenatore_id != $trainer->id) {
+                    $countAbsenceTrainer += 1;
+                }
+            }
+        }
+        return $countAbsenceTrainer;
+    }
+
+    public function countAttendanceTrainer($trainer)
+    {
+        $countAttendanceTrainer = 0;
+        // Itera attraverso tutti i gruppi in cui il trainer è primo allenatore
+        foreach ($trainer->primoAllenatoreGroups as $group) {
+            // Itera attraverso tutti gli alias associati al gruppo
+            foreach ($group->aliases as $alias) {
+                // Verifica se il trainer è presente nell'alias (presenza)
+                if ($alias->primo_allenatore_id == $trainer->id) {
+                    $countAttendanceTrainer += 1;
+                }
+            }
+        }
+        // Itera attraverso tutti i gruppi in cui il trainer è secondo allenatore
+        foreach ($trainer->secondoAllenatoreGroups as $group) {
+            // Itera attraverso tutti gli alias associati al gruppo
+            foreach ($group->aliases as $alias) {
+                // Verifica se il trainer è presente nell'alias (presenza)
+                if ($alias->secondo_allenatore_id == $trainer->id) {
+                    $countAttendanceTrainer += 1;
+                }
+            }
+        }
+        return $countAttendanceTrainer;
     }
 }

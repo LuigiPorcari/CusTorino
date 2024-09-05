@@ -3,7 +3,7 @@
 }
 
 .boxesTrainer {
-    height: 200px;
+    height: 370px;
     overflow: auto;
     width: 100%;
 }
@@ -13,5 +13,5 @@
 }
 
 .cardTrainer{
-    min-height: 75vh;
+    min-height: 60vh;
 }
