@@ -15,10 +15,56 @@
                         @if ($group->secondo_allenatore_id != null)
                             <p class="card-text">Secondo allenatore: <br> {{ $group->secondoAllenatore->name }}
                                 {{ $group->secondoAllenatore->cognome }}</p>
+                            @if ($group->condiviso == 'true')
+                                <p class="card-text">Condiviso</p>
+                            @endif
                         @endif
                         <p class="card-text">Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
                         <p class="card-text">Livello: {{ $group->livello }}</p>
-
+                        <p class="card-text mb-0">Studenti:</p>
+                        @foreach ($group->users as $student)
+                            <div class="d-flex">
+                                <p class="mt-3 fw-bold">{{ $student->name }} {{ $student->cognome }} - </p>
+                                <div class="btn-group dropend">
+                                    <button type="button" class="btn btn-sm dropdown-toggle text-white"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Documentazione
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <p class="dropdown-item">Cus Card --
+                                                @if ($student->cus_card)
+                                                    OK
+                                                @else
+                                                    NON OK
+                                                @endif
+                                            </p>
+                                            <p class="dropdown-item">Visita Medica --
+                                                @if ($student->visita_medica)
+                                                    OK
+                                                @else
+                                                    NON OK
+                                                @endif
+                                            </p>
+                                            <p class="dropdown-item">Pagamento --
+                                                @if ($student->pagamento)
+                                                    OK
+                                                @else
+                                                    NON OK
+                                                @endif
+                                            </p>
+                                            <p class="dropdown-item">Universitario --
+                                                @if ($student->universitario)
+                                                    SI
+                                                @else
+                                                    NO
+                                                @endif
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        @endforeach
                         <div class="d-flex flex-column align-items-center mt-5">
                             <a class="btn admin-btn-warning mb-2"
                                 href="{{ route('groups.edit', $group) }}">Modifica</a>
@@ -34,7 +80,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-12 col-md-8">
                 <h1>Alias del Gruppo</h1>
                 <form method="GET" action="{{ route('admin.group.details', $group) }}">
