@@ -27,7 +27,7 @@
                             value="{{ request('student_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary">Filtra</button>
+                        <button type="submit" class="btn btn-primary w-100">Filtra</button>
                     </div>
                 </div>
             </form>

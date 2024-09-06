@@ -1,9 +1,9 @@
 <x-layout documentTitle="Student Dashboard">
     <div class="container mt-5">
         <div class="row mt-5">
-            <h1 class="mt-5">Student Dashboard</h1>
+            <h1 class="mt-5">Dashboard Corsista</h1>
             {{-- Tabella con il conteggio delle assenze e dei gettoni --}}
-            <div class="col-12 mb-5">
+            <div class="col-12 mb-5 mt-2">
                 <h2 class="mb-3">Statistiche Personali</h2>
                 <div class="col-12 border rounded-4 shadow bg-white">
                     <table class="table table-hover mt-3">
@@ -51,7 +51,6 @@
                             </div>
                         </div>
                     </form>
-
                     <div class="col-12 border rounded-4 shadow bg-white">
                         <table class="table table-hover mt-3">
                             <thead>
