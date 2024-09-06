@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 
-<body class="bg-light-subtle">
+<body>
     <x-nav />
     <div class="min-vh-100">
         {{ $slot }}

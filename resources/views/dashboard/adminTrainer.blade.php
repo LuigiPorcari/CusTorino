@@ -1,20 +1,19 @@
 <x-layout documentTitle="Admin Trainer Dashboard">
-    <ul class="nav nav-tabs mt-5 pt-3">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
+    <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
+        <li class="nav-item admin-nav-item">
+            <a class="nav-link mt-3" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}">Trainer</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
         </li>
     </ul>
 
-    <div class="container mt-5">
-        {{-- Elenco Trainer --}}
+    <div class="container mt-5 admin-trainer-dashboard">
         <h2 class="mt-5 mb-4">Elenco Trainer</h2>
-        <div class="mb-4">
+        <div class="mb-4 admin-trainer-filter">
             <form method="GET" action="{{ route('admin.dashboard.trainer') }}">
                 <div class="row g-2">
                     <div class="col-md-4">
@@ -22,15 +21,14 @@
                             value="{{ request('trainer_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary w-100">Filtra</button>
+                        <button type="submit" class="btn admin-btn-info w-100">Filtra</button>
                     </div>
                 </div>
             </form>
         </div>
 
-        <!-- Tabella Responsive -->
-        <div class="table-responsive">
-            <table class="table table-bordered">
+        <div class="table-responsive admin-table-responsive">
+            <table class="table table-bordered admin-trainer-table">
                 <thead>
                     <tr>
                         <th class="d-table-cell d-md-none">Nome e Cognome</th>
@@ -51,16 +49,14 @@
                                 <td class="d-none d-md-table-cell">{{ $trainer->cognome }}</td>
                                 <td class="d-none d-md-table-cell">{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</td>
                                 <td>
-                                    <a href="{{ route('admin.trainer.details', $trainer) }}" class="btn btn-info w-100 mb-2 mb-md-0">
-                                        Visualizza Dettagli
-                                    </a>
+                                    <a href="{{ route('admin.trainer.details', $trainer) }}" class="btn admin-btn-info">Visualizza Dettagli</a>
                                 </td>
                                 <td class="d-flex flex-column flex-md-row">
                                     <select class="form-control mb-2 mb-md-0" name="is_corsista">
                                         <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI</option>
                                         <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO</option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary w-100 w-md-auto">Modifica</button>
+                                    <button type="submit" class="btn admin-btn-info">Modifica</button>
                                 </td>
                             </tr>
                         </form>
@@ -73,7 +69,6 @@
             </table>
         </div>
 
-        <!-- Paginazione -->
         {{ $trainers->links('pagination::bootstrap-5') }}
     </div>
 </x-layout>

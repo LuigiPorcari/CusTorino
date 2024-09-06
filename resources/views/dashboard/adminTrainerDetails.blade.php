@@ -1,11 +1,10 @@
 <x-layout documentTitle="Admin Trainer Details">
-    <div class="container mt-5">
+    <div class="container mt-5 admin-trainer-details">
         <div class="row">
             <h1 class="mt-5">Dettagli pagamenti {{ $trainer->name }} {{ $trainer->cognome }}</h1>
             <div class="col-12">
                 <h2 class="mt-5 mb-4">{{ $trainer->name }} {{ $trainer->cognome }}</h2>
-                <!-- Tabella per mostrare assenze e presenze -->
-                <table class="table table-bordered mb-5">
+                <table class="table table-bordered admin-trainer-table">
                     <thead>
                         <tr>
                             <th>Totale Presenze</th>
@@ -19,22 +18,13 @@
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-bordered">
+                <table class="table table-bordered admin-trainer-table">
                     <thead>
                         <tr>
-                            <th>
-                                <p>Nome Gruppo Alias</p>
-                            </th>
-                            <th>
-                                <p>Data Gruppo Alias</p>
-                            </th>
-                            <th class="d-flex justify-content-between">
-                                <p>Tipo allenatore</p>
-                                <p>Condiviso</p>
-                            </th>
-                            <th>
-                                <p>Stipendio relativo alla prestazione (€)</p>
-                            </th>
+                            <th>Nome Gruppo Alias</th>
+                            <th>Data Gruppo Alias</th>
+                            <th>Tipo allenatore / Condiviso</th>
+                            <th>Stipendio (€)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,57 +32,26 @@
                             <tr>
                                 <td>{{ $alias->nome }}</td>
                                 <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td class="d-flex justify-content-between">
-                                    <p>Primo Allenatore</p>
-                                    <p>
-                                        @if ($alias->condiviso == 'true')
-                                            Si
-                                        @else
-                                            No
-                                        @endif
-                                    </p>
-                                </td>
-                                @if ($alias->condiviso == 'true')
-                                    <td>15.00 €</td>
-                                @else
-                                    <td>22.50 €</td>
-                                @endif
+                                <td>Primo Allenatore / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
+                                <td>{{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}</td>
                             </tr>
                         @endforeach
                         @foreach ($trainer->secondoAllenatoreAliases as $alias)
                             <tr>
                                 <td>{{ $alias->nome }}</td>
                                 <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td class="d-flex justify-content-between">
-                                    <p>Secondo Allenatore</p>
-                                    <p>
-                                        @if ($alias->condiviso == 'true')
-                                            Si
-                                        @else
-                                            No
-                                        @endif
-                                    </p>
-                                </td>
-                                @if ($alias->condiviso == 'true')
-                                    <td>15.00 €</td>
-                                @else
-                                    <td>7.50 €</td>
-                                @endif
+                                <td>Secondo Allenatore / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
+                                <td>{{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}</td>
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="3"></td>
-                        </tr>
-                        <tr>
                             <td colspan="2" class="text-right"><strong>Stipendio Totale:</strong></td>
-                            <td><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
+                            <td colspan="2"><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
                         </tr>
                     </tbody>
                 </table>
-                <!-- Pulsante di Ritorno -->
                 <div class="text-center">
-                    <a href="{{ route('admin.dashboard.trainer') }}" class="btn btn-primary">Torna alla lista
-                        Trainer</a>
+                    <a href="{{ route('admin.dashboard.trainer') }}" class="btn admin-btn-info">Torna alla lista Trainer</a>
                 </div>
             </div>
         </div>

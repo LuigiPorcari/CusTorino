@@ -1,0 +1,96 @@
+/* Titolo principale */
+.custom-title {
+    color: rgb(245, 189, 27); /* Giallo sportivo */
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-family: 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+/* Stile per le colonne principali della homepage */
+.custom-homepage-col {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white; /* Testo bianco per contrasto */
+    padding: 2rem;
+    height: 45vh;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+.custom-homepage-col:hover {
+    transform: translateY(-5px); /* Sollevamento leggero al passaggio */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Ombra più accentuata */
+}
+
+/* Stile per i sottotitoli */
+.custom-subtitle {
+    color: rgb(245, 189, 27); /* Giallo sportivo */
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: 'Arial', sans-serif;
+    text-transform: uppercase;
+}
+
+/* Paragrafo */
+.custom-paragraph {
+    color: white;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+}
+
+/* Pulsante primario */
+.custom-btn-primary-home {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    border-color: rgb(0, 108, 181);
+    padding: 0.7rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.custom-btn-primary-home:hover {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    border-color: rgb(245, 189, 27);
+    transform: translateY(-2px); /* Sollevamento pulsante al passaggio */
+    box-shadow: 0 6px 8px rgba(245, 189, 27, 0.6);
+}
+
+/* Placeholder per le immagini */
+.custom-image-placeholder {
+    color: rgb(0, 108, 181); /* Blu chiaro */
+    font-size: 2rem;
+    font-weight: bold;
+    border: 2px dashed rgb(245, 189, 27); /* Bordo giallo sportivo */
+    padding: 3rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-image-placeholder:hover {
+    border-color: rgb(0, 108, 181); /* Cambia al blu chiaro al passaggio */
+    transform: scale(1.05); /* Leggero ingrandimento al passaggio */
+}
+
+/* Success message */
+.custom-alert-success-home {
+    background-color: rgb(245, 189, 27);
+    border-color: rgb(0, 108, 181);
+    color: rgb(22, 39, 101); /* Blu scuro per testo */
+    font-weight: bold;
+}
+
+/* Media query per mobile */
+@media (max-width: 768px) {
+    .custom-title {
+        font-size: 2rem;
+    }
+
+    .custom-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .custom-paragraph {
+        font-size: 1rem;
+    }
+}

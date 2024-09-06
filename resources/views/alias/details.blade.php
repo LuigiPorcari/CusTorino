@@ -1,6 +1,6 @@
 <x-layout documentTitle="Dettagli Alias">
-    <div class="container mt-5 pt-4">
-        <h1 class="text-center mb-3">Dettagli del Gruppo Alias</h1>
+    <div class="container mt-5 pt-5">
+        <h1 class="text-center mb-3 mt-4">Dettagli del Gruppo Alias</h1>
         @if (session('success'))
             <div class="alert alert-success alert-dismissible">
                 {{ session('success') }}

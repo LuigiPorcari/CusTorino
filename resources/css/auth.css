@@ -1,0 +1,82 @@
+/* Stile generale per i form */
+.custom-card {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white; /* Testo bianco */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Aggiunge ombra */
+}
+
+.custom-card-header {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    color: white; /* Testo bianco */
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.custom-card-body {
+    padding: 2rem;
+}
+
+/* Pulsanti */
+.custom-btn-submit {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: white;
+    padding: 0.7rem 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.custom-btn-submit:hover {
+    background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 108, 181, 0.5);
+}
+
+/* Form Labels */
+.custom-form-label {
+    font-weight: bold;
+    color: rgb(245, 189, 27); /* Giallo */
+    margin-bottom: 0.5rem;
+}
+
+/* Input Fields */
+.custom-form-input {
+    border: 1px solid rgb(245, 189, 27); /* Giallo */
+    padding: 0.7rem;
+    border-radius: 5px;
+    color: black;
+    background-color: #f9f9f9;
+    margin-bottom: 1rem;
+    width: 100%;
+    transition: border 0.3s ease;
+}
+
+.custom-form-input:focus {
+    border: 2px solid rgb(0, 108, 181); /* Blu chiaro */
+}
+
+/* Messaggio di errore */
+.custom-invalid-feedback {
+    color: rgb(245, 189, 27); /* Giallo */
+    font-weight: bold;
+}
+
+/* Media queries per dispositivi mobili */
+@media (max-width: 768px) {
+    .custom-card-body {
+        padding: 1.5rem;
+    }
+
+    .custom-btn-submit {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+}

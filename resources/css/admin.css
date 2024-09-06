@@ -1,0 +1,368 @@
+/* Stile personalizzato per la Dashboard Admin */
+.admin-dashboard {
+    padding-top: 5rem;
+}
+
+.admin-nav-tabs {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    border-bottom: 2px solid rgb(245, 189, 27); /* Bordo giallo */
+}
+
+.admin-nav-item .nav-link {
+    color: rgb(245, 189, 27); /* Giallo per i link */
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.admin-nav-item .nav-link.active {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    color: white;
+}
+
+.admin-nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Sfondo al passaggio */
+    color: rgb(245, 189, 27);
+}
+
+/* Stile per tabelle della dashboard */
+.admin-table {
+    border: 2px solid rgb(22, 39, 101); /* Bordo blu scuro */
+}
+
+.admin-table th {
+    background-color: rgb(0, 108, 181); /* Sfondo blu chiaro per l'intestazione */
+    color: white;
+    font-weight: bold;
+}
+
+.admin-table td {
+    background-color: white;
+    color: rgb(22, 39, 101);
+}
+
+/* Pulsanti personalizzati */
+.admin-btn-info {
+    background-color: rgb(0, 108, 181);
+    color: white;
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.admin-btn-info:hover {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: rgb(22, 39, 101);
+}
+
+/* Alert personalizzati */
+.admin-alert {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: rgb(22, 39, 101); /* Blu scuro per il testo */
+    font-weight: bold;
+}
+
+.admin-alert .btn-close {
+    color: rgb(22, 39, 101); /* Blu scuro */
+}
+
+/* Stile per i modali */
+.admin-modal-header {
+    background-color: rgb(245, 189, 27); /* Sfondo giallo */
+    color: rgb(22, 39, 101); /* Testo blu scuro */
+}
+
+.admin-modal-footer {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white;
+}
+
+/* Pulsanti nel modale */
+.admin-modal-btn {
+    background-color: rgb(255, 2, 2); /* Rosso */
+    color: white;
+    font-weight: bold;
+}
+
+.admin-modal-btn-secondary {
+    background-color: rgb(0, 108, 181);
+    color: white;
+}
+
+/* Stile per i dettagli del gruppo nella pagina Admin */
+.admin-group-details {
+    padding-top: 5rem;
+}
+
+.admin-card {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white; /* Testo bianco */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra */
+}
+
+.admin-card-header {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    color: white;
+    font-weight: bold;
+    padding: 1rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.admin-card-body {
+    padding: 2rem;
+}
+
+.admin-btn-warning, .admin-btn-danger {
+    width: 100%;
+    padding: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.admin-btn-warning {
+    background-color: rgb(245, 189, 27);
+    color: white;
+}
+
+.admin-btn-warning:hover {
+    background-color: rgb(0, 108, 181);
+    color: white;
+}
+
+.admin-btn-danger {
+    background-color: rgb(255, 2, 2);
+    color: white;
+}
+
+.admin-btn-danger:hover {
+    background-color: rgb(0, 108, 181);
+}
+
+.admin-table {
+    border: 2px solid rgb(22, 39, 101);
+}
+
+.admin-table th {
+    background-color: rgb(0, 108, 181);
+    color: white;
+}
+
+.admin-table td {
+    color: rgb(22, 39, 101);
+}
+
+.admin-modal-header {
+    background-color: rgb(245, 189, 27);
+    color: rgb(22, 39, 101);
+}
+
+.admin-modal-footer {
+    background-color: rgb(22, 39, 101);
+    color: white;
+}
+
+.admin-table td {
+    background-color: white;
+}
+
+/* Stile personalizzato per la dashboard studenti */
+.admin-student-dashboard {
+    padding-top: 5rem;
+}
+
+.admin-student-table {
+    border: 2px solid rgb(22, 39, 101); /* Bordo blu scuro */
+}
+
+.admin-student-table th {
+    background-color: rgb(0, 108, 181); /* Sfondo blu chiaro */
+    color: white;
+    font-weight: bold;
+}
+
+.admin-student-table td {
+    background-color: white;
+    color: rgb(22, 39, 101);
+}
+
+.admin-student-filter {
+    margin-bottom: 1.5rem;
+}
+
+.admin-alert {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: rgb(22, 39, 101); /* Blu scuro per il testo */
+    font-weight: bold;
+}
+
+.admin-alert .btn-close {
+    color: rgb(22, 39, 101); /* Blu scuro */
+}
+
+/* Tabella responsive */
+.admin-table-responsive {
+    overflow-x: auto;
+}
+
+/* Stile per la pagina dei dettagli dello studente */
+.admin-student-details {
+    padding-top: 5rem;
+}
+
+.admin-student-card {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra */
+}
+
+.admin-student-card-header {
+    background-color: rgb(0, 108, 181);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+}
+
+.admin-btn-warning, .admin-btn-danger {
+    width: 100%;
+    padding: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.admin-btn-warning {
+    background-color: rgb(245, 189, 27);
+    color: white;
+}
+
+.admin-btn-warning:hover {
+    background-color: rgb(0, 108, 181);
+}
+
+.admin-btn-danger {
+    background-color: rgb(255, 2, 2);
+    color: white;
+}
+
+.admin-btn-danger:hover {
+    background-color: rgb(0, 108, 181);
+}
+
+.admin-modal-header {
+    background-color: rgb(245, 189, 27);
+    color: rgb(22, 39, 101);
+}
+
+.admin-modal-footer {
+    background-color: rgb(22, 39, 101);
+    color: white;
+}
+
+/* Stile personalizzato per la dashboard dei trainer */
+.admin-trainer-dashboard {
+    padding-top: 5rem;
+}
+
+.admin-trainer-table {
+    border: 2px solid rgb(22, 39, 101); /* Bordo blu scuro */
+}
+
+.admin-trainer-table th {
+    background-color: rgb(0, 108, 181); /* Sfondo blu chiaro */
+    color: white;
+    font-weight: bold;
+}
+
+.admin-trainer-table td {
+    background-color: white;
+    color: rgb(22, 39, 101);
+}
+
+.admin-trainer-filter {
+    margin-bottom: 1.5rem;
+}
+
+.admin-btn-filter {
+    background-color: rgb(245, 189, 27);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.admin-btn-filter:hover {
+    background-color: rgb(0, 108, 181);
+}
+
+/* Tabella responsive */
+.admin-table-responsive {
+    overflow-x: auto;
+}
+
+/* Stile per la pagina dei dettagli del trainer */
+.admin-trainer-details {
+    padding-top: 5rem;
+}
+
+.admin-trainer-table {
+    border: 2px solid rgb(22, 39, 101); /* Bordo blu scuro */
+}
+
+.admin-trainer-table th {
+    background-color: rgb(0, 108, 181); /* Sfondo blu chiaro */
+    color: white;
+    font-weight: bold;
+}
+
+.admin-trainer-table td {
+    background-color: white;
+    color: rgb(22, 39, 101);
+}
+
+.admin-trainer-card {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra */
+}
+
+.admin-trainer-card-header {
+    background-color: rgb(0, 108, 181);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+}
+
+.admin-btn-warning, .admin-btn-danger {
+    width: 100%;
+    padding: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.admin-btn-warning {
+    background-color: rgb(245, 189, 27);
+    color: white;
+}
+
+.admin-btn-warning:hover {
+    background-color: rgb(0, 108, 181);
+}
+
+.admin-btn-danger {
+    background-color: rgb(255, 2, 2);
+    color: white;
+}
+
+.admin-btn-danger:hover {
+    background-color: rgb(0, 108, 181);
+}
+
