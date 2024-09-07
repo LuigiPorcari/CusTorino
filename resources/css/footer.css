@@ -5,25 +5,36 @@
     padding: 2rem 0;
 }
 
-/* Social media buttons */
+/* Pulsanti social media */
 .custom-btn-social {
-    display: inline-flex; /* Inline-flex mantiene i pulsanti allineati orizzontalmente */
-    background-color: rgba(255, 255, 255, 0.1); /* Sfondo leggero per i pulsanti */
-    color: rgb(245, 189, 27); /* Colore giallo per le icone */
+    display: inline-flex;
+    background-color: rgba(255, 255, 255, 0.1); /* Sfondo leggero */
+    color: rgb(245, 189, 27); /* Giallo per le icone */
     border-radius: 50%;
     font-size: 1.5rem;
     width: 50px;
     height: 50px;
-    align-items: center; /* Centra verticalmente l'icona */
-    justify-content: center; /* Centra orizzontalmente l'icona */
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
-    margin: 0.5rem; /* Spaziatura tra i pulsanti */
+    margin: 0.5rem;
 }
 
 .custom-btn-social:hover {
     background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
     color: white !important;
-    transform: scale(1.1); /* Effetto di ingrandimento al passaggio */
+    transform: scale(1.1);
+}
+
+/* Link nel footer */
+.custom-footer a {
+    text-decoration: none;
+    color: rgb(245, 189, 27); /* Giallo per i link */
+    transition: color 0.3s ease;
+}
+
+.custom-footer a:hover {
+    color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
 }
 
 /* Sezione copyright */
@@ -31,30 +42,15 @@
     margin-bottom: 1rem;
 }
 
-.custom-footer a {
-    text-decoration: none;
-    color: rgb(245, 189, 27); /* Giallo per i link */
-}
-
-.custom-footer a:hover {
-    color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
-}
-
-/* Copyright area */
 .custom-copyright {
-    background-color: rgba(
-        0,
-        108,
-        181,
-        0.1
-    ); /* Sfondo leggero per la sezione copyright */
-    color: rgb(245, 189, 27); /* Giallo sportivo */
+    background-color: rgba(0, 108, 181, 0.1); /* Sfondo leggero */
+    color: rgb(245, 189, 27); /* Giallo */
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-/* Media queries per migliorare la visualizzazione su mobile */
+/* Media queries per dispositivi mobili */
 @media (max-width: 768px) {
     .custom-btn-social {
         font-size: 1.2rem;

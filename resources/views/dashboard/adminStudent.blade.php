@@ -19,7 +19,7 @@
     @endif
 
     <div class="container mt-5 admin-student-dashboard">
-        <h2 class="mt-5 mb-4">Elenco Studenti</h2>
+        <h2 class="mt-5 mb-4 custom-title">Elenco Studenti</h2>
         <div class="mb-4 admin-student-filter">
             <form method="GET" action="{{ route('admin.dashboard.student') }}">
                 <div class="row">

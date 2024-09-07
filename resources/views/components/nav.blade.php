@@ -20,12 +20,12 @@
                         <ul class="dropdown-menu custom-dropdown-menu">
                             @if (Auth::user()->is_admin)
                                 <li class="d-flex justify-content-center">
-                                    <a class="btn custom-btn-primary-nav mb-2" href="{{ route('groups.create') }}">Crea
+                                    <a class="btn custom-btn-primary-nav-drop mb-2" href="{{ route('groups.create') }}">Crea
                                         gruppi</a>
                                 </li>
                             @endif
                             <li class="d-flex justify-content-center">
-                                <a class="btn custom-btn-primary-nav mb-2" href="{{ route('password.change') }}">Cambia
+                                <a class="btn custom-btn-primary-nav-drop mb-2" href="{{ route('password.change') }}">Cambia
                                     Password</a>
                             </li>
                             <li class="d-flex justify-content-center">

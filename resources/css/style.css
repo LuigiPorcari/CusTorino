@@ -19,3 +19,293 @@
 body {
     background-color: rgb(200, 221, 254);
 }
+
+/* Stile personalizzato per la Dashboard Admin */
+.admin-dashboard,
+.admin-group-details,
+.admin-student-dashboard,
+.admin-student-details,
+.admin-trainer-dashboard,
+.admin-trainer-details {
+    padding-top: 5rem;
+}
+
+/* Stile per le schede di navigazione */
+.admin-nav-tabs {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    border-bottom: 2px solid rgb(245, 189, 27); /* Bordo giallo */
+}
+
+.admin-nav-item .nav-link {
+    color: rgb(245, 189, 27); /* Giallo per i link */
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.admin-nav-item .nav-link.active {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    color: white;
+}
+
+.admin-nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Sfondo al passaggio */
+    color: rgb(245, 189, 27);
+}
+
+/* Stile per tabelle della dashboard */
+.admin-table,
+.admin-student-table,
+.admin-trainer-table {
+    border: 2px solid rgb(22, 39, 101); /* Bordo blu scuro */
+}
+
+.admin-table th,
+.admin-student-table th,
+.admin-trainer-table th {
+    background-color: rgb(
+        0,
+        108,
+        181
+    ); /* Sfondo blu chiaro per l'intestazione */
+    color: white;
+    font-weight: bold;
+}
+
+.admin-table td,
+.admin-student-table td,
+.admin-trainer-table td {
+    background-color: white;
+    color: rgb(22, 39, 101);
+}
+
+/* Pulsanti personalizzati */
+.admin-btn-info,
+.admin-modal-btn-secondary,
+.admin-btn-warning:hover,
+.admin-btn-danger:hover {
+    background-color: rgb(0, 108, 181);
+    color: white;
+}
+
+.admin-modal-body {
+    gap: 20px; /* Aggiunge uno spazio tra i pulsanti */
+}
+
+.admin-btn-info {
+    border: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.admin-btn-info:hover {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: rgb(22, 39, 101);
+}
+
+/* Alert personalizzati */
+.admin-alert {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: rgb(22, 39, 101); /* Blu scuro per il testo */
+    font-weight: bold;
+}
+
+.admin-alert .btn-close {
+    color: rgb(22, 39, 101); /* Blu scuro */
+}
+
+/* Stile per i modali */
+.admin-modal-header {
+    background-color: rgb(245, 189, 27); /* Sfondo giallo */
+    color: rgb(22, 39, 101); /* Testo blu scuro */
+}
+
+.admin-modal-footer {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white;
+}
+
+.admin-modal-btn {
+    background-color: rgb(255, 2, 2); /* Rosso */
+    color: white;
+    font-weight: bold;
+}
+
+/* Pulsanti nel modale */
+.admin-modal-btn-secondary {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    color: white;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.admin-modal-btn-secondary:hover {
+    background-color: rgb(245, 189, 27);
+    color: black;
+}
+
+/* Stile per card */
+.admin-card,
+.admin-student-card,
+.admin-trainer-card {
+    background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+    color: white; /* Testo bianco */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra */
+}
+
+.admin-card-header,
+.admin-student-card-header,
+.admin-trainer-card-header {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    color: white;
+    font-weight: bold;
+    padding: 1rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+}
+
+.admin-card-body {
+    padding: 2rem;
+}
+
+/* Pulsanti di avvertimento e pericolo */
+.admin-btn-warning,
+.admin-btn-danger {
+    width: 100%;
+    padding: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.admin-btn-warning {
+    background-color: rgb(245, 189, 27);
+}
+
+.admin-btn-danger {
+    background-color: rgb(255, 2, 2);
+}
+
+/* Tabella responsive */
+.admin-table-responsive {
+    overflow-x: auto;
+}
+
+/* Filtri */
+.admin-student-filter,
+.admin-trainer-filter {
+    margin-bottom: 1.5rem;
+}
+
+.admin-btn-filter {
+    background-color: rgb(245, 189, 27);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.admin-btn-filter:hover {
+    background-color: rgb(0, 108, 181);
+}
+
+/* Pulsante di submit per il form */
+.custom-btn-submit {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: white;
+    padding: 0.7rem 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.custom-btn-submit:hover {
+    background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 108, 181, 0.5);
+}
+
+/* Imposta tutte le card alla stessa altezza */
+.equal-height-card {
+    min-height: 500px; /* Imposta l'altezza minima per uniformare le card */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Stile per il link Indietro senza sottolineatura */
+.custom-link-btn {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: white;
+    padding: 0.7rem 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none; /* Rimuove la sottolineatura */
+    border-radius: 5px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.custom-link-btn:hover {
+    background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 108, 181, 0.5);
+}
+
+.custom-date {
+    color: rgb(245, 189, 27); /* Giallo sportivo per contrastare il blu scuro */
+}
+
+/* Pulsante per creare il gruppo */
+.custom-btn-create-group {
+    background-color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: white;
+    padding: 0.7rem 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.custom-btn-create-group:hover {
+    background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 108, 181, 0.5);
+}
+
+/* Stile per input di tipo date */
+.custom-form-input-date {
+    border: 1px solid rgb(245, 189, 27); /* Bordo giallo */
+    padding: 0.7rem;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 100%;
+    transition: border 0.3s ease;
+}
+
+.custom-form-input-date:focus {
+    border: 2px solid rgb(0, 108, 181); /* Bordo blu chiaro al focus */
+}
+
+
+/* Media queries per dispositivi mobili */
+@media (max-width: 768px) {
+    .admin-btn-info {
+        border: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+        font-size: 12px;
+    }
+}

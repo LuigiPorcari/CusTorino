@@ -8,7 +8,7 @@
 
 .custom-card-header {
     background-color: rgb(0, 108, 181); /* Blu chiaro */
-    color: white; /* Testo bianco */
+    color: white;
     font-weight: bold;
     text-align: center;
     padding: 1rem;
@@ -35,7 +35,6 @@
 
 .custom-btn-submit:hover {
     background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
-    color: white;
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 108, 181, 0.5);
 }
@@ -52,11 +51,11 @@
     border: 1px solid rgb(245, 189, 27); /* Giallo */
     padding: 0.7rem;
     border-radius: 5px;
-    color: black;
     background-color: #f9f9f9;
     margin-bottom: 1rem;
     width: 100%;
     transition: border 0.3s ease;
+    color: black;
 }
 
 .custom-form-input:focus {

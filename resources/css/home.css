@@ -11,20 +11,20 @@
 /* Stile per le colonne principali della homepage */
 .custom-homepage-col {
     background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
-    color: white; /* Testo bianco per contrasto */
+    color: white;
     padding: 2rem;
     height: 45vh;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .custom-homepage-col:hover {
     transform: translateY(-5px); /* Sollevamento leggero al passaggio */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Ombra più accentuata */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Ombra accentuata */
 }
 
 /* Stile per i sottotitoli */
 .custom-subtitle {
-    color: rgb(245, 189, 27); /* Giallo sportivo */
+    color: rgb(245, 189, 27);
     font-size: 1.8rem;
     font-weight: 700;
     font-family: 'Arial', sans-serif;
@@ -53,30 +53,30 @@
 .custom-btn-primary-home:hover {
     background-color: rgb(245, 189, 27); /* Giallo sportivo */
     border-color: rgb(245, 189, 27);
-    transform: translateY(-2px); /* Sollevamento pulsante al passaggio */
+    transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(245, 189, 27, 0.6);
 }
 
 /* Placeholder per le immagini */
 .custom-image-placeholder {
-    color: rgb(0, 108, 181); /* Blu chiaro */
+    color: rgb(0, 108, 181);
     font-size: 2rem;
     font-weight: bold;
-    border: 2px dashed rgb(245, 189, 27); /* Bordo giallo sportivo */
+    border: 2px dashed rgb(245, 189, 27); /* Bordo giallo */
     padding: 3rem;
     transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
 .custom-image-placeholder:hover {
-    border-color: rgb(0, 108, 181); /* Cambia al blu chiaro al passaggio */
-    transform: scale(1.05); /* Leggero ingrandimento al passaggio */
+    border-color: rgb(0, 108, 181); /* Cambia al blu chiaro */
+    transform: scale(1.05);
 }
 
 /* Success message */
 .custom-alert-success-home {
     background-color: rgb(245, 189, 27);
     border-color: rgb(0, 108, 181);
-    color: rgb(22, 39, 101); /* Blu scuro per testo */
+    color: rgb(22, 39, 101); /* Testo blu scuro */
     font-weight: bold;
 }
 

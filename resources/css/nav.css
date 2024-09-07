@@ -1,46 +1,46 @@
-/* Imposta lo sfondo della navbar */
+/* Sfondo della navbar */
 .custom-navbar {
-    background-color: rgb(22, 39, 101); /* Blu scuro elegante */
+    background-color: rgb(22, 39, 101); /* Blu scuro */
     padding: 0.8rem 1.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra dinamica */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra dinamica */
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* Imposta il brand con un font sportivo */
+/* Brand nella navbar */
 .custom-navbar-brand {
-    color: rgb(245, 189, 27); /* Giallo di accento */
+    color: rgb(245, 189, 27); /* Giallo */
     font-size: 1.7rem;
     font-weight: 800;
-    font-family: "Arial Black", sans-serif; /* Font sportivo */
+    font-family: "Arial Black", sans-serif;
     transition: color 0.3s ease-in-out, transform 0.3s ease;
 }
 
 .custom-navbar-brand:hover {
-    color: rgb(0, 108, 181); /* Colore blu chiaro */
+    color: rgb(0, 108, 181); /* Blu chiaro */
     transform: scale(1.1);
 }
 
-/* Stile per le voci di navigazione */
+/* Stile delle voci di navigazione */
 .custom-nav-link {
-    color: rgb(245, 189, 27); /* Colore giallo */
+    color: rgb(245, 189, 27); /* Giallo */
     font-size: 1.1rem;
     font-weight: bold;
     font-family: "Arial", sans-serif;
     padding: 0.7rem 1.2rem;
     letter-spacing: 0.05rem;
     border-radius: 5px;
-    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out,
-        transform 0.2s ease, border-radius 0.3s ease-in-out;
+    transition: color 0.3s, background-color 0.3s, transform 0.2s,
+        border-radius 0.3s;
 }
 
 .custom-nav-link:hover {
-    color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    color: rgb(0, 108, 181); /* Blu chiaro */
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     transform: translateY(-3px);
 }
 
-/* Dropdown menu migliorato */
+/* Stile per il menu a tendina */
 .custom-dropdown-menu {
     background-color: rgb(22, 39, 101); /* Blu scuro */
     border: 2px solid rgb(0, 108, 181); /* Bordo blu chiaro */
@@ -49,65 +49,73 @@
 }
 
 .custom-dropdown-menu a {
-    color: rgb(245, 189, 27); /* Giallo per i link */
+    color: rgb(245, 189, 27); /* Giallo */
     font-weight: bold;
 }
 
 .custom-dropdown-menu a:hover {
-    background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
     color: white;
     border-radius: 5px;
     transform: scale(1.05);
 }
 
-/* Pulsanti migliorati */
-.custom-btn-primary-nav {
-    background-color: rgb(0, 108, 181); /* Blu chiaro */
-    border-color: rgb(0, 108, 181);
-    box-shadow: 0 4px 6px rgba(0, 108, 181, 0.5);
+/* Pulsanti nella navbar */
+.custom-btn-warning-nav,
+.custom-btn-danger-nav,
+.custom-btn-primary-nav-drop {
     width: 17vh;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    transition: 0.4s;
 }
 
-.custom-btn-primary-nav:hover {
-    background-color: rgb(245, 189, 27); /* Giallo al passaggio */
+.custom-btn-primary-nav,
+.custom-btn-primary-nav-drop {
+    background-color: rgb(0, 108, 181); /* Blu chiaro */
+    border-color: rgb(0, 108, 181);
+    transition: 0.4s;
+    color: white;
+}
+
+.custom-btn-primary-nav-drop:hover {
+    background-color: rgb(245, 189, 27); /* Giallo */
     border-color: rgb(245, 189, 27);
     box-shadow: 0 6px 8px rgba(245, 189, 27, 0.6);
     transform: translateY(-2px);
-    transition: 0.4s;
+}
+
+.custom-btn-primary-nav:hover {
+    background-color: rgb(245, 189, 27); /* Giallo */
+    border-color: rgb(245, 189, 27);
+    box-shadow: 0 6px 8px rgba(245, 189, 27, 0.6);
+    transform: translateY(-2px);
 }
 
 .custom-btn-warning-nav {
-    background-color: rgb(108, 117, 125); /* Grigio per logout */
+    background-color: rgb(108, 117, 125); /* Grigio */
     border-color: rgb(108, 117, 125);
-    box-shadow: 0 4px 6px rgba(108, 117, 125, 0.5);
-    width: 17vh;
 }
 
 .custom-btn-warning-nav:hover {
-    background-color: rgb(52, 58, 64); /* Grigio scuro al passaggio */
+    background-color: rgb(52, 58, 64); /* Grigio scuro */
     border-color: rgb(52, 58, 64);
     box-shadow: 0 6px 8px rgba(52, 58, 64, 0.6);
     transform: translateY(-2px);
-    transition: 0.4s;
-
 }
 
 .custom-btn-danger-nav {
-    background-color: rgb(200, 50, 50); /* Rosso meno acceso */
+    background-color: rgb(200, 50, 50); /* Rosso */
     border-color: rgb(200, 50, 50);
-    box-shadow: 0 4px 6px rgba(200, 50, 50, 0.5);
-    width: 17vh;
 }
 
 .custom-btn-danger-nav:hover {
-    background-color: rgb(150, 40, 40); /* Rosso scuro al passaggio */
+    background-color: rgb(150, 40, 40); /* Rosso scuro */
     border-color: rgb(150, 40, 40);
     box-shadow: 0 6px 8px rgba(150, 40, 40, 0.6);
     transform: translateY(-2px);
-    transition: 0.4s;
 }
 
-
+/* Stile dell'immagine nella navbar */
 .img-nav {
     height: 10vh;
 }

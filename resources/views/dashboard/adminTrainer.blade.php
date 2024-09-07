@@ -12,7 +12,7 @@
     </ul>
 
     <div class="container mt-5 admin-trainer-dashboard">
-        <h2 class="mt-5 mb-4">Elenco Trainer</h2>
+        <h2 class="mt-5 mb-4 custom-title">Elenco Trainer</h2>
         <div class="mb-4 admin-trainer-filter">
             <form method="GET" action="{{ route('admin.dashboard.trainer') }}">
                 <div class="row g-2">

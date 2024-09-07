@@ -89,11 +89,11 @@
                     <h1 class="modal-title fs-5" id="deleteModalLabel{{ $student->id }}">Sicuro di voler eliminare lo studente {{ $student->name }} {{ $student->cognome }}?</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex justify-content-center">
+                <div class="modal-body d-flex justify-content-center admin-modal-body">
                     <form action="{{ route('student.destroy', $student->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn admin-btn-danger mx-2 px-3">Si</button>
+                        <button type="submit" class="btn admin-btn-danger mx-2">Si</button>
                     </form>
                     <button type="button" class="btn admin-modal-btn-secondary" data-bs-dismiss="modal">No</button>
                 </div>
@@ -103,4 +103,5 @@
             </div>
         </div>
     </div>
+
 </x-layout>

@@ -17,7 +17,7 @@
         </div>
     @endif
     <div class="container mt-5 admin-dashboard">
-        <h2 class="mt-2 mb-4">Elenco Gruppi</h2>
+        <h2 class="mt-2 mb-4 custom-title">Elenco Gruppi</h2>
         <div class="mb-4">
             <form method="GET" action="{{ route('admin.dashboard') }}">
                 <div class="row">

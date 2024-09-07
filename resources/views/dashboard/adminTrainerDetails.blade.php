@@ -45,8 +45,8 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="2" class="text-right"><strong>Stipendio Totale:</strong></td>
-                            <td colspan="2"><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
+                            <td colspan="3" class="text-right" style="background-color: white;"><strong>Stipendio Totale:</strong></td>
+                            <td style="background-color: white;"><strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong></td>
                         </tr>
                     </tbody>
                 </table>

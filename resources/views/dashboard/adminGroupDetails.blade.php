@@ -72,8 +72,8 @@
                                 href="{{ route('edit.student', $group) }}">Inserisci-Modifica Corsisti</a>
                             <button type="button" class="btn admin-btn-danger mb-2" data-bs-toggle="modal"
                                 data-bs-target="#deleteModalGroup">Elimina</button>
-                            <div class="text-center">
-                                <a href="{{ route('admin.dashboard') }}" class="btn admin-btn-info">Torna alla lista
+                            <div class="text-center w-100">
+                                <a href="{{ route('admin.dashboard') }}" class="btn admin-btn-info w-100">Torna alla lista
                                     Gruppi</a>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-8">
-                <h1>Alias del Gruppo</h1>
+                <h1 class="custom-title">Date degli allenamenti</h1>
                 <form method="GET" action="{{ route('admin.group.details', $group) }}">
                     <div class="mb-3">
                         <label for="data_allenamento" class="form-label">Filtra per data:</label>
@@ -149,7 +149,7 @@
                                         </td>
                                     </div>
                                     <td><a href="{{ route('alias.details', $alias) }}"
-                                            class="btn admin-btn-info fs-6">Visualizza Dettagli</a></td>
+                                            class="btn admin-btn-info fs-md-6">Visualizza Dettagli</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -160,20 +160,18 @@
     </div>
 
     <!-- Modal per eliminare il gruppo -->
-    <div class="modal fade" id="deleteModalGroup" tabindex="-1" aria-labelledby="deleteModalGroupLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="deleteModalGroup" tabindex="-1" aria-labelledby="deleteModalGroupLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header admin-modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalGroupLabel">Sicuro di voler eliminare questo Gruppo?
-                    </h1>
+                    <h1 class="modal-title fs-5" id="deleteModalGroupLabel">Sicuro di voler eliminare questo Gruppo?</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body d-flex justify-content-center">
+                <div class="modal-body d-flex justify-content-center admin-modal-body">
                     <form action="{{ route('groups.delete', $group) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn admin-btn-danger mx-2 px-3">Si</button>
+                        <button type="submit" class="btn admin-btn-danger mx-2">Si</button>
                     </form>
                     <button type="button" class="btn admin-modal-btn-secondary" data-bs-dismiss="modal">No</button>
                 </div>
