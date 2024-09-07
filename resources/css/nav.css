@@ -65,6 +65,7 @@
     background-color: rgb(0, 108, 181); /* Blu chiaro */
     border-color: rgb(0, 108, 181);
     box-shadow: 0 4px 6px rgba(0, 108, 181, 0.5);
+    width: 17vh;
 }
 
 .custom-btn-primary-nav:hover {
@@ -76,32 +77,36 @@
 }
 
 .custom-btn-warning-nav {
-    background-color: rgb(245, 189, 27); /* Giallo per avvisi */
-    border-color: rgb(245, 189, 27);
-    box-shadow: 0 4px 6px rgba(245, 189, 27, 0.5);
+    background-color: rgb(108, 117, 125); /* Grigio per logout */
+    border-color: rgb(108, 117, 125);
+    box-shadow: 0 4px 6px rgba(108, 117, 125, 0.5);
+    width: 17vh;
 }
 
 .custom-btn-warning-nav:hover {
-    background-color: rgb(0, 108, 181);
-    border-color: rgb(0, 108, 181);
-    box-shadow: 0 6px 8px rgba(0, 108, 181, 0.6);
+    background-color: rgb(52, 58, 64); /* Grigio scuro al passaggio */
+    border-color: rgb(52, 58, 64);
+    box-shadow: 0 6px 8px rgba(52, 58, 64, 0.6);
     transform: translateY(-2px);
     transition: 0.4s;
+
 }
 
 .custom-btn-danger-nav {
-    background-color: rgb(255, 2, 2); /* Rosso per avvisi */
-    border-color: rgb(255, 2, 2);
-    box-shadow: 0 4px 6px rgba(255, 2, 2, 0.5);
+    background-color: rgb(200, 50, 50); /* Rosso meno acceso */
+    border-color: rgb(200, 50, 50);
+    box-shadow: 0 4px 6px rgba(200, 50, 50, 0.5);
+    width: 17vh;
 }
 
 .custom-btn-danger-nav:hover {
-    background-color: rgb(0, 108, 181);
-    border-color: rgb(0, 108, 181);
-    box-shadow: 0 6px 8px rgba(0, 108, 181, 0.6);
+    background-color: rgb(150, 40, 40); /* Rosso scuro al passaggio */
+    border-color: rgb(150, 40, 40);
+    box-shadow: 0 6px 8px rgba(150, 40, 40, 0.6);
     transform: translateY(-2px);
     transition: 0.4s;
 }
+
 
 .img-nav {
     height: 10vh;

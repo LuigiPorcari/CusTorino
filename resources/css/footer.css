@@ -7,20 +7,17 @@
 
 /* Social media buttons */
 .custom-btn-social {
-    background-color: rgba(
-        255,
-        255,
-        255,
-        0.1
-    ); /* Sfondo leggero per i pulsanti */
-    color: rgb(245, 189, 27); /* Colore giallo per i pulsanti */
+    display: inline-flex; /* Inline-flex mantiene i pulsanti allineati orizzontalmente */
+    background-color: rgba(255, 255, 255, 0.1); /* Sfondo leggero per i pulsanti */
+    color: rgb(245, 189, 27); /* Colore giallo per le icone */
     border-radius: 50%;
     font-size: 1.5rem;
     width: 50px;
     height: 50px;
-    line-height: 50px;
-    display: inline-block;
+    align-items: center; /* Centra verticalmente l'icona */
+    justify-content: center; /* Centra orizzontalmente l'icona */
     transition: all 0.3s ease;
+    margin: 0.5rem; /* Spaziatura tra i pulsanti */
 }
 
 .custom-btn-social:hover {
@@ -63,7 +60,6 @@
         font-size: 1.2rem;
         width: 40px;
         height: 40px;
-        line-height: 40px;
     }
 
     .custom-footer {
