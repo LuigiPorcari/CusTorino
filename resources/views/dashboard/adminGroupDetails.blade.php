@@ -2,6 +2,12 @@
     <div class="container mt-5 pt-5 admin-group-details">
         <div class="row mt-4">
             <div class="col-12 col-md-4">
+                @if (session('success'))
+                    <div class="alert alert-dismissible custom-alert-success">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="card admin-card">
                     <div class="admin-card-body">
                         <h5 class="card-title">Dettagli del {{ $group->nome }}</h5>
@@ -73,7 +79,8 @@
                             <button type="button" class="btn admin-btn-danger mb-2" data-bs-toggle="modal"
                                 data-bs-target="#deleteModalGroup">Elimina</button>
                             <div class="text-center w-100">
-                                <a href="{{ route('admin.dashboard') }}" class="btn admin-btn-info w-100">Torna alla lista
+                                <a href="{{ route('admin.dashboard') }}" class="btn admin-btn-info w-100 fs-6 ">Torna alla
+                                    lista
                                     Gruppi</a>
                             </div>
                         </div>
@@ -81,11 +88,11 @@
                 </div>
             </div>
             <div class="col-12 col-md-8">
-                <h1 class="custom-title">Date degli allenamenti</h1>
+                <h1 class="custom-title mt-4 mt-md-0">Date degli allenamenti</h1>
                 <form method="GET" action="{{ route('admin.group.details', $group) }}">
                     <div class="mb-3">
                         <label for="data_allenamento" class="form-label">Filtra per data:</label>
-                        <select name="data_allenamento" id="data_allenamento" class="form-select"
+                        <select name="data_allenamento" id="data_allenamento" class="custom-form-input"
                             onchange="this.form.submit()">
                             <option value="">Tutte le date</option>
                             @foreach ($availableDates as $date)
@@ -160,11 +167,13 @@
     </div>
 
     <!-- Modal per eliminare il gruppo -->
-    <div class="modal fade" id="deleteModalGroup" tabindex="-1" aria-labelledby="deleteModalGroupLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModalGroup" tabindex="-1" aria-labelledby="deleteModalGroupLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header admin-modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalGroupLabel">Sicuro di voler eliminare questo Gruppo?</h1>
+                    <h1 class="modal-title fs-5" id="deleteModalGroupLabel">Sicuro di voler eliminare questo Gruppo?
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center admin-modal-body">

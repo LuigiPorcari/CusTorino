@@ -9,10 +9,10 @@
     </ul>
 {{-- Gruppi allenati --}}
 <div class="container mt-5">
-    <h1 class="custom-title mt-5 pt-5 text-center">Benvenuto Trainer {{ Auth::user()->name }}</h1>
+    <h1 class="custom-title mt-md-5 pt-md-5 text-center">Benvenuto Trainer {{ Auth::user()->name }}</h1>
     <h2 class="custom-subtitle mt-5 mb-4">Gruppi in cui alleni</h2>
     @if (session('success'))
-        <div class="admin-alert alert-dismissible">
+        <div class="alert custom-alert-success alert-dismissible">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -36,7 +36,7 @@
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100 admin-btn-info py-2 my-1">Filtra</button>
+                    <button type="submit" class="btn btn-primary w-100 admin-btn-info py-2 my-1 fs-6">Filtra</button>
                 </div>
             </div>
         </form>

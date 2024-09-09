@@ -2,7 +2,7 @@
     <div class="container mt-5 pt-5">
         <h1 class="custom-title text-center mb-3 mt-4">Dettagli del Gruppo Alias</h1>
         @if (session('success'))
-            <div class="custom-alert alert-dismissible">
+            <div class="alert alert-dismissible custom-alert-success">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

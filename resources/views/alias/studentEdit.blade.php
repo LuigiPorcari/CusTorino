@@ -2,7 +2,7 @@
     <div class="container mt-5 pt-4">
         <h1 class="custom-title mb-4 mt-5 pt-4 text-center">Lista Studenti</h1>
         @if ($errors->any())
-            <div class="custom-alert alert-dismissible">
+            <div class="alert alert-danger alert-dismissible">
                 @foreach ($errors->all() as $error)
                     <div>{{ $error }}</div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

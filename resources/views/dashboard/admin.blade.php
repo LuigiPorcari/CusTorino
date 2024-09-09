@@ -11,22 +11,22 @@
         </li>
     </ul>
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible admin-alert">
+        <div class="alert alert-dismissible custom-alert-success">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    <div class="container mt-5 admin-dashboard">
-        <h2 class="mt-2 mb-4 custom-title">Elenco Gruppi</h2>
+    <div class="container mt-md-5 admin-dashboard">
+        <h2 class="mt-md-5 mb-4 custom-title">Elenco Gruppi</h2>
         <div class="mb-4">
             <form method="GET" action="{{ route('admin.dashboard') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="search" name="group_name" class="form-control" placeholder="Nome Gruppo"
+                        <input type="search" name="group_name" class="custom-form-input" placeholder="Nome Gruppo"
                             value="{{ request('group_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary w-100 admin-btn-info">Filtra</button>
+                        <button type="submit" class="btn w-100 admin-btn-info py-2 mt-1 fs-6">Filtra</button>
                     </div>
                 </div>
             </form>

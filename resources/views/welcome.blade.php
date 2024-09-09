@@ -5,7 +5,7 @@
                 <h1 class="mt-5 custom-title">Homepage</h1>
                 <a class="btn custom-btn-primary-home" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
                 @if (session('success'))
-                    <div class="alert alert-success alert-dismissible custom-alert-success-home">
+                    <div class="alert alert-dismissible custom-alert-success mt-3">
                         {{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>

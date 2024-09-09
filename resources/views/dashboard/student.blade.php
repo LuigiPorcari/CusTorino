@@ -1,6 +1,6 @@
 <x-layout documentTitle="Student Dashboard">
     <div class="container mt-5">
-        <div class="row mt-5">
+        <div class="row mt-5 justify-content-center">
             <h1 class="custom-title mt-5 pt-5">Benvenuto Corsista {{ Auth::user()->name }}</h1>
             {{-- Tabella con il conteggio delle assenze e dei gettoni --}}
             <div class="col-12 mb-5 mt-2">
@@ -26,7 +26,7 @@
                 <div class="col-12 col-md-6">
                     <h2 class="custom-subtitle mt-2 mb-3">Gruppi dove ti alleni</h2>
                     @if (session('success'))
-                        <div class="alert admin-alert alert-dismissible">
+                        <div class="alert alert-dismissible custom-alert-success">
                             {!! session('success') !!}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -82,7 +82,7 @@
                 <div class="col-12 col-md-6">
                     <h2 class="custom-subtitle mt-2 mb-3">Gruppi dove puoi recuperare</h2>
                     @if (session('success1'))
-                        <div class="alert admin-alert alert-dismissible">
+                        <div class="alert alert-dismissible custom-alert-success">
                             {!! session('success1') !!}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>

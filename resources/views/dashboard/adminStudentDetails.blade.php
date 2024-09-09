@@ -74,7 +74,7 @@
                             </div>
                     </form>
                     <div class="text-center">
-                        <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info">Torna alla Lista
+                        <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info fs-6">Torna alla Lista
                             Corsisti</a>
                     </div>
                 </div>

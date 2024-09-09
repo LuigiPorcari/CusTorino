@@ -123,7 +123,11 @@ class LoginController extends Controller
 
         $trainer->delete();
 
-        return redirect()->route('homepage')->with('success', 'Trainer eliminato con successo.');
+        if (Auth::user()->is_admin) {
+            return redirect()->route('admin.dashboard.trainer')->with('success', 'Trainer eliminato con successo.');
+        } else {
+            return redirect()->route('homepage')->with('success', 'Trainer eliminato con successo.');
+        }
     }
 
     public function destroyAdmin($id)

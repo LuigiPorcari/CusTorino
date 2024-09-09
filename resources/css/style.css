@@ -104,14 +104,7 @@ body {
     color: rgb(22, 39, 101);
 }
 
-/* Alert personalizzati */
-.admin-alert {
-    background-color: rgb(245, 189, 27); /* Giallo sportivo */
-    color: rgb(22, 39, 101); /* Blu scuro per il testo */
-    font-weight: bold;
-}
-
-.admin-alert .btn-close {
+.custom-alert-success .btn-close {
     color: rgb(22, 39, 101); /* Blu scuro */
 }
 

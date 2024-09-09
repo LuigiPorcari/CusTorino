@@ -147,14 +147,4 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success1', 'Ti è stato tolto un gettone<br>Il numero di gettoni che ti rimangono è ' . $student->Nrecuperi .'<br>Recupero segnato con successo.');
     }
-
-    public function update(Request $request, User $student)
-    {
-        $student = Auth::user();
-        $student->update([
-            'documentation' => $request->documentation,
-        ]);
-
-        return redirect()->back()->with('succes', 'Documentazione aggiunta');
-    }
 }

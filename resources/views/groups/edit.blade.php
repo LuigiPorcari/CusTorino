@@ -91,6 +91,7 @@
                     </div>
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <button type="submit" class="custom-btn-submit">Modifica Gruppo</button>
+                        <a class="btn admin-btn-info mt-3" href="{{route('admin.group.details' , $group)}}">Indietro</a>
                     </div>
                 </form>
             </div>

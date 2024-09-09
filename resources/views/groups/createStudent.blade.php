@@ -25,6 +25,7 @@
                     </div>
                     <div class="mb-3 text-center">
                         <button type="submit" class="custom-btn-submit mt-3">Salva</button>
+                        <a class="btn admin-btn-info mt-3" href="{{route('admin.group.details' , $group)}}">Indietro</a>
                     </div>
                 </form>
             </div>

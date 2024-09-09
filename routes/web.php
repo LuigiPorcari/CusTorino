@@ -32,6 +32,8 @@ Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])-
 Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 //!MIDDLEWERE ADMIN + TRAINER
 Route::middleware([CheckAdminOrTrainer::class])->group(function () {
+    //!ROTTA ELIMINA TRAINER
+    Route::delete('/trainer/delete/{id}', [LoginController::class, 'destroyTrainer'])->name('trainer.destroy');
     //!ROTTE MODIFICA ALIAS
     Route::post('/alias/student-absence/{alias}', [AliasController::class, 'studentAbsence'])->name('student.absence');
     Route::post('/alias/student-recoveries/{alias}', [AliasController::class, 'recoveriesStudent'])->name('student.recoveries');
@@ -81,8 +83,6 @@ Route::middleware(CheckAdmin::class)->group(function () {
 });
 //!MIDDLEWERE TRAINER
 Route::middleware(CheckTrainer::class)->group(function () {
-    //!ROTTA ELIMINA TRAINER
-    Route::delete('/trainer/delete/{id}', [LoginController::class, 'destroyTrainer'])->name('trainer.destroy');
     //!ROTTE DASHBOARD TRAINER
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
     Route::get('/trainer/dashboard/salary', [TrainerController::class, 'salary'])->name('trainer.salary');
