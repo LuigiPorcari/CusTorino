@@ -3,7 +3,7 @@
         <div class="row justify-content-center mt-4">
             <div class="col-12 col-md-8">
                 <div class="card custom-card">
-                    <div class="card-header custom-card-header fs-4">Registrati come Trainer</div>
+                    <div class="card-header custom-card-header fs-4">Registrati come Allenatore</div>
                     <div class="card-body custom-card-body">
                         <form method="POST" action="{{ route('trainer.register') }}">
                             @csrf

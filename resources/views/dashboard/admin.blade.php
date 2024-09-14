@@ -4,7 +4,7 @@
             <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Trainer</a>
+            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>

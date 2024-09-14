@@ -7,7 +7,7 @@
                     <h2 class="mt-5 mb-4 me-5 fw-bolder fs-1">{{ $trainer->name }} {{ $trainer->cognome }}</h2>
                     <div>
                         <button type="button" class="btn admin-btn-danger ms-md-5 mt-5" data-bs-toggle="modal"
-                        data-bs-target="#deleteModalTrainerAdmin">Elimina Trainer</button>
+                            data-bs-target="#deleteModalTrainerAdmin">Elimina Allenatore</button>
                     </div>
                 </div>
                 <table class="table table-bordered admin-trainer-table">
@@ -61,7 +61,7 @@
                 </table>
                 <div class="text-center">
                     <a href="{{ route('admin.dashboard.trainer') }}" class="btn admin-btn-info fs-6">Torna alla lista
-                        Trainer</a>
+                        Allenatori</a>
                 </div>
             </div>
         </div>
@@ -71,7 +71,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header admin-modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalTrainerLabel">Sicuro di voler eliminare il Trainer {{$trainer->name}} {{$trainer->cognome}}?</h1>
+                    <h1 class="modal-title fs-5" id="deleteModalTrainerLabel">Sicuro di voler eliminare l'Allenatore
+                        {{ $trainer->name }} {{ $trainer->cognome }}?</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center admin-modal-body">

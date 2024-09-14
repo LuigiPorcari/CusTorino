@@ -4,7 +4,7 @@
             <a class="nav-link mt-3" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}">Trainer</a>
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}">Allenatore</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
@@ -17,7 +17,7 @@
         </div>
     @endif
     <div class="container mt-md-5 admin-trainer-dashboard">
-        <h2 class="mt-md-5 mb-4 custom-title">Elenco Trainer</h2>
+        <h2 class="mt-md-5 mb-4 custom-title">Elenco Allenatori</h2>
         <div class="mb-4 admin-trainer-filter">
             <form method="GET" action="{{ route('admin.dashboard.trainer') }}">
                 <div class="row g-2">
@@ -71,7 +71,7 @@
                         </form>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">Non ci sono trainer disponibili</td>
+                            <td colspan="5" class="text-center">Non ci sono Allenatori disponibili</td>
                         </tr>
                     @endforelse
                 </tbody>

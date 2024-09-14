@@ -46,14 +46,6 @@
                                     </button>
                                 </li>
                             @endif
-                            {{-- @if (Auth::user()->is_trainer)
-                                <li class="d-flex justify-content-center">
-                                    <button type="button" class="btn custom-btn-danger-nav" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModalTrainer">
-                                        Elimina utente
-                                    </button>
-                                </li>
-                            @endif --}}
                         </ul>
                     @endif
                 </li>
