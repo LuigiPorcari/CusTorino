@@ -1,7 +1,7 @@
 <x-layout documentTitle="Student Dashboard">
     <div class="container mt-5">
         <div class="row mt-5 justify-content-center">
-            <h1 class="custom-title mt-5 pt-5">Benvenuto Corsista {{ Auth::user()->name }}</h1>
+            <h1 class="custom-title mt-5 pt-5">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>
             {{-- Tabella con il conteggio delle assenze e dei gettoni --}}
             <div class="col-12 mb-5 mt-2">
                 <h2 class="custom-subtitle mb-3">Statistiche Personali</h2>
@@ -138,7 +138,7 @@
                                             Non puoi recuperare perchè <br>
                                             @if (Auth::user()->countAbsences() > 0)
                                                 non hai rispettato i criteri opportuni quando hai segnato la tua
-                                                assenza <br> o hai usato tutti i tuoi gettoni
+                                                assenza <br> o hai recuperato tutte le tue assenze
                                             @else
                                                 non hai mai fatto un'assenza
                                             @endif
@@ -191,7 +191,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Ti verrà sottratto un gettone.<br>
                         Sei sicuro di voler recuperare l'assenza per il gruppo in data {{ $alias->formatData($alias->data_allenamento) }} all'ora
                         {{ $alias->formatHours($alias->orario) }}?
                     </div>

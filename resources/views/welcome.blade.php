@@ -1,63 +1,47 @@
 <x-layout documentTitle="Homepage">
-    <div class="container-fluid mt-5 text-center p-5">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="mt-5 custom-title">Homepage</h1>
-                <a class="btn custom-btn-primary-home" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
-                @if (session('success'))
-                    <div class="alert alert-dismissible custom-alert-success mt-3">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+    @if (!Auth::check())
+        <div class="container mt-5 pt-1">
+            <div class="row mt-5 pt-5 justify-content-center">
+                <div class="col-6">
+                    <!-- Pulsante Accedi-->
+                    <a class="btn custom-btn-primary-nav w-100 py-4 fs-4 fw-bolder" href="{{ route('login') }}">Accedi</a>
+                </div>
+                <div class="col-6">
+                    <!-- Pulsante Registrati-->
+                    <a class="btn custom-btn-primary-nav w-100 py-4 fs-4 fw-bolder"
+                        href="{{ route('corsista.register') }}">Registrati</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        {{-- PRIMA ROW --}}
-        <div class="row flex-column-reverse flex-md-row justify-content-center">
-            <div
-                class="me-2 col-12 col-md-5 border rounded-5 d-flex justify-content-center align-items-center flex-column text-center shadow custom-homepage-col">
-                <h3 class="custom-subtitle py-2">Chi siamo?</h3>
-                <p class="custom-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo doloribus
-                    eaque
-                    esse mollitia explicabo tenetur maxime eum libero officiis consequatur, inventore temporibus
-                </p>
+    @endif
+    <!-- Carosello-->
+    <div class="container mt-4">
+        <div id="homepageCarousel" class="carousel slide custom-carousel shadow rounded-4" data-bs-ride="carousel" data-bs-interval="2500">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ asset('img/gruppo.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('img/palla.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('img/rete.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{ asset('img/simbolo.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 4">
+                </div>
             </div>
-            <div
-                class="ms-2 col-12 col-md-5 border rounded-5 d-flex justify-content-center align-items-center flex-column text-center shadow custom-homepage-col mb-3">
-                <img src="{{ asset('img/gruppo.jpg') }}" alt="gruppo di persone" class="img-fluid">
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#homepageCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon custom-carousel-control" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homepageCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon custom-carousel-control" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        {{-- SECONDA ROW --}}
-        <div class="row flex-column flex-md-row justify-content-center mt-5">
-            <div
-                class="me-2 col-12 col-md-5 border rounded-5 d-flex justify-content-center align-items-center flex-column text-center shadow custom-homepage-col mb-3">
-                <img src="{{ asset('img/rete.jpg') }}" alt="rete di pallavolo" class="img-fluid">
-            </div>
-            <div
-                class="ms-2 col-12 col-md-5 border rounded-5 d-flex justify-content-center align-items-center flex-column text-center shadow custom-homepage-col">
-                <h3 class="custom-subtitle py-2">Cosa offriamo?</h3>
-                <p class="custom-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo doloribus
-                    eaque
-                    esse mollitia explicabo tenetur maxime eum libero officiis consequatur, inventore temporibus
-                </p>
-            </div>
-        </div>
-        {{-- TERZA ROW --}}
-        <div class="row flex-column-reverse flex-md-row justify-content-center mt-5">
-            <div
-                class="me-2 col-12 col-md-5 border rounded-5 d-flex justify-content-center align-items-center flex-column text-center shadow custom-homepage-col">
-                <h3 class="custom-subtitle py-2">Cosa offre questo sito?</h3>
-                <p class="custom-paragraph">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo doloribus
-                    eaque
-                    esse mollitia explicabo tenetur maxime eum libero officiis consequatur, inventore temporibus
-                </p>
-            </div>
-            <div
-                class="ms-2 col-12 col-md-5 border rounded-5 d-flex justify-content-center align-items-center flex-column text-center shadow custom-homepage-col mb-3">
-                <img src="{{ asset('img/palla.jpg') }}" alt="palla di pallavolo" class="img-fluid">
-            </div>
-        </div>
+        <a class="btn custom-btn-primary-nav" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
     </div>
 </x-layout>

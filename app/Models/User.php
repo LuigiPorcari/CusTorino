@@ -170,21 +170,21 @@ class User extends Authenticatable
         $deadline = $aliasDateTime->copy()->subHours(12);
         // Verifica che lo studente abbia la carta CUS, la visita medica e il pagamento effettuato
         if (!Auth::user()->cus_card) {
-            $string .= 'Non guadagnerai un gettone perchè non hai una carta CUS valida.<br>';
+            $string .= 'Non hai possibilità di recuperare questa assenza perchè non hai una carta CUS valida.<br>';
         }
         if (!Auth::user()->visita_medica) {
-            $string .= 'Non guadagnerai un gettone perchè la tua visita medica non è completa.<br>';
+            $string .= 'Non hai possibilità di recuperare questa assenza perchè la tua visita medica non è completa.<br>';
         }
         if (!Auth::user()->pagamento) {
-            $string .= 'Non guadagnerai un gettone perchè non hai completato il pagamento.<br>';
+            $string .= 'Non hai possibilità di recuperare questa assenza perchè non hai completato il pagamento.<br>';
         }
         // Verifica se l'assenza è richiesta con almeno 12 ore di anticipo
         if ($now->gt($deadline)) {
-            $string .= 'Non guadagnerai un gettone perchè il termine delle 12 ore è già passato.<br>';
+            $string .= 'Non hai possibilità di recuperare questa assenza perchè il termine delle 12 ore è già passato.<br>';
         }
         // Verifica che tutte le condizioni siano soddisfatte
         if (empty($string) && $now->lte($deadline)) {
-            $string = 'Guadagnerai un gettone.<br>';
+            $string = 'Hai la possibilità di recuperare questa assenza.<br>';
         }
         return $string;
     }

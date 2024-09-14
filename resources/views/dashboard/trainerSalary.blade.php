@@ -4,7 +4,7 @@
             <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" href="{{ route('trainer.salary') }}">Stipendio</a>
+            <a class="nav-link active" href="{{ route('trainer.salary') }}">Compensi</a>
         </li>
     </ul>
 

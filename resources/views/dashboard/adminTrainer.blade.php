@@ -41,7 +41,7 @@
                         <th class="d-none d-md-table-cell">Cognome</th>
                         <th class="d-none d-md-table-cell">Stipendio Tot:</th>
                         <th>Dettagli</th>
-                        <th>Questo Trainer è un Corsista?</th>
+                        <th>Questo Allenatore è anche un Corsista?</th>
                     </tr>
                 </thead>
                 <tbody>

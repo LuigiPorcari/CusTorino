@@ -122,7 +122,7 @@ class StudentController extends Controller
         $alias->studenti_id = array_values($studenti); // Rimuove eventuali buchi nell'array
         $alias->save();
         $string = Auth::user()->canMarkAbsence($alias);
-        return redirect()->back()->with('success', $string . 'Assenza segnata con successo.');
+        return redirect()->back()->with('success', 'Assenza segnata con successo.<br>' . $string);
     }
 
     public function recAbsence($aliasId)
@@ -145,6 +145,6 @@ class StudentController extends Controller
         $alias->studenti_id = array_values($studenti); // Rimuove eventuali buchi nell'array
         $alias->save();
 
-        return redirect()->back()->with('success1', 'Ti è stato tolto un gettone<br>Il numero di gettoni che ti rimangono è ' . $student->Nrecuperi .'<br>Recupero segnato con successo.');
+        return redirect()->back()->with('success1', 'Recupero segnato con successo.<br>' . 'Il numero di recuperi che ti rimangono è ' . $student->Nrecuperi);
     }
 }

@@ -291,6 +291,19 @@ body {
     border: 2px solid rgb(0, 108, 181); /* Bordo blu chiaro al focus */
 }
 
+/* Stile personalizzato per il carosello */
+.custom-carousel {
+    overflow: hidden;
+}
+
+.custom-carousel-img {
+    height: 600px; /* Altezza fissa per immagini uniformi */
+    object-fit: cover; /* Copre tutto lo spazio mantenendo la proporzione */
+}
+
+.custom-carousel-control {
+    filter: invert(100%); /* Rende le icone di controllo bianche per visibilità */
+}
 
 /* Media queries per dispositivi mobili */
 @media (max-width: 768px) {
@@ -301,4 +314,9 @@ body {
         transition: background-color 0.3s ease;
         font-size: 12px;
     }
+
+    .custom-carousel-img {
+        height: 300px;
+    }
+
 }

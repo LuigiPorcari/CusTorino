@@ -96,6 +96,9 @@ class AdminController extends Controller
             'universitario' => $request->universitario,
             'is_trainer' => $request->is_trainer,
             'Nrecuperi' => $request->Nrecuperi,
+            'genere' => $request->genere,
+            'name' => $request->name,
+            'cognome' => $request->cognome
         ]);
 
         return redirect(route('admin.dashboard.student'))->with('success', 'Corsista modificato con successo');

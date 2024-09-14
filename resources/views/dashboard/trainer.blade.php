@@ -4,12 +4,12 @@
             <a class="nav-link active" aria-current="page" href="{{ route('trainer.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('trainer.salary') }}">Stipendio</a>
+            <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
         </li>
     </ul>
 {{-- Gruppi allenati --}}
 <div class="container mt-5">
-    <h1 class="custom-title mt-md-5 pt-md-5 text-center">Benvenuto Trainer {{ Auth::user()->name }}</h1>
+    <h1 class="custom-title mt-md-5 pt-md-5 text-center">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>
     <h2 class="custom-subtitle mt-5 mb-4">Gruppi in cui alleni</h2>
     @if (session('success'))
         <div class="alert custom-alert-success alert-dismissible">
@@ -21,7 +21,7 @@
         <form method="GET" action="{{ route('trainer.dashboard') }}">
             <div class="row">
                 <div class="col-md-4">
-                    <input type="search" name="alias_name" class="custom-form-input" placeholder="Nome Alias"
+                    <input type="search" name="alias_name" class="custom-form-input" placeholder="Gruppo"
                         value="{{ request('alias_name') }}" onsearch="this.form.submit()">
                 </div>
                 <div class="col-md-4">

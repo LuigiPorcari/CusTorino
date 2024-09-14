@@ -36,6 +36,14 @@ class PasswordController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('homepage')->with('success', 'Password cambiata con successo!');
+        if (Auth::user()->is_corsista) {
+            return redirect()->route('student.dashboard')->with('success', 'Password cambiata con successo!');
+        }
+        if (Auth::user()->is_trainer) {
+            return redirect()->route('trainer.dashboard')->with('success', 'Password cambiata con successo!');
+        }
+        if (Auth::user()->is_admin) {
+            return redirect()->route('admin.dashboard')->with('success', 'Password cambiata con successo!');
+        }
     }
 }

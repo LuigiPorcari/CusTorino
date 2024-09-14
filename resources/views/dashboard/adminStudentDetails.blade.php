@@ -9,24 +9,32 @@
                     <form method="POST" action="{{ route('admin.update.student', $student) }}">
                         @csrf
                         <div class="card-body">
+                            <!-- Campo per Nome -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Nome:</strong></label>
-                                <p class="form-control">{{ $student->name }}</p>
+                                <input type="text" class="form-control" name="name" value="{{ $student->name }}">
                             </div>
+                            <!-- Campo per Cognome -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Cognome:</strong></label>
-                                <p class="form-control">{{ $student->cognome }}</p>
+                                <input type="text" class="form-control" name="cognome" value="{{ $student->cognome }}">
                             </div>
+                            <!-- Campo per Livello -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Livello:</strong></label>
                                 <input placeholder="@if ($student->livello == null) N.C. @endif"
                                     value="{{ $student->livello }}" type="number" class="form-control" name="level"
                                     min="1" max="10">
                             </div>
+                            <!-- Campo per Genere -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Genere:</strong></label>
-                                <p class="form-control">{{ $student->genere }}</p>
+                                <select class="form-control" name="genere">
+                                    <option @if ($student->genere == 'M') selected @endif value="M">Maschio</option>
+                                    <option @if ($student->genere == 'F') selected @endif value="F">Femmina</option>
+                                </select>
                             </div>
+                            <!-- CUS Card -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>CUS Card:</strong></label>
                                 <select class="form-control" name="cus_card">
@@ -34,6 +42,7 @@
                                     <option @if ($student->cus_card == 0) selected @endif value="0">NON OK</option>
                                 </select>
                             </div>
+                            <!-- Visita Medica -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Visita Medica:</strong></label>
                                 <select class="form-control" name="visita_medica">
@@ -41,6 +50,7 @@
                                     <option @if ($student->visita_medica == 0) selected @endif value="0">NON OK</option>
                                 </select>
                             </div>
+                            <!-- Pagamento -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Pagamento:</strong></label>
                                 <select class="form-control" name="pagamento">
@@ -48,6 +58,7 @@
                                     <option @if ($student->pagamento == 0) selected @endif value="0">NON OK</option>
                                 </select>
                             </div>
+                            <!-- Universitario -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Universitario:</strong></label>
                                 <select class="form-control" name="universitario">
@@ -55,18 +66,21 @@
                                     <option @if ($student->universitario == 0) selected @endif value="0">NO</option>
                                 </select>
                             </div>
+                            <!-- Questo Corsista è anche un Allenatore -->
                             <div class="mb-3">
-                                <label class="form-label"><strong>Questo trainer è anche un corsista?</strong></label>
+                                <label class="form-label"><strong>Questo Corsista è anche un Allenatore?</strong></label>
                                 <select class="form-control" name="is_trainer">
                                     <option @if ($student->is_trainer == 1) selected @endif value="1">SI</option>
                                     <option @if ($student->is_trainer == 0) selected @endif value="0">NO</option>
                                 </select>
                             </div>
+                            <!-- Recuperi -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Recuperi:</strong></label>
                                 <input value="{{ $student->Nrecuperi }}" type="number" class="form-control"
                                     name="Nrecuperi" min="0">
                             </div>
+                            <!-- Pulsanti Salva ed Elimina -->
                             <div class="mb-3 d-flex justify-content-center">
                                 <button type="submit" class="btn admin-btn-warning me-1">Salva Modifiche</button>
                                 <button type="button" class="btn admin-btn-danger ms-1" data-bs-toggle="modal"

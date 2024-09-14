@@ -8,9 +8,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link custom-nav-link" aria-current="page" href="{{ route('homepage') }}">Home</a>
-                </li>
+                @if (!Auth::check())
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link" aria-current="page" href="{{ route('homepage') }}">Home</a>
+                    </li>
+                @endif
                 <li class="nav-item dropdown">
                     @if (Auth::check())
                         <a class="nav-link dropdown-toggle custom-nav-link" href="#" role="button"
@@ -20,12 +22,14 @@
                         <ul class="dropdown-menu custom-dropdown-menu">
                             @if (Auth::user()->is_admin)
                                 <li class="d-flex justify-content-center">
-                                    <a class="btn custom-btn-primary-nav-drop mb-2" href="{{ route('groups.create') }}">Crea
+                                    <a class="btn custom-btn-primary-nav-drop mb-2"
+                                        href="{{ route('groups.create') }}">Crea
                                         gruppi</a>
                                 </li>
                             @endif
                             <li class="d-flex justify-content-center">
-                                <a class="btn custom-btn-primary-nav-drop mb-2" href="{{ route('password.change') }}">Cambia
+                                <a class="btn custom-btn-primary-nav-drop mb-2"
+                                    href="{{ route('password.change') }}">Cambia
                                     Password</a>
                             </li>
                             <li class="d-flex justify-content-center">
@@ -42,51 +46,48 @@
                                     </button>
                                 </li>
                             @endif
-                            @if (Auth::user()->is_trainer)
+                            {{-- @if (Auth::user()->is_trainer)
                                 <li class="d-flex justify-content-center">
                                     <button type="button" class="btn custom-btn-danger-nav" data-bs-toggle="modal"
                                         data-bs-target="#deleteModalTrainer">
                                         Elimina utente
                                     </button>
                                 </li>
-                            @endif
+                            @endif --}}
                         </ul>
                     @endif
                 </li>
                 @if (Auth::check())
+                    @if (Auth::user()->is_corsista)
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="{{ route('student.dashboard') }}">Home</a>
+                        </li>
+                    @endif
                     @if (Auth::user()->is_admin)
                         <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="{{ route('admin.dashboard') }}">Dashboard
-                                Admin</a>
+                            <a class="nav-link custom-nav-link" href="{{ route('admin.dashboard') }}">Admin</a>
                         </li>
                     @endif
                     @if (Auth::user()->is_trainer)
                         <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="{{ route('trainer.dashboard') }}">Dashboard
-                                Trainer</a>
-                        </li>
-                    @endif
-                    @if (Auth::user()->is_corsista)
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link" href="{{ route('student.dashboard') }}">Dashboard
-                                Corsista</a>
+                            <a class="nav-link custom-nav-link" href="{{ route('trainer.dashboard') }}">Allenatore</a>
                         </li>
                     @endif
                 @endif
             </ul>
-            @if (!Auth::check())
+            {{-- @if (!Auth::check())
                 <div>
                     <a class="btn custom-btn-primary-nav" href="{{ route('login') }}">Accedi</a>
                     <a class="btn custom-btn-primary-nav mx-2" href="{{ route('corsista.register') }}">Registrati come
                         Corsista</a>
                 </div>
-            @endif
+            @endif --}}
             @if (Auth::check() && Auth::user()->is_admin)
                 <div class="d-flex">
                     <a class="btn custom-btn-primary-nav me-2" href="{{ route('corsista.register') }}">Registra nuovo
                         Corsista</a>
                     <a class="btn custom-btn-primary-nav me-2" href="{{ route('trainer.register') }}">Registra nuovo
-                        Trainer</a>
+                        Allenatore</a>
                     <a class="btn custom-btn-primary-nav" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
                 </div>
             @endif

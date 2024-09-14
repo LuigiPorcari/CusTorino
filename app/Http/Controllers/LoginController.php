@@ -37,7 +37,15 @@ class LoginController extends Controller
         if (Auth::attempt($this->credentials($request), $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended($this->redirectPath());
+            if (Auth::user()->is_corsista) {
+                return redirect()->route('student.dashboard');
+            }
+            if (Auth::user()->is_trainer) {
+                return redirect()->route('trainer.dashboard');
+            }
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
         }
 
         throw ValidationException::withMessages([
@@ -71,17 +79,6 @@ class LoginController extends Controller
     }
 
     /**
-     * Il percorso di reindirizzamento dopo il login.
-     *
-     * @return string
-     */
-    protected function redirectPath()
-    {
-        // Puoi specificare una rotta specifica qui, ad esempio 'home'
-        return '/';
-    }
-
-    /**
      * Effettua il logout dell'utente.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -105,6 +102,13 @@ class LoginController extends Controller
         $student->aliases()->detach();
         // Rimuovere i record dipendenti nella tabella pivot group_student
         $student->groups()->detach();
+        if ($student->is_corsista) {
+            // Aggiornare o rimuovere i record dipendenti
+            Alias::where('primo_allenatore_id', $id)->update(['primo_allenatore_id' => null]);
+            Alias::where('secondo_allenatore_id', $id)->update(['secondo_allenatore_id' => null]);
+            Group::where('primo_allenatore_id', $id)->update(['primo_allenatore_id' => null]);
+            Group::where('secondo_allenatore_id', $id)->update(['secondo_allenatore_id' => null]);
+        }
 
         $student->delete();
 
@@ -120,14 +124,16 @@ class LoginController extends Controller
         Alias::where('secondo_allenatore_id', $id)->update(['secondo_allenatore_id' => null]);
         Group::where('primo_allenatore_id', $id)->update(['primo_allenatore_id' => null]);
         Group::where('secondo_allenatore_id', $id)->update(['secondo_allenatore_id' => null]);
+        if ($trainer->is_corsista) {
+            // Rimuovere i record dipendenti nella tabella pivot alias_student
+            $trainer->aliases()->detach();
+            // Rimuovere i record dipendenti nella tabella pivot group_student
+            $trainer->groups()->detach();
+        }
 
         $trainer->delete();
 
-        if (Auth::user()->is_admin) {
-            return redirect()->route('admin.dashboard.trainer')->with('success', 'Trainer eliminato con successo.');
-        } else {
-            return redirect()->route('homepage')->with('success', 'Trainer eliminato con successo.');
-        }
+        return redirect()->route('admin.dashboard.trainer')->with('success', 'Trainer eliminato con successo.');
     }
 
     public function destroyAdmin($id)
@@ -135,6 +141,6 @@ class LoginController extends Controller
         $admin = User::findOrFail($id);
         $admin->delete();
 
-        return redirect()->route('homepage')->with('success', 'Admin eliminato con successo.');
+        return redirect()->route('admin.dashboard')->with('success', 'Admin eliminato con successo.');
     }
 }
