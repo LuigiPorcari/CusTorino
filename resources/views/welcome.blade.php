@@ -42,6 +42,5 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <a class="btn custom-btn-primary-nav" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
     </div>
 </x-layout>

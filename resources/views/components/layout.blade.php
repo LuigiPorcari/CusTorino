@@ -15,10 +15,21 @@
     <div class="min-vh-100">
         {{ $slot }}
     </div>
-    <x-footer/>
+    <x-footer />
     <x-modal />
     {{-- SCRIPT FONTAWESOME --}}
     <script src="https://kit.fontawesome.com/cfb9a37921.js" crossorigin="anonymous"></script>
+    {{-- SCRIPT IUBENDA --}}
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {
+            "siteId": 3767111,
+            "cookiePolicyId": 11435994,
+            "lang": "it"
+        };
+    </script>
+    <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3767111.js"></script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
 </body>
 
 </html>
