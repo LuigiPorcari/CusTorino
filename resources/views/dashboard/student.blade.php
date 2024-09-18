@@ -127,7 +127,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="3">
-                                            <h2 class="custom-subtitle">Non ci sono gruppi adatti al tuo recupero</h2>
+                                            <h2 class="custom-subtitle text-black">Non ci sono gruppi adatti al tuo recupero</h2>
                                         </td>
                                     </tr>
                                 @endforelse

@@ -66,12 +66,16 @@ class Alias extends Model
             array_diff($aliasStudentIds, $groupStudentIds)
         );
 
-        // Trova gli studenti con gli ID trovati
-        $students = User::whereIn('id', $diffIds)->get();
+        // Filtra i diffIds per ottenere solo quelli che non sono presenti nel gruppo
+        $filteredDiffIds = array_diff($diffIds, $groupStudentIds);
 
-        // Restituisce gli studenti che differiscono
+        // Trova gli studenti con gli ID filtrati
+        $students = User::whereIn('id', $filteredDiffIds)->get();
+
+        // Restituisce gli studenti che differiscono e non sono nel gruppo
         return $students;
     }
+
 
     public function formatData($date)
     {

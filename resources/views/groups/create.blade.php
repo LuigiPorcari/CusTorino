@@ -14,13 +14,13 @@
                     <div class="mb-3">
                         <label class="custom-form-label" for="giorno_settimana">Giorno della Settimana</label>
                         <select class="custom-form-input" id="giorno_settimana" name="giorno_settimana" required>
-                            <option value="monday">Lunedì</option>
-                            <option value="tuesday">Martedì</option>
-                            <option value="wednesday">Mercoledì</option>
-                            <option value="thursday">Giovedì</option>
-                            <option value="friday">Venerdì</option>
-                            <option value="saturday">Sabato</option>
-                            <option value="sunday">Domenica</option>
+                            <option value="lunedi">Lunedì</option>
+                            <option value="martedi">Martedì</option>
+                            <option value="mercoledi">Mercoledì</option>
+                            <option value="giovedi">Giovedì</option>
+                            <option value="venerdi">Venerdì</option>
+                            <option value="sabato">Sabato</option>
+                            <option value="domenica">Domenica</option>
                         </select>
                     </div>
                     {{-- ORARIO --}}
