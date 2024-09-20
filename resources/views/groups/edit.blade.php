@@ -14,13 +14,13 @@
                     <div class="mb-3">
                         <label class="custom-form-label" for="giorno_settimana">Giorno della Settimana</label>
                         <select class="custom-form-input" id="giorno_settimana" name="giorno_settimana" required>
-                            <option @if ($group->giorno_settimana == 'monday') selected @endif value="monday">Lunedì</option>
-                            <option @if ($group->giorno_settimana == 'tuesday') selected @endif value="tuesday">Martedì</option>
-                            <option @if ($group->giorno_settimana == 'wednesday') selected @endif value="wednesday">Mercoledì</option>
-                            <option @if ($group->giorno_settimana == 'thursday') selected @endif value="thursday">Giovedì</option>
-                            <option @if ($group->giorno_settimana == 'friday') selected @endif value="friday">Venerdì</option>
-                            <option @if ($group->giorno_settimana == 'saturday') selected @endif value="saturday">Sabato</option>
-                            <option @if ($group->giorno_settimana == 'sunday') selected @endif value="sunday">Domenica</option>
+                            <option @if ($group->giorno_settimana == 'lunedi') selected @endif value="lunedi">Lunedì</option>
+                            <option @if ($group->giorno_settimana == 'martedi') selected @endif value="martedi">Martedì</option>
+                            <option @if ($group->giorno_settimana == 'mercoledi') selected @endif value="mercoledi">Mercoledì</option>
+                            <option @if ($group->giorno_settimana == 'giovedi') selected @endif value="giovedi">Giovedì</option>
+                            <option @if ($group->giorno_settimana == 'venerdi') selected @endif value="venerdi">Venerdì</option>
+                            <option @if ($group->giorno_settimana == 'sabato') selected @endif value="sabato">Sabato</option>
+                            <option @if ($group->giorno_settimana == 'domenica') selected @endif value="domenica">Domenica</option>
                         </select>
                     </div>
                     {{-- SEDE --}}

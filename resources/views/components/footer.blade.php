@@ -19,7 +19,7 @@
             </a>
             <!-- playtomic -->
             <a class="btn custom-btn-social m-1" href="https://playtomic.io/" role="button" target="_blank">
-                Play <br> Tonic
+                Play <br> Tomic
             </a>
             <!-- Mail -->
             <a class="btn custom-btn-social m-1" href="mailto:beachvolley@custorino.it" role="button" target="_blank">

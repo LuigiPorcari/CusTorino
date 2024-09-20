@@ -6,7 +6,12 @@
     font-family: 'Arial Black', sans-serif;
     text-transform: uppercase;
     margin-bottom: 1.5rem;
+    /* Bordo del testo */
+    -webkit-text-stroke: 1px rgb(0, 0, 0); /* Colore del bordo e spessore */
+    text-stroke: 1px rgb(0, 0, 0); /* Standard per altri browser */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Ombra per dare profondità */
 }
+
 
 /* Stile per le colonne principali della homepage */
 .custom-homepage-col {
@@ -29,6 +34,10 @@
     font-weight: 700;
     font-family: 'Arial', sans-serif;
     text-transform: uppercase;
+    /* Bordo del testo */
+    -webkit-text-stroke: 0.7px rgb(0, 0, 0); /* Colore del bordo e spessore */
+    text-stroke: 0.7px rgb(0, 0, 0); /* Standard per altri browser */
+    text-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.5); /* Ombra per dare profondità */
 }
 
 /* Paragrafo */
