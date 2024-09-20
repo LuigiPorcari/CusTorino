@@ -14,7 +14,7 @@
                 <div class="custom-card equal-height-card mx-1 my-2">
                     <div class="custom-card-body">
                         <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <p class="card-text">Luogo: <span class="text-uppercase">{{ $alias->location }}</span></p>
+                        <p class="card-text">Sede: <span class="text-uppercase">{{ $alias->location }}</span></p>
                         <h6 class="custom-date card-subtitle mb-2">{{ $alias->formatData($alias->data_allenamento) }}
                         </h6>
                         <p class="custom-paragraph"><span class="fw-bold">Orario:</span>

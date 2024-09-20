@@ -66,7 +66,7 @@
                         <thead>
                             <tr>
                                 <th>Pulsante Assenza</th>
-                                <th>Data / Luogo</th>
+                                <th>Data / Sede</th>
                                 <th>Orario</th>
                             </tr>
                         </thead>
@@ -133,7 +133,7 @@
                         <thead>
                             <tr>
                                 <th>Pulsante Recupero</th>
-                                <th>Data / Luogo</th>
+                                <th>Data / Sede</th>
                                 <th>Orario</th>
                             </tr>
                         </thead>

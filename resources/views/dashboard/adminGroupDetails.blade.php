@@ -11,7 +11,7 @@
                 <div class="card admin-card">
                     <div class="admin-card-body">
                         <h5 class="card-title">Dettagli del {{ $group->nome }}</h5>
-                        <p class="card-text">Luogo: <span class="text-uppercase">{{ $group->location }}</span></p>
+                        <p class="card-text">Sede: <span class="text-uppercase">{{ $group->location }}</span></p>
                         <p class="card-text">Giorno: {{ $group->giorno_settimana }}</p>
                         <p class="card-text">Orario: {{ $group->formatHours($group->orario) }}</p>
                         <p class="card-text">Tipologia: {{ $group->tipo }}</p>

@@ -49,7 +49,7 @@
             <thead>
                 <tr>
                     <th>Nome Alias</th>
-                    <th>Data Alias / Luogo Alias</th>
+                    <th>Data Alias / Sede Alias</th>
                     <th>Dettagli</th>
                 </tr>
             </thead>

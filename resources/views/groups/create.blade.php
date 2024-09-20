@@ -23,7 +23,7 @@
                             <option value="domenica">Domenica</option>
                         </select>
                     </div>
-                    {{-- LUOGO --}}
+                    {{-- SEDE --}}
                     <div class="mb-3">
                         <label class="custom-form-label" for="location">In che sede si svolge l'allenamento?</label>
                         <select class="custom-form-input" id="location" name="location" required>
