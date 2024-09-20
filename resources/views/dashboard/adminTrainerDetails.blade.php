@@ -25,29 +25,28 @@
                     </tbody>
                 </table>
                 <table class="table table-bordered admin-trainer-table">
-                    <thead>
+                    <thead class="custom-table-header">
                         <tr>
                             <th>Nome Gruppo Alias</th>
                             <th>Data Gruppo Alias</th>
                             <th>Tipo allenatore / Condiviso</th>
-                            <th>Stipendio (€)</th>
+                            <th>Stipendio relativo alla prestazione (€)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($trainer->primoAllenatoreAliases as $alias)
+                        @foreach ($aliasesTrainer as $alias)
                             <tr>
                                 <td>{{ $alias->nome }}</td>
                                 <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>Primo Allenatore / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
-                                <td>{{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}</td>
-                            </tr>
-                        @endforeach
-                        @foreach ($trainer->secondoAllenatoreAliases as $alias)
-                            <tr>
-                                <td>{{ $alias->nome }}</td>
-                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>Secondo Allenatore / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
-                                <td>{{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}</td>
+                                <td>{{ $alias->primo_allenatore_id == $trainer->id ? 'Primo Allenatore' : 'Secondo Allenatore' }}
+                                    / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
+                                <td>
+                                    @if ($alias->primo_allenatore_id == $trainer->id)
+                                        {{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}
+                                    @else
+                                        {{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         <tr>
@@ -59,6 +58,7 @@
                         </tr>
                     </tbody>
                 </table>
+
                 <div class="text-center">
                     <a href="{{ route('admin.dashboard.trainer') }}" class="btn admin-btn-info fs-6">Torna alla lista
                         Allenatori</a>

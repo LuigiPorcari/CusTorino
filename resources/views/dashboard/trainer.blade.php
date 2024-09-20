@@ -1,71 +1,80 @@
 <x-layout documentTitle="Trainer Dashboard">
     <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('trainer.dashboard') }}">Gruppi</a>
+            <a class="nav-link active" aria-current="page" href="{{ route('trainer.dashboard') }}">Oggi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
         </li>
     </ul>
-{{-- Gruppi allenati --}}
-<div class="container mt-5">
-    <h1 class="custom-title mt-md-5 pt-md-5 text-center">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>
-    <h2 class="custom-subtitle mt-5 mb-4">Gruppi in cui alleni</h2>
-    @if (session('success'))
-        <div class="alert custom-alert-success alert-dismissible">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container">
+        <div class="row my-5 justify-content-center">
+            {{-- ! Descrizione gruppo alias --}}
+            @foreach ($aliasesTrainer as $alias)
+                <div class="col-11 col-md-3">
+                    <div class="custom-card equal-height-card mx-1 my-2">
+                        <div class="custom-card-body">
+                            <h5 class="card-title">{{ $alias->nome }}</h5>
+                            <p class="card-text">Luogo: <span class="text-uppercase">{{ $alias->location }}</span></p>
+                            <h6 class="custom-date card-subtitle mb-2">
+                                {{ $alias->formatData($alias->data_allenamento) }}
+                            </h6>
+                            <p class="custom-paragraph"><span class="fw-bold">Orario:</span>
+                                {{ $alias->formatHours($alias->orario) }}</p>
+                            @if ($alias->condiviso == 'false')
+                                @if ($alias->primo_allenatore_id != null)
+                                    <p class="custom-paragraph"><span class="fw-bold">Primo allenatore:</span> <br>
+                                        {{ $alias->primoAllenatore->name }} {{ $alias->primoAllenatore->cognome }}</p>
+                                @endif
+                                @if ($alias->secondo_allenatore_id != null)
+                                    <p class="custom-paragraph"><span class="fw-bold">Secondo allenatore:</span> <br>
+                                        {{ $alias->secondoAllenatore->name }} {{ $alias->secondoAllenatore->cognome }}
+                                    </p>
+                                @endif
+                            @endif
+                            @if ($alias->condiviso == 'true')
+                                @if ($alias->primo_allenatore_id != null)
+                                    <p class="custom-paragraph"><span class="fw-bold">Allenatore condiviso:</span> <br>
+                                        {{ $alias->primoAllenatore->name }} {{ $alias->primoAllenatore->cognome }}</p>
+                                @endif
+                                @if ($alias->secondo_allenatore_id != null)
+                                    <p class="custom-paragraph"><span class="fw-bold">Allenatore condiviso:</span> <br>
+                                        {{ $alias->secondoAllenatore->name }} {{ $alias->secondoAllenatore->cognome }}
+                                    </p>
+                                @endif
+                                <p class="custom-paragraph">Condiviso</p>
+                            @endif
+                            <div class="row border rounded-3">
+                                <div class="col-6 p-0 border-end">
+                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Studenti
+                                            originali:</span></p>
+                                    @foreach ($alias->group->users as $student)
+                                        <p
+                                            class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                            {{ $student->name }} {{ $student->cognome }}
+                                        </p>
+                                    @endforeach
+                                </div>
+                                <div class="col-6 p-0">
+                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Recuperi:</span>
+                                    </p>
+                                    @foreach ($alias->compareStudents($alias->group->id, $alias->id) as $recupero)
+                                        @if (!in_array($recupero->id, $alias->group->studenti_id))
+                                            <p class="my-0 py-1 card-text border-bottom">{{ $recupero->name }}
+                                                {{ $recupero->cognome }}</p>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a class="custom-link-btn mb-4" href="{{ route('alias.details', $alias) }}">Modifica</a>
+                        </div>
+                    </div>
+                </div>
         </div>
-    @endif
-    <div class="mb-4">
-        <form method="GET" action="{{ route('trainer.dashboard') }}">
-            <div class="row">
-                <div class="col-md-4">
-                    <input type="search" name="alias_name" class="custom-form-input" placeholder="Gruppo"
-                        value="{{ request('alias_name') }}" onsearch="this.form.submit()">
-                </div>
-                <div class="col-md-4">
-                    <select name="alias_date" class="custom-form-input" onchange="this.form.submit()">
-                        <option value="">Tutte le date</option>
-                        @foreach ($availableDates as $date)
-                            <option value="{{ $date['original'] }}"
-                                {{ request('alias_date') == $date['original'] ? 'selected' : '' }}>
-                                {{ $date['formatted'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100 admin-btn-info py-2 my-1 fs-6">Filtra</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <table class="table table-bordered admin-trainer-table">
-        <thead>
-            <tr>
-                <th>Nome Alias</th>
-                <th>Data Alias</th>
-                <th>Dettagli</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($aliasesTrainer as $alias)
-                <tr>
-                    <td>{{ $alias->nome }}</td>
-                    <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                    <td>
-                        <a href="{{ route('alias.details', $alias) }}" class="btn admin-btn-info">Visualizza
-                            Dettagli</a>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="3" class="text-center">Non ci sono gruppi disponibili</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-    {{ $aliasesTrainer->links('pagination::bootstrap-5') }}
-</div>
+        @endforeach
 </x-layout>

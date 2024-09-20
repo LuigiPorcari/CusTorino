@@ -23,12 +23,31 @@
                             <option value="domenica">Domenica</option>
                         </select>
                     </div>
+                    {{-- LUOGO --}}
+                    <div class="mb-3">
+                        <label class="custom-form-label" for="location">In che sede si svolge l'allenamento?</label>
+                        <select class="custom-form-input" id="location" name="location" required>
+                            <option value="torino">TORINO</option>
+                            <option value="leinì" class="text-uppercase">leinì</option>
+                        </select>
+                    </div>
                     {{-- ORARIO --}}
                     <div class="mb-3">
                         <label class="custom-form-label" for="orario">Orario</label>
                         <select class="custom-form-input" id="orario" name="orario" required>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                            <option value="18:00">18:00</option>
                             <option value="18:30">18:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
                             <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
                             <option value="21:30">21:30</option>
                         </select>
                     </div>
@@ -83,7 +102,7 @@
                     {{-- LIVELLO --}}
                     <div class="mb-3">
                         <label class="custom-form-label" for="livello">Livello</label>
-                        <input type="number" class="custom-form-input" id="livello" name="livello" required min="1" max="10">
+                        <input type="number" class="custom-form-input" id="livello" name="livello" required min="1" max="12">
                     </div>
                     {{-- DATA INIZIO CORSO --}}
                     <div class="mb-3">

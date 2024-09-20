@@ -23,6 +23,14 @@
                             <option @if ($group->giorno_settimana == 'sunday') selected @endif value="sunday">Domenica</option>
                         </select>
                     </div>
+                    {{-- LUOGO --}}
+                    <div class="mb-3">
+                        <label class="custom-form-label" for="location">In che sede si svolge l'allenamento?</label>
+                        <select class="custom-form-input" id="location" name="location" required>
+                            <option @if ($group->location == 'torino') selected @endif value="torino">TORINO</option>
+                            <option @if ($group->location == 'leinì') selected @endif value="leinì" class="text-uppercase">leinì</option>
+                        </select>
+                    </div>
                     {{-- ORARIO --}}
                     <div class="mb-3">
                         <label class="custom-form-label" for="orario">Orario</label>

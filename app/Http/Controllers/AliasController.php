@@ -13,30 +13,57 @@ use Illuminate\Support\Facades\Validator;
 class AliasController extends Controller
 {
     //!Funzione per segnare assenza
+    // public function studentAbsence(Request $request, Alias $alias)
+    // {
+
+    //     $request->validate([
+    //         'studenti_ids' => 'required|array',
+    //         'studenti_ids.*' => 'required|integer|exists:users,id',
+    //     ]);
+
+    //     $studentIds = $request->studenti_ids;
+
+    //     // Rimuovi gli studenti selezionati dall'array studenti_id
+    //     $studenti = $alias->studenti_id ?? [];
+    //     foreach ($studentIds as $studentId) {
+    //         if (($key = array_search($studentId, $studenti)) !== false) {
+    //             unset($studenti[$key]);
+    //         }
+    //     }
+    //     $alias->studenti_id = array_values($studenti); // Reindex the array
+    //     $alias->save();
+    //     // Rimuovi la relazione N-N
+    //     $alias->users()->sync($alias->studenti_id);
+
+    //     return redirect()->back()->with('success', 'Assenze segnate con successo.');
+    // }
     public function studentAbsence(Request $request, Alias $alias)
-    {
+{
+    // Validazione della richiesta
+    $request->validate([
+        'studenti_ids' => 'nullable|array',
+        'studenti_ids.*' => 'integer|exists:users,id',
+    ]);
 
-        $request->validate([
-            'studenti_ids' => 'required|array',
-            'studenti_ids.*' => 'required|integer|exists:users,id',
-        ]);
+    // Ottieni l'array degli ID degli studenti selezionati (ovvero gli studenti assenti)
+    $studentIds = $request->studenti_ids ?? [];
 
-        $studentIds = $request->studenti_ids;
+    // Recupera l'array degli ID degli studenti attualmente associati all'alias (presenti)
+    $allStudents = $alias->group->users->pluck('id')->toArray();
 
-        // Rimuovi gli studenti selezionati dall'array studenti_id
-        $studenti = $alias->studenti_id ?? [];
-        foreach ($studentIds as $studentId) {
-            if (($key = array_search($studentId, $studenti)) !== false) {
-                unset($studenti[$key]);
-            }
-        }
-        $alias->studenti_id = array_values($studenti); // Reindex the array
-        $alias->save();
-        // Rimuovi la relazione N-N
-        $alias->users()->sync($alias->studenti_id);
+    // Gli studenti non selezionati nel form sono considerati presenti
+    $presentStudents = array_diff($allStudents, $studentIds);
 
-        return redirect()->back()->with('success', 'Assenze segnate con successo.');
-    }
+    // Aggiorna l'alias con gli studenti presenti
+    $alias->studenti_id = array_values($presentStudents); 
+    $alias->save();
+
+    // Sincronizza la relazione N-N tra alias e utenti
+    $alias->users()->sync($alias->studenti_id);
+
+    return redirect()->back()->with('success', 'Assenze segnate con successo.');
+}
+
     //!Funzione per segnare i recuperi
     public function recoveriesStudent(Request $request, Alias $alias)
     {

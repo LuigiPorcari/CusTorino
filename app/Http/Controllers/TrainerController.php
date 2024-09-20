@@ -14,6 +14,26 @@ class TrainerController extends Controller
 {
     public function dashboard(Request $request)
     {
+        // Ottieni l'ID dell'allenatore attualmente autenticato
+        $allenatore_id = Auth::user()->id;
+
+        // Ottieni la data odierna
+        $today = Carbon::today()->toDateString();
+
+        // Filtra gli alias per primo o secondo allenatore e solo per la data odierna
+        $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
+            $query->where('primo_allenatore_id', $allenatore_id)
+                ->orWhere('secondo_allenatore_id', $allenatore_id);
+        })
+            ->whereDate('data_allenamento', $today) // Filtra solo gli alias con data odierna
+            ->orderBy('orario', 'asc') // Ordina per orario crescente
+            ->paginate(10); // Pagina con 10 risultati per pagina
+
+        return view('dashboard.trainer', compact('aliasesTrainer'));
+    }
+
+    public function dashboardGroup(Request $request)
+    {
         $allenatore_id = Auth::user()->id;
         // Calcola la data odierna meno 15 giorni
         $dateThreshold = Carbon::now()->subDays(15)->toDateString();
@@ -58,12 +78,23 @@ class TrainerController extends Controller
 
         $aliasesTrainer = $query->orderBy('data_allenamento', 'asc')->paginate(9);
 
-        return view('dashboard.trainer', compact('aliasesTrainer', 'availableDates'));
+        return view('dashboard.trainerGroup', compact('aliasesTrainer', 'availableDates'));
     }
 
     public function salary()
     {
-        return view('dashboard.trainerSalary');
+        $allenatore_id = Auth::user()->id;
+
+        // Recupera tutti gli alias dove l'utente è il primo o secondo allenatore, ordinati per data_allenamento
+        $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
+            $query->where('primo_allenatore_id', $allenatore_id)
+                ->orWhere('secondo_allenatore_id', $allenatore_id);
+        })
+            ->orderBy('data_allenamento', 'asc') // Ordina per data_allenamento in ordine crescente
+            ->get();
+
+        return view('dashboard.trainerSalary', compact('aliasesTrainer'));
     }
+
 
 }

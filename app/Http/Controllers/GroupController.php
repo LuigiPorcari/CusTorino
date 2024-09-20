@@ -13,15 +13,15 @@ class GroupController extends Controller
 {
     public function create()
     {
-        $trainers = User::where('is_trainer' , 1)->get();
-        $students = User::where('is_corsista' , 1)->get();
+        $trainers = User::where('is_trainer', 1)->get();
+        $students = User::where('is_corsista', 1)->get();
         return view('groups.create', compact('trainers', 'students'));
     }
 
     public function editStudent(Group $group)
     {
         // FILTRO STUDENTI IMPLEMENTABILE
-        $students = User::where('is_corsista' , 1)->get();
+        $students = User::where('is_corsista', 1)->get();
         $studentsAvaiable = [];
         foreach ($students as $student) {
             if ($student->genere == $group->tipo) {
@@ -46,6 +46,7 @@ class GroupController extends Controller
             'livello' => 'required|integer|min:1|max:10',
             'data_inizio_corso' => 'required|date',
             'data_fine_corso' => 'required|date|after_or_equal:data_inizio_corso',
+            'location' => 'required|string',
         ]);
 
         $group = Group::create([
@@ -61,6 +62,7 @@ class GroupController extends Controller
             'livello' => $request->livello,
             'data_inizio_corso' => $request->data_inizio_corso,
             'data_fine_corso' => $request->data_fine_corso,
+            'location' => $request->location,
         ]);
 
         $group->studenti_id = []; // Imposta l'array vuoto se necessario
@@ -84,6 +86,7 @@ class GroupController extends Controller
                 'condiviso' => $request->condiviso,
                 'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
                 'livello' => $request->livello,
+                'location' => $request->location,
             ]);
             $dataInizio->addWeek();
             $alias->studenti_id = []; // Imposta l'array vuoto se necessario
@@ -94,8 +97,8 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        $trainers = User::where('is_trainer' , 1)->get();
-        $students = User::where('is_corsista' , 1)->get();
+        $trainers = User::where('is_trainer', 1)->get();
+        $students = User::where('is_corsista', 1)->get();
         return view('groups.edit', compact('group', 'trainers', 'students'));
     }
 
@@ -112,6 +115,7 @@ class GroupController extends Controller
             'condiviso' => $request->condiviso,
             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
             'livello' => $request->livello,
+            'location' => $request->location,
         ]);
 
         // Modifica dei gruppi alias
@@ -127,6 +131,7 @@ class GroupController extends Controller
                 'condiviso' => $request->condiviso,
                 'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
                 'livello' => $request->livello,
+                'location' => $request->location,
             ]);
         }
         return redirect(route('admin.group.details', compact('group')))->with('success', 'Gruppo modificato con successo');
@@ -134,6 +139,18 @@ class GroupController extends Controller
 
     public function createStudent(Request $request, Group $group)
     {
+        // Inizializza gli studenti precedenti come array vuoto se non esistono
+        $studentOld = $group->studenti_id ?? [];
+
+        // Verifica che $request->studenti_id sia un array valido
+        $studentiNuovi = $request->studenti_id ?? [];
+
+        // Trova gli studenti rimossi (presenti prima, ma non più selezionati nel form)
+        $studentiRimossi = array_diff($studentOld, $studentiNuovi);
+
+        // Trova gli studenti aggiunti (nuovi nel gruppo)
+        $studentAggiunti = array_diff($studentiNuovi, $studentOld);
+
         // Definire le regole di base
         $validator = Validator::make($request->all(), [
             'studenti_id' => 'nullable|array',
@@ -153,22 +170,50 @@ class GroupController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-
+        // Aggiorna il gruppo con i nuovi studenti
         $group->update([
-            'studenti_id' => $request->studenti_id,
+            'studenti_id' => $studentiNuovi,
         ]);
 
-        $group->users()->sync($request->input('studenti_id'));
+        // Sincronizza i nuovi studenti con il gruppo
+        $group->users()->sync($studentiNuovi);
 
-        // Modifica dei gruppi alias
+        // Modifica degli alias
         foreach ($group->aliases as $alias) {
+            // Inizializza gli studenti dell'alias come array vuoto se null
+            $studentiAlias = $alias->studenti_id ?? [];
+
+            // Trova gli studenti presenti sia nel vecchio array che nell'alias
+            $studentPresenti = array_intersect($studentOld, $studentiAlias);
+
+            // Trova gli studenti extra che sono solo nell'alias e non nel gruppo
+            $studentiExtraAlias = array_diff($studentiAlias, $studentOld);
+
+            // Unisci gli studenti presenti con quelli aggiunti e mantieni gli studenti extra
+            $corsisti = array_merge($studentPresenti, $studentAggiunti, $studentiExtraAlias);
+
+            // Rimuovi gli studenti deselezionati dal gruppo, ma non gli studenti extra dell'alias
+            $corsisti = array_diff($corsisti, $studentiRimossi);
+
+            // Elimina eventuali duplicati e reindicizza l'array
+            $corsisti = array_unique($corsisti);
+            $corsisti = array_values($corsisti);
+
+            // Aggiorna l'alias con i nuovi studenti
             $alias->update([
-                'studenti_id' => $request->studenti_id,
+                'studenti_id' => $corsisti,
             ]);
-            $alias->users()->sync($request->input('studenti_id'));
+
+            // Sincronizza l'alias con i nuovi studenti
+            $alias->users()->sync($corsisti);
         }
-        return redirect(route('admin.group.details', compact('group')))->with('success', 'Operazione avvenuta con successo');
+
+        return redirect(route('admin.group.details', ['group' => $group->id]))
+            ->with('success', 'Operazione avvenuta con successo');
     }
+
+
+
 
     public function delete(Group $group)
     {
@@ -181,4 +226,20 @@ class GroupController extends Controller
         $group->delete();
         return redirect(route('admin.dashboard'))->with('success', 'Gruppo cancellato');
     }
+
+    public function deleteAlias(Alias $alias)
+    {
+        $group = $alias->group;  // Recupera il gruppo a cui appartiene l'alias
+
+        // Rimuovi tutti gli utenti associati all'alias
+        $alias->users()->sync([]);
+
+        // Elimina l'alias
+        $alias->delete();
+
+        // Reindirizza alla pagina dei dettagli del gruppo con il messaggio di successo
+        return redirect()->route('admin.group.details', ['group' => $group->id])
+            ->with('success', 'Gruppo Alias cancellato');
+    }
+
 }

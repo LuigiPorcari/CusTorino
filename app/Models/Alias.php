@@ -24,6 +24,7 @@ class Alias extends Model
         'numero_massimo_partecipanti',
         'livello',
         'studenti_id',
+        'location',
     ];
 
     protected $casts = [

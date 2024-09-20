@@ -38,14 +38,14 @@
                                     <button type="submit" class="btn custom-btn-warning-nav mb-2">Logout</button>
                                 </form>
                             </li>
-                            @if (Auth::user()->is_admin)
+                            {{-- @if (Auth::user()->is_admin)
                                 <li class="d-flex justify-content-center">
                                     <button type="button" class="btn custom-btn-danger-nav" data-bs-toggle="modal"
                                         data-bs-target="#deleteModalAdmin">
                                         Elimina utente
                                     </button>
                                 </li>
-                            @endif
+                            @endif --}}
                         </ul>
                     @endif
                 </li>

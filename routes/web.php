@@ -71,6 +71,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/groups/edit/{group}', [GroupController::class, 'edit'])->name('groups.edit');
     Route::post('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
     Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
+    Route::delete('/alias/delete/{alias}', [GroupController::class, 'deleteAlias'])->name('alias.delete');
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
     //!ROTTE ADMIN DASHBOARD
@@ -85,6 +86,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
 Route::middleware(CheckTrainer::class)->group(function () {
     //!ROTTE DASHBOARD TRAINER
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
+    Route::get('/trainer/dashboard/group', [TrainerController::class, 'dashboardGroup'])->name('trainer.group');
     Route::get('/trainer/dashboard/salary', [TrainerController::class, 'salary'])->name('trainer.salary');
 });
 //!MIDDLEWERE CORSISTA
@@ -93,4 +95,6 @@ Route::middleware(CheckStudent::class)->group(function () {
     Route::get('/corsista/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
     Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');
+    //!ROTTA ANNULLA OPERAZIONE
+    Route::post('/student/undo-last-action', [StudentController::class, 'undoLastAction'])->name('student.undoLastAction');
 });

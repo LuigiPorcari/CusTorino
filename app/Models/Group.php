@@ -25,6 +25,7 @@ class Group extends Model
         'studenti_id',
         'data_inizio_corso',
         'data_fine_corso',
+        'location',
     ];
 
     protected $casts = [

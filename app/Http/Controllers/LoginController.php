@@ -37,14 +37,14 @@ class LoginController extends Controller
         if (Auth::attempt($this->credentials($request), $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            if (Auth::user()->is_corsista) {
-                return redirect()->route('student.dashboard');
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.dashboard');
             }
             if (Auth::user()->is_trainer) {
                 return redirect()->route('trainer.dashboard');
             }
-            if (Auth::user()->is_admin) {
-                return redirect()->route('admin.dashboard');
+            if (Auth::user()->is_corsista) {
+                return redirect()->route('student.dashboard');
             }
         }
 

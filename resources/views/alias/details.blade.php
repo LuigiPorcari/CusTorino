@@ -14,8 +14,11 @@
                 <div class="custom-card equal-height-card mx-1 my-2">
                     <div class="custom-card-body">
                         <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <h6 class="custom-date card-subtitle mb-2">{{ $alias->formatData($alias->data_allenamento) }}</h6>
-                        <p class="custom-paragraph"><span class="fw-bold">Orario:</span> {{ $alias->formatHours($alias->orario) }}</p>
+                        <p class="card-text">Luogo: <span class="text-uppercase">{{ $alias->location }}</span></p>
+                        <h6 class="custom-date card-subtitle mb-2">{{ $alias->formatData($alias->data_allenamento) }}
+                        </h6>
+                        <p class="custom-paragraph"><span class="fw-bold">Orario:</span>
+                            {{ $alias->formatHours($alias->orario) }}</p>
                         @if ($alias->condiviso == 'false')
                             @if ($alias->primo_allenatore_id != null)
                                 <p class="custom-paragraph"><span class="fw-bold">Primo allenatore:</span> <br>
@@ -39,9 +42,11 @@
                         @endif
                         <div class="row border rounded-3">
                             <div class="col-6 p-0 border-end">
-                                <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Studenti originali:</span></p>
+                                <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Studenti
+                                        originali:</span></p>
                                 @foreach ($alias->group->users as $student)
-                                    <p class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                    <p
+                                        class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
                                         {{ $student->name }} {{ $student->cognome }}
                                     </p>
                                 @endforeach
@@ -50,7 +55,8 @@
                                 <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Recuperi:</span></p>
                                 @foreach ($alias->compareStudents($alias->group->id, $alias->id) as $recupero)
                                     @if (!in_array($recupero->id, $alias->group->studenti_id))
-                                        <p class="my-0 py-1 card-text border-bottom">{{ $recupero->name }} {{ $recupero->cognome }}</p>
+                                        <p class="my-0 py-1 card-text border-bottom">{{ $recupero->name }}
+                                            {{ $recupero->cognome }}</p>
                                     @endif
                                 @endforeach
                             </div>
@@ -68,17 +74,26 @@
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
                                         @csrf
-                                        @forelse ($alias->users as $student)
-                                            <div class="col-12">
+                                        <div class="col-12">
+                                            @foreach ($alias->group->users as $student)
                                                 <label class="checkbox">
                                                     <input class="form-check-input me-1 ms-4" type="checkbox"
-                                                        value="{{ $student->id }}" name="studenti_ids[]">
+                                                        value="{{ $student->id }}" name="studenti_ids[]"
+                                                        @if (!in_array($student->id, $alias->studenti_id)) checked @endif>
                                                     {{ $student->name }} {{ $student->cognome }}
                                                 </label>
-                                            </div>
-                                        @empty
-                                            <p class="text-center fs-3">Sono tutti assenti</p>
-                                        @endforelse
+                                            @endforeach
+                                            @foreach ($alias->users as $student)
+                                                @if (!in_array($student->id, $alias->group->studenti_id))
+                                                    <label class="checkbox">
+                                                        <input class="form-check-input me-1 ms-4" type="checkbox"
+                                                            value="{{ $student->id }}" name="studenti_ids[]"
+                                                            @if (!in_array($student->id, $alias->studenti_id)) checked @endif>
+                                                        {{ $student->name }} {{ $student->cognome }}
+                                                    </label>
+                                                @endif
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column align-items-center">
@@ -99,9 +114,11 @@
                         @if ($threeDaysCheck || Auth::user()->is_admin)
                             @if ($alias->studenti_id == null || $alias->numero_massimo_partecipanti > count($alias->studenti_id))
                                 @if (empty(Auth::user()->getRecoverableStudent($alias)))
-                                    <p class="text-center">Non ci sono Studenti che possono recuperare in questa data</p>
+                                    <p class="text-center">Non ci sono Studenti che possono recuperare in questa data
+                                    </p>
                                 @else
-                                    <a class="custom-btn-submit text-center text-decoration-none" href="{{ route('student.edit', $alias) }}">Segna recuperi</a>
+                                    <a class="custom-btn-submit text-center text-decoration-none"
+                                        href="{{ route('student.edit', $alias) }}">Segna recuperi</a>
                                 @endif
                             @else
                                 <p class="text-center">Questo gruppo è già al completo</p>
@@ -123,26 +140,32 @@
                                 {{-- PRIMO ALLENATORE --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="primo_allenatore_id">Primo Allenatore</label>
-                                    <select class="custom-form-input" id="primo_allenatore_id" name="primo_allenatore_id" required>
+                                    <select class="custom-form-input" id="primo_allenatore_id"
+                                        name="primo_allenatore_id" required>
                                         @foreach ($trainers as $trainer)
                                             <option {{ $alias->primo_allenatore_id == $trainer->id ? 'selected' : '' }}
-                                                value="{{ $trainer->id }}">{{ $trainer->name }} {{ $trainer->cognome }}
+                                                value="{{ $trainer->id }}">{{ $trainer->name }}
+                                                {{ $trainer->cognome }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 {{-- SECONDO ALLENATORE --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="secondo_allenatore_id">Secondo Allenatore</label>
-                                    <select class="custom-form-input" id="secondo_allenatore_id" name="secondo_allenatore_id">
+                                    <label class="custom-form-label" for="secondo_allenatore_id">Secondo
+                                        Allenatore</label>
+                                    <select class="custom-form-input" id="secondo_allenatore_id"
+                                        name="secondo_allenatore_id">
                                         @if ($alias->secondo_allenatore_id == null)
                                             <option value="" selected>Nessuno</option>
                                         @else
                                             <option value="">Nessuno</option>
                                         @endif
                                         @foreach ($trainers as $trainer)
-                                            <option {{ $alias->secondo_allenatore_id == $trainer->id ? 'selected' : '' }}
-                                                value="{{ $trainer->id }}">{{ $trainer->name }} {{ $trainer->cognome }}
+                                            <option
+                                                {{ $alias->secondo_allenatore_id == $trainer->id ? 'selected' : '' }}
+                                                value="{{ $trainer->id }}">{{ $trainer->name }}
+                                                {{ $trainer->cognome }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -175,7 +198,7 @@
                 </div>
             @else
                 <div class="text-center">
-                    <a class="custom-link-btn" href="{{ route('trainer.dashboard') }}">Indietro</a>
+                    <a class="custom-link-btn" href="{{ route('trainer.group') }}">Indietro</a>
                 </div>
             @endif
         </div>

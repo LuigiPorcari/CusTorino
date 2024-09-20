@@ -1,13 +1,15 @@
 <x-layout documentTitle="Admin Trainer Details">
     <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Gruppi</a>
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Oggi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link active" href="{{ route('trainer.salary') }}">Compensi</a>
         </li>
     </ul>
-
     <div class="container mt-5">
         <div class="row">
             <h1 class="custom-title mt-1 mb-5">Dettagli pagamenti</h1>
@@ -26,7 +28,6 @@
                         </tr>
                     </tbody>
                 </table>
-
                 <table class="table table-bordered admin-trainer-table">
                     <thead class="custom-table-header">
                         <tr>
@@ -37,29 +38,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (Auth::user()->primoAllenatoreAliases as $alias)
+                        @foreach ($aliasesTrainer as $alias)
                             <tr>
                                 <td>{{ $alias->nome }}</td>
                                 <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>Primo Allenatore / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
-                                <td>{{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}</td>
-                            </tr>
-                        @endforeach
-
-                        @foreach (Auth::user()->secondoAllenatoreAliases as $alias)
-                            <tr>
-                                <td>{{ $alias->nome }}</td>
-                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>Secondo Allenatore / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
-                                <td>{{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}</td>
+                                <td>{{ $alias->primo_allenatore_id == Auth::user()->id ? 'Primo Allenatore' : 'Secondo Allenatore' }}
+                                    / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
+                                <td>
+                                    @if ($alias->primo_allenatore_id == Auth::user()->id)
+                                        {{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}
+                                    @else
+                                        {{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="3" class="text-right" style="background-color: white;"><strong>Stipendio Totale:</strong></td>
-                            <td style="background-color: white;"><strong>{{ Auth::user()->calcolaStipendioAllenatore(Auth::user()->id) }} €</strong></td>
+                            <td colspan="3" class="text-right" style="background-color: white;"><strong>Stipendio
+                                    Totale:</strong></td>
+                            <td style="background-color: white;">
+                                <strong>{{ Auth::user()->calcolaStipendioAllenatore(Auth::user()->id) }} €</strong>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

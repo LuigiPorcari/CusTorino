@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Alias;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
@@ -82,8 +83,17 @@ class AdminController extends Controller
 
     public function trainerDetails(User $trainer)
     {
-        return view('dashboard.adminTrainerDetails', compact('trainer'));
+        // Recupera gli alias dove il trainer è il primo o secondo allenatore, ordinati per data_allenamento
+        $aliasesTrainer = Alias::where(function ($query) use ($trainer) {
+            $query->where('primo_allenatore_id', $trainer->id)
+                ->orWhere('secondo_allenatore_id', $trainer->id);
+        })
+            ->orderBy('data_allenamento', 'asc') // Ordina per data_allenamento in ordine crescente
+            ->get();
+
+        return view('dashboard.adminTrainerDetails', compact('trainer', 'aliasesTrainer'));
     }
+
 
     public function updateStudent(Request $request, User $student)
     {

@@ -24,7 +24,7 @@
                                 <label class="form-label"><strong>Livello:</strong></label>
                                 <input placeholder="@if ($student->livello == null) N.C. @endif"
                                     value="{{ $student->livello }}" type="number" class="form-control" name="level"
-                                    min="1" max="10">
+                                    min="1" max="12">
                             </div>
                             <!-- Campo per Genere -->
                             <div class="mb-3">

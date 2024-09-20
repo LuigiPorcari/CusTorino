@@ -13,6 +13,7 @@
                 </div>
             </div>
         </div>
+        <a class="btn custom-btn-primary-nav" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
     @endif
     <!-- Carosello-->
     <div class="container mt-4">

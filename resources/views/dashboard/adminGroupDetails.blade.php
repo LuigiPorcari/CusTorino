@@ -11,6 +11,7 @@
                 <div class="card admin-card">
                     <div class="admin-card-body">
                         <h5 class="card-title">Dettagli del {{ $group->nome }}</h5>
+                        <p class="card-text">Luogo: <span class="text-uppercase">{{ $group->location }}</span></p>
                         <p class="card-text">Giorno: {{ $group->giorno_settimana }}</p>
                         <p class="card-text">Orario: {{ $group->formatHours($group->orario) }}</p>
                         <p class="card-text">Tipologia: {{ $group->tipo }}</p>
@@ -79,7 +80,8 @@
                             <button type="button" class="btn admin-btn-danger mb-2" data-bs-toggle="modal"
                                 data-bs-target="#deleteModalGroup">Elimina</button>
                             <div class="text-center w-100">
-                                <a href="{{ route('admin.dashboard') }}" class="btn admin-btn-info w-100 fs-6 ">Torna alla
+                                <a href="{{ route('admin.dashboard') }}" class="btn admin-btn-info w-100 fs-6 ">Torna
+                                    alla
                                     lista
                                     Gruppi</a>
                             </div>
@@ -156,7 +158,14 @@
                                         </td>
                                     </div>
                                     <td><a href="{{ route('alias.details', $alias) }}"
-                                            class="btn admin-btn-info fs-md-6">Visualizza Dettagli</a></td>
+                                            class="btn admin-btn-info fs-md-6 w-50 mb-2">Dettagli</a>
+                                        <button type="button"
+                                            class="btn custom-btn-danger-nav text-uppercase text-white fw-bolder fs-6 w-50"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModalAlias{{ $alias->id }}">
+                                            Elimina
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -185,9 +194,41 @@
                     <button type="button" class="btn admin-modal-btn-secondary" data-bs-dismiss="modal">No</button>
                 </div>
                 <div class="modal-footer admin-modal-footer">
-                    <button type="button" class="btn admin-modal-btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn admin-modal-btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
+    @foreach ($aliases as $alias)
+        <!-- Modal per eliminare l'alias -->
+        <div class="modal fade" id="deleteModalAlias{{ $alias->id }}" tabindex="-1"
+            aria-labelledby="deleteModalAliasLabel{{ $alias->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header admin-modal-header">
+                        <h1 class="modal-title fs-5" id="deleteModalAliasLabel{{ $alias->id }}">Sicuro di voler
+                            eliminare il gruppo Alias in data {{ $alias->formatData($alias->data_allenamento) }}?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center admin-modal-body">
+                        <form action="{{ route('alias.delete', $alias->id, $availableDates, $group) }}"
+                            method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn admin-btn-danger mx-2">Si</button>
+                        </form>
+                        <button type="button" class="btn admin-modal-btn-secondary"
+                            data-bs-dismiss="modal">No</button>
+                    </div>
+                    <div class="modal-footer admin-modal-footer">
+                        <button type="button" class="btn admin-modal-btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </x-layout>

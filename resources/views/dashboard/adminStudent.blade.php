@@ -40,6 +40,11 @@
                     <tr>
                         <th>Nome</th>
                         <th>Cognome</th>
+                        <th class="d-none d-md-table-cell">CUS Card</th>
+                        <th class="d-none d-md-table-cell">Visita Medica</th>
+                        <th class="d-none d-md-table-cell">Pagamento</th>
+                        <th class="d-none d-md-table-cell">Universitario</th>
+                        <th class="d-none d-md-table-cell">Nrecuperi</th>
                         <th>Dettagli</th>
                     </tr>
                 </thead>
@@ -48,12 +53,17 @@
                         <tr>
                             <td>{{ $student->name }}</td>
                             <td>{{ $student->cognome }}</td>
-                            <td><a class="btn admin-btn-info" href="{{ route('admin.student.details', $student) }}">Visualizza
-                                    dettagli</a></td>
+                            <td class="d-none d-md-table-cell">{{ $student->cus_card ? 'OK' : 'NonOK' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $student->visita_medica ? 'OK' : 'NonOK' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $student->pagamento ? 'OK' : 'NonOK' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $student->universitario ? 'Sì' : 'No' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $student->Nrecuperi }}</td>
+                            <td><a class="btn admin-btn-info"
+                                    href="{{ route('admin.student.details', $student) }}">Visualizza dettagli</a></td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">Non ci sono studenti disponibili</td>
+                            <td colspan="8" class="text-center">Non ci sono studenti disponibili</td>
                         </tr>
                     @endforelse
                 </tbody>
