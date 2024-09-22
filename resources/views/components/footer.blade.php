@@ -38,7 +38,7 @@
         </section>
     </div>
     <div class="mb-3">
-        <a href="https://www.iubenda.com/privacy-policy/42749205"
+        <a href="https://www.iubenda.com/privacy-policy/11435994"
             class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy
             Policy</a>
         <script type="text/javascript">
@@ -58,7 +58,7 @@
                 }
             })(window, document);
         </script>
-        <a href="https://www.iubenda.com/privacy-policy/42749205/cookie-policy"
+        <a href="https://www.iubenda.com/privacy-policy/11435994/cookie-policy"
             class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Cookie Policy ">Cookie
             Policy</a>
         <script type="text/javascript">
