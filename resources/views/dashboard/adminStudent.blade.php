@@ -19,7 +19,7 @@
     @endif
 
     <div class="container mt-md-5 admin-student-dashboard">
-        <h2 class="mt-md-5 mb-4 custom-title">Elenco Studenti</h2>
+        <h2 class="mt-md-5 mb-4 custom-title">Elenco Corsisti</h2>
         <div class="mb-4 admin-student-filter">
             <form method="GET" action="{{ route('admin.dashboard.student') }}">
                 <div class="row">
@@ -63,7 +63,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center">Non ci sono studenti disponibili</td>
+                            <td colspan="8" class="text-center">Non ci sono corsisti disponibili</td>
                         </tr>
                     @endforelse
                 </tbody>

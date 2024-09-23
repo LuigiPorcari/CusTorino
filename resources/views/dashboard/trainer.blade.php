@@ -49,8 +49,7 @@
                             @endif
                             <div class="row border rounded-3">
                                 <div class="col-6 p-0 border-end">
-                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Studenti
-                                            originali:</span></p>
+                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Corsisti:</span></p>
                                     @foreach ($alias->group->users as $student)
                                         <p
                                             class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">

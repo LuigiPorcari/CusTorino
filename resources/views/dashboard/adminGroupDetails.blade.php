@@ -28,7 +28,7 @@
                         @endif
                         <p class="card-text">Numero massimo: {{ $group->numero_massimo_partecipanti }}</p>
                         <p class="card-text">Livello: {{ $group->livello }}</p>
-                        <p class="card-text mb-0">Studenti:</p>
+                        <p class="card-text mb-0">Corsisti:</p>
                         @foreach ($group->users as $student)
                             <div class="d-flex">
                                 <p class="mt-3 fw-bold">{{ $student->name }} {{ $student->cognome }} - </p>
@@ -112,7 +112,7 @@
                         <thead>
                             <tr>
                                 <th>Alias</th>
-                                <th>Studenti</th>
+                                <th>Corsisti</th>
                                 <th>Recuperi</th>
                                 <th class="d-none d-md-table-cell">Allenatori</th>
                                 <th>Azioni</th>

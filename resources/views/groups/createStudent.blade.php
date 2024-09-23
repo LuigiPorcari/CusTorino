@@ -1,6 +1,6 @@
 <x-layout documentTitle="Create groups Student">
     <div class="container mt-5 pt-5">
-        <h1 class="custom-title mb-4 mt-5 pt-4 text-center">Lista Studenti</h1>
+        <h1 class="custom-title mb-4 mt-5 pt-4 text-center">Lista Corsisti</h1>
         @if ($errors->any())
             <div class="alert alert-dismissible custom-alert-success">
                 @foreach ($errors->all() as $error)
@@ -11,7 +11,7 @@
         @endif
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 custom-card p-3">
-                <input type="text" id="searchInput" class="custom-form-input mb-3" placeholder="Cerca studenti...">
+                <input type="text" id="searchInput" class="custom-form-input mb-3" placeholder="Cerca corsisti...">
                 <form method="POST" action="{{ route('create.student', $group) }}">
                     @csrf
                     <div id="studentsList" class="list-group">
