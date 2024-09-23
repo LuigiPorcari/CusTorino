@@ -38,7 +38,49 @@
         </section>
     </div>
     <div class="mb-3">
-        <a href="https://www.iubenda.com/privacy-policy/11435994"
+        {{-- ! IUBENDA SERVER PERSONALE --}}
+        {{-- <a href="https://www.iubenda.com/privacy-policy/11435994"
+            class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy
+            Policy</a>
+        <script type="text/javascript">
+            (function(w, d) {
+                var loader = function() {
+                    var s = d.createElement("script"),
+                        tag = d.getElementsByTagName("script")[0];
+                    s.src = "https://cdn.iubenda.com/iubenda.js";
+                    tag.parentNode.insertBefore(s, tag);
+                };
+                if (w.addEventListener) {
+                    w.addEventListener("load", loader, false);
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", loader);
+                } else {
+                    w.onload = loader;
+                }
+            })(window, document);
+        </script> --}}
+        {{-- <a href="https://www.iubenda.com/privacy-policy/11435994/cookie-policy"
+            class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Cookie Policy ">Cookie
+            Policy</a>
+        <script type="text/javascript">
+            (function(w, d) {
+                var loader = function() {
+                    var s = d.createElement("script"),
+                        tag = d.getElementsByTagName("script")[0];
+                    s.src = "https://cdn.iubenda.com/iubenda.js";
+                    tag.parentNode.insertBefore(s, tag);
+                };
+                if (w.addEventListener) {
+                    w.addEventListener("load", loader, false);
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", loader);
+                } else {
+                    w.onload = loader;
+                }
+            })(window, document);
+        </script> --}}
+        {{-- ! IUBENDA SERVER CUSTORINO --}}
+        <a href="https://www.iubenda.com/privacy-policy/42749205"
             class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy
             Policy</a>
         <script type="text/javascript">
@@ -58,7 +100,7 @@
                 }
             })(window, document);
         </script>
-        <a href="https://www.iubenda.com/privacy-policy/11435994/cookie-policy"
+        <a href="https://www.iubenda.com/privacy-policy/42749205/cookie-policy"
             class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Cookie Policy ">Cookie
             Policy</a>
         <script type="text/javascript">
