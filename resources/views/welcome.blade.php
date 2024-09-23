@@ -13,10 +13,12 @@
                 </div>
             </div>
         </div>
+        <a class="btn custom-btn-primary-nav" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
     @endif
     <!-- Carosello-->
     <div class="container mt-4">
-        <div id="homepageCarousel" class="carousel slide custom-carousel shadow rounded-4" data-bs-ride="carousel" data-bs-interval="2500">
+        <div id="homepageCarousel" class="carousel slide custom-carousel shadow rounded-4" data-bs-ride="carousel"
+            data-bs-interval="2500">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src="{{ asset('img/gruppo.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 1">
@@ -28,7 +30,8 @@
                     <img src="{{ asset('img/rete.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 3">
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ asset('img/simbolo.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 4">
+                    <img src="{{ asset('img/simbolo.jpg') }}" class="d-block w-100 custom-carousel-img"
+                        alt="Immagine 4">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#homepageCarousel"
