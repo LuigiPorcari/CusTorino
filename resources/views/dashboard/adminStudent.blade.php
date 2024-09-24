@@ -45,6 +45,7 @@
                         <th class="d-none d-md-table-cell">Pagamento</th>
                         <th class="d-none d-md-table-cell">Universitario</th>
                         <th class="d-none d-md-table-cell">Nrecuperi</th>
+                        <th class="d-none d-md-table-cell">Gruppi</th>
                         <th>Dettagli</th>
                     </tr>
                 </thead>
@@ -58,6 +59,13 @@
                             <td class="d-none d-md-table-cell">{{ $student->pagamento ? 'OK' : 'NonOK' }}</td>
                             <td class="d-none d-md-table-cell">{{ $student->universitario ? 'Sì' : 'No' }}</td>
                             <td class="d-none d-md-table-cell">{{ $student->Nrecuperi }}</td>
+                            <td class="d-none d-md-table-cell">
+                                @forelse ($student->groups as $group)
+                                    <p class="m-1">{{ $group->nome }}</p>
+                                @empty
+                                    <p>Non è iscritto a nessun gruppo</p>
+                                @endforelse
+                            </td>
                             <td><a class="btn admin-btn-info"
                                     href="{{ route('admin.student.details', $student) }}">Visualizza dettagli</a></td>
                         </tr>
