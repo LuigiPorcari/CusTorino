@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Alias;
 use App\Models\Group;
@@ -16,7 +17,7 @@ class AdminController extends Controller
         if ($request->filled('group_name')) {
             $groupQuery->where('nome', 'like', '%' . $request->group_name . '%');
         }
-        $groups = $groupQuery->paginate(10);
+        $groups = $groupQuery->paginate(50);
         return view('dashboard.admin', compact('groups'));
     }
 
@@ -38,7 +39,10 @@ class AdminController extends Controller
             ->distinct()
             ->get();
 
-        return view('dashboard.adminGroupDetails', compact('group', 'aliases', 'availableDates'));
+
+        $dateMancanti = $this->getMissingAliasDates($group);
+
+        return view('dashboard.adminGroupDetails', compact('group', 'aliases', 'availableDates', 'dateMancanti'));
     }
 
     public function dashboardTrainer(Request $request)
@@ -127,4 +131,70 @@ class AdminController extends Controller
     {
         return view('dashboard.adminStudentDetails', compact('student'));
     }
+
+    public function getMissingAliasDates(Group $group)
+    {
+        // Ottieni le date di inizio e fine del corso
+        $dataInizio = Carbon::parse($group->data_inizio_corso);
+        $dataFine = Carbon::parse($group->data_fine_corso);
+
+        // Ottieni tutte le date già esistenti per questo gruppo alias
+        $dateEsistenti = $group->aliases()->pluck('data_allenamento')->map(function ($date) {
+            return Carbon::parse($date)->format('Y-m-d'); // Formatta le date esistenti come stringhe
+        })->toArray();
+
+        // Genera tutte le date tra data_inizio_corso e data_fine_corso
+        $possibiliDate = [];
+        $currentDate = $dataInizio->copy();
+
+        // Aggiungi tutte le date settimanali a partire dalla data di inizio fino alla data di fine
+        while ($currentDate->lte($dataFine)) {
+            $possibiliDate[] = $currentDate->copy()->format('Y-m-d'); // Salva ogni data in formato stringa
+            $currentDate->addWeek(); // Aggiungi una settimana
+        }
+
+        // Filtra le date mancanti: prendi le date possibili che non sono presenti tra quelle esistenti
+        $dateMancanti = array_diff($possibiliDate, $dateEsistenti);
+
+        return array_values($dateMancanti); // Restituisci l'array delle date mancanti
+    }
+
+    public function storeAlias(Request $request, Group $group)
+    {
+        // Validazione della data di allenamento
+        $request->validate([
+            'data_allenamento' => 'required|date',
+        ]);
+
+        // Controlla se la data è già presente per evitare duplicati
+        $existingAlias = $group->aliases()->where('data_allenamento', $request->data_allenamento)->first();
+
+        if ($existingAlias) {
+            return redirect()->back()->with('error', 'Il gruppo alias esiste già per questa data.');
+        }
+
+        // Creazione del nuovo alias basato sulle proprietà del gruppo originale
+        $alias = Alias::create([
+            'nome' => $group->nome,
+            'group_id' => $group->id,
+            'data_allenamento' => $request->data_allenamento,
+            'orario' => $group->orario,
+            'campo' => $group->campo,
+            'tipo' => $group->tipo,
+            'primo_allenatore_id' => $group->primo_allenatore_id,
+            'secondo_allenatore_id' => $group->secondo_allenatore_id,
+            'condiviso' => $group->condiviso,
+            'numero_massimo_partecipanti' => $group->numero_massimo_partecipanti,
+            'livello' => $group->livello,
+            'location' => $group->location,
+            'studenti_id' => $group->studenti_id,
+        ]);
+
+
+        $alias->users()->sync($group->studenti_id);
+        $alias->save();
+
+        return redirect()->route('admin.group.details', $group->id)->with('success', 'Gruppo Alias creato con successo');
+    }
+
 }

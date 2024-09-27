@@ -62,6 +62,8 @@
                         <select class="custom-form-input" id="tipo" name="tipo" required>
                             <option value="M">Maschile</option>
                             <option value="F">Femminile</option>
+                            <option value="misto">Misto</option>
+                            <option value="under">Under</option>
                         </select>
                     </div>
                     {{-- PRIMO ALLENATORE --}}

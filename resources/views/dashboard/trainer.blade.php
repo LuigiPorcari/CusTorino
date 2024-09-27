@@ -22,6 +22,8 @@
                             <h6 class="custom-date card-subtitle mb-2">
                                 {{ $alias->formatData($alias->data_allenamento) }}
                             </h6>
+                            <p class="custom-paragraph"><span class="fw-bold">Tipo:</span>
+                                {{ $alias->tipo }}</p>
                             <p class="custom-paragraph"><span class="fw-bold">Orario:</span>
                                 {{ $alias->formatHours($alias->orario) }}</p>
                             @if ($alias->condiviso == 'false')
@@ -49,7 +51,8 @@
                             @endif
                             <div class="row border rounded-3">
                                 <div class="col-6 p-0 border-end">
-                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Corsisti:</span></p>
+                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Corsisti:</span>
+                                    </p>
                                     @foreach ($alias->group->users as $student)
                                         <p
                                             class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">

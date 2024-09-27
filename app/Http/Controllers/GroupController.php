@@ -24,7 +24,7 @@ class GroupController extends Controller
         $students = User::where('is_corsista', 1)->get();
         $studentsAvaiable = [];
         foreach ($students as $student) {
-            if ($student->genere == $group->tipo) {
+            if ($student->genere == $group->tipo || $group->tipo == 'misto' || $group->tipo == 'under') {
                 $studentsAvaiable[] = $student;
             }
         }
@@ -43,7 +43,7 @@ class GroupController extends Controller
             'secondo_allenatore_id' => 'nullable|integer|exists:users,id',
             'condiviso' => 'required|string',
             'numero_massimo_partecipanti' => 'required|integer',
-            'livello' => 'required|integer|min:1|max:10',
+            'livello' => 'required|integer|min:1|max:12',
             'data_inizio_corso' => 'required|date',
             'data_fine_corso' => 'required|date|after_or_equal:data_inizio_corso',
             'location' => 'required|string',

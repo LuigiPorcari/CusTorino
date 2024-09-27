@@ -65,6 +65,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::post('/register/trainer', [RegisterController::class, 'registerTrainer']);
     //!ROTTE ADMIN GRUPPI
     Route::get('/admin/dashboard/group/details/{group}', [AdminController::class, 'groupDetails'])->name('admin.group.details');
+    Route::post('/admin/{group}/alias/store', [AdminController::class, 'storeAlias'])->name('storeAlias');
     //!ROTTE GRUPPI
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
     Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');

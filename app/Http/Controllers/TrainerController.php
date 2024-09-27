@@ -76,7 +76,7 @@ class TrainerController extends Controller
             $query->whereDate('data_allenamento', $request->alias_date);
         }
 
-        $aliasesTrainer = $query->orderBy('data_allenamento', 'asc')->paginate(9);
+        $aliasesTrainer = $query->orderBy('data_allenamento', 'asc')->paginate(50);
 
         return view('dashboard.trainerGroup', compact('aliasesTrainer', 'availableDates'));
     }

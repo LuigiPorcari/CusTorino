@@ -77,6 +77,8 @@
                                 href="{{ route('groups.edit', $group) }}">Modifica</a>
                             <a class="btn admin-btn-warning mb-2"
                                 href="{{ route('edit.student', $group) }}">Inserisci-Modifica Corsisti</a>
+                            <button type="button" class="btn admin-btn-warning mb-2" data-bs-toggle="modal"
+                                data-bs-target="#addModalAlias">Aggiungi gruppo Alias</button>
                             <button type="button" class="btn admin-btn-danger mb-2" data-bs-toggle="modal"
                                 data-bs-target="#deleteModalGroup">Elimina</button>
                             <div class="text-center w-100">
@@ -231,4 +233,43 @@
             </div>
         </div>
     @endforeach
+    <!-- Modal per aggiungere l'alias -->
+    <div class="modal fade" id="addModalAlias" tabindex="-1" aria-labelledby="addModalAliasLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header admin-modal-header">
+                    <h1 class="modal-title fs-5" id="addModalAliasLabel">Aggiungi un gruppo Alias</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body admin-modal-body">
+                    <form action="{{ route('storeAlias', $group->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="custom-form-label" for="data_allenamento">In che data vuoi creare il gruppo
+                                alias?</label>
+                            <select class="custom-form-input" id="data_allenamento" name="data_allenamento" required>
+                                @forelse ($dateMancanti as $date)
+                                    <option value="{{ $date }}">
+                                        {{ \Carbon\Carbon::parse($date)->translatedFormat('l d F') }}</option>
+                                @empty
+                                    <option value="">
+                                        Non ci sono date disponibili</option>
+                                @endforelse
+                            </select>
+                        </div>
+                </div>
+                <!-- Modal Footer for buttons -->
+                <div class="modal-footer admin-modal-footer">
+                    @if (count($dateMancanti) != 0)
+                        <button type="submit" class="btn admin-btn-danger w-25">Conferma</button>
+                    @endif
+                    <button type="button" class="btn admin-modal-btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </x-layout>

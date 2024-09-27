@@ -51,6 +51,8 @@
                         <select class="custom-form-input" id="tipo" name="tipo" required>
                             <option @if ($group->tipo == 'M') selected @endif value="M">Maschile</option>
                             <option @if ($group->tipo == 'F') selected @endif value="F">Femminile</option>
+                            <option @if ($group->tipo == 'misto') selected @endif value="misto">Misto</option>
+                            <option @if ($group->tipo == 'under') selected @endif value="under">Under</option>
                         </select>
                     </div>
                     {{-- PRIMO ALLENATORE --}}
@@ -95,7 +97,7 @@
                     {{-- LIVELLO --}}
                     <div class="mb-3">
                         <label class="custom-form-label" for="livello">Livello</label>
-                        <input value="{{ $group->livello }}" type="number" class="custom-form-input" id="livello" name="livello" required min="1" max="10">
+                        <input value="{{ $group->livello }}" type="number" class="custom-form-input" id="livello" name="livello" required min="1" max="12">
                     </div>
                     <div class="mb-3 d-flex flex-column align-items-center">
                         <button type="submit" class="custom-btn-submit">Modifica Gruppo</button>
