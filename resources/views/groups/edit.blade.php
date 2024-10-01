@@ -35,8 +35,19 @@
                     <div class="mb-3">
                         <label class="custom-form-label" for="orario">Orario</label>
                         <select class="custom-form-input" id="orario" name="orario" required>
+                            <option @if ($group->orario == '13:00:00') selected @endif value="13:00">13:00</option>
+                            <option @if ($group->orario == '13:30:00') selected @endif value="13:30">13:30</option>
+                            <option @if ($group->orario == '14:00:00') selected @endif value="14:00">14:00</option>
+                            <option @if ($group->orario == '14:30:00') selected @endif value="14:30">14:30</option>
+                            <option @if ($group->orario == '17:00:00') selected @endif value="17:00">17:00</option>
+                            <option @if ($group->orario == '17:30:00') selected @endif value="17:30">17:30</option>
+                            <option @if ($group->orario == '18:00:00') selected @endif value="18:00">18:00</option>
                             <option @if ($group->orario == '18:30:00') selected @endif value="18:30">18:30</option>
+                            <option @if ($group->orario == '19:00:00') selected @endif value="19:00">19:00</option>
+                            <option @if ($group->orario == '19:30:00') selected @endif value="19:30">19:30</option>
                             <option @if ($group->orario == '20:00:00') selected @endif value="20:00">20:00</option>
+                            <option @if ($group->orario == '20:30:00') selected @endif value="20:30">20:30</option>
+                            <option @if ($group->orario == '21:00:00') selected @endif value="21:00">21:00</option>
                             <option @if ($group->orario == '21:30:00') selected @endif value="21:30">21:30</option>
                         </select>
                     </div>
