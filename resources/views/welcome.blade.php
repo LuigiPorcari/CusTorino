@@ -20,7 +20,7 @@
             data-bs-interval="2500">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="{{ asset('img/gruppo.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 1">
+                    <img src="{{ asset('img/gruppo1.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 1">
                 </div>
                 <div class="carousel-item">
                     <img src="{{ asset('img/palla.jpg') }}" class="d-block w-100 custom-carousel-img" alt="Immagine 2">
