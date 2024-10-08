@@ -1,5 +1,5 @@
 <x-layout documentTitle="Admin Trainer Details">
-    <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Oggi</a>
         </li>
@@ -11,8 +11,8 @@
         </li>
     </ul>
     <div class="container mt-5">
-        <div class="row">
-            <h1 class="custom-title mt-1 mb-5">Dettagli pagamenti</h1>
+        <div class="row mt-5 pt-5">
+            <h1 class="custom-title my-5 pt-5">Dettagli pagamenti</h1>
             <div class="col-12">
                 <table class="table table-bordered admin-trainer-table mb-5">
                     <thead class="custom-table-header">

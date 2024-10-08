@@ -1,10 +1,10 @@
 <x-layout documentTitle="Admin Trainer Dashboard">
-    <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs mt-5 pt-5 pt-md-0">
         <li class="nav-item admin-nav-item">
             <a class="nav-link mt-3" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}">Allenatore</a>
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
@@ -17,16 +17,16 @@
         </div>
     @endif
     <div class="container mt-md-5 admin-trainer-dashboard">
-        <h2 class="mt-md-5 mb-4 custom-title">Elenco Allenatori</h2>
+        <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h2>
         <div class="mb-4 admin-trainer-filter">
             <form method="GET" action="{{ route('admin.dashboard.trainer') }}">
                 <div class="row g-2">
                     <div class="col-md-4">
-                        <input type="search" name="trainer_name" class="custom-form-input " placeholder="Nome Trainer"
+                        <input type="search" name="trainer_name" class="custom-form-input shadow-lg" placeholder="Nome Trainer"
                             value="{{ request('trainer_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn admin-btn-info w-100 py-2 mt-1 fs-6">Filtra</button>
+                        <button type="submit" class="btn admin-btn-info w-100 py-2 mt-1 fs-6  shadow-lg">Filtra</button>
                     </div>
                 </div>
             </form>
@@ -39,6 +39,7 @@
                         <th class="d-table-cell d-md-none">Nome e Cognome</th>
                         <th class="d-none d-md-table-cell">Nome</th>
                         <th class="d-none d-md-table-cell">Cognome</th>
+                        <th class="d-none d-md-table-cell">Gruppi</th>
                         <th class="d-none d-md-table-cell">Stipendio Tot:</th>
                         <th>Dettagli</th>
                         <th>Questo Allenatore è anche un Corsista?</th>
@@ -53,19 +54,28 @@
                                 <td class="d-none d-md-table-cell">{{ $trainer->name }}</td>
                                 <td class="d-none d-md-table-cell">{{ $trainer->cognome }}</td>
                                 <td class="d-none d-md-table-cell">
+                                    @forelse ($trainer->groups as $group)
+                                        <p class="m-1">{{ $group->nome }}</p>
+                                    @empty
+                                        <p>Non allena nessun gruppo</p>
+                                    @endforelse
+                                </td>
+                                <td class="d-none d-md-table-cell">
                                     {{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</td>
                                 <td>
                                     <a href="{{ route('admin.trainer.details', $trainer) }}"
                                         class="btn admin-btn-info">Visualizza Dettagli</a>
                                 </td>
-                                <td class="d-flex flex-column flex-md-row">
-                                    <select class="form-control mb-2 mb-md-0" name="is_corsista">
-                                        <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI
-                                        </option>
-                                        <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO
-                                        </option>
-                                    </select>
-                                    <button type="submit" class="btn admin-btn-info">Modifica</button>
+                                <td>
+                                    <div class=" d-flex">
+                                        <select class="form-control mb-2 mb-md-0" name="is_corsista">
+                                            <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI
+                                            </option>
+                                            <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO
+                                            </option>
+                                        </select>
+                                        <button type="submit" class="btn admin-btn-info">Modifica</button>
+                                    </div>
                                 </td>
                             </tr>
                         </form>

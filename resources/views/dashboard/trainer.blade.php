@@ -1,5 +1,5 @@
 <x-layout documentTitle="Trainer Dashboard">
-    <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link active" aria-current="page" href="{{ route('trainer.dashboard') }}">Oggi</a>
         </li>
@@ -14,8 +14,8 @@
         <div class="row my-5 justify-content-center">
             {{-- ! Descrizione gruppo alias --}}
             @forelse($aliasesTrainer as $alias)
-                <div class="col-11 col-md-3">
-                    <div class="custom-card equal-height-card mx-1 my-2">
+                <div class="col-11 col-md-3 mt-5 pt-4">
+                    <div class="custom-card equal-height-card mx-1 mb-2 mt-5">
                         <div class="custom-card-body">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
                             <p class="card-text">Sede: <span class="text-uppercase">{{ $alias->location }}</span></p>

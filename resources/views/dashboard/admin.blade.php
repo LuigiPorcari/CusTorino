@@ -1,5 +1,5 @@
 <x-layout documentTitle="Admin Group Dashboard">
-    <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs mt-5 pt-5 pt-md-0">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
@@ -17,16 +17,16 @@
         </div>
     @endif
     <div class="container mt-md-5 admin-dashboard">
-        <h2 class="mt-md-5 mb-4 custom-title">Elenco Gruppi</h2>
+        <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Gruppi</h2>
         <div class="mb-4">
             <form method="GET" action="{{ route('admin.dashboard') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="search" name="group_name" class="custom-form-input" placeholder="Nome Gruppo"
+                        <input type="search" name="group_name" class="custom-form-input shadow-lg" placeholder="Nome Gruppo"
                             value="{{ request('group_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn w-100 admin-btn-info py-2 mt-1 fs-6">Filtra</button>
+                        <button type="submit" class="btn w-100 admin-btn-info py-2 mt-1 fs-6 shadow-lg">Filtra</button>
                     </div>
                 </div>
             </form>

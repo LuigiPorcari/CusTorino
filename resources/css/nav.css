@@ -104,13 +104,13 @@
 }
 
 .custom-btn-danger-nav {
-    background-color: rgb(200, 50, 50); /* Rosso */
-    border-color: rgb(200, 50, 50);
+    background-color: rgb(201,34,63); /* Rosso */
+    border-color: rgb(201,34,63);
 }
 
 .custom-btn-danger-nav:hover {
-    background-color: rgb(150, 40, 40); /* Rosso scuro */
-    border-color: rgb(150, 40, 40);
+    background-color: rgb(201,34,63); /* Rosso scuro */
+    border-color: rgb(201,34,63);
     box-shadow: 0 6px 8px rgba(150, 40, 40, 0.6);
     transform: translateY(-2px);
 }

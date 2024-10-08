@@ -65,20 +65,31 @@ class AdminController extends Controller
     }
 
 
+    // public function dashboardStudent(Request $request)
+    // {
+    //     // Studenti: Filtro per nome e cognome combinati
+    //     $studentQuery = User::where('is_corsista', 1);
+
+    //     if ($request->filled('student_name')) {
+    //         $searchTerm = $request->input('student_name');
+    //         $studentQuery->where(function ($query) use ($searchTerm) {
+    //             $query->where('name', 'like', '%' . $searchTerm . '%')
+    //                 ->orWhere('cognome', 'like', '%' . $searchTerm . '%')
+    //                 ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $searchTerm . '%']);
+    //         });
+    //     }
+
+    //     $students = $studentQuery->paginate(10);
+
+    //     return view('dashboard.adminStudent', compact('students'));
+    // }
+
     public function dashboardStudent(Request $request)
     {
-        // Studenti: Filtro per nome e cognome combinati
+        // Questo rimane invariato
         $studentQuery = User::where('is_corsista', 1);
 
-        if ($request->filled('student_name')) {
-            $searchTerm = $request->input('student_name');
-            $studentQuery->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('cognome', 'like', '%' . $searchTerm . '%')
-                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $searchTerm . '%']);
-            });
-        }
-
+        // Mantieni solo il codice di paginazione
         $students = $studentQuery->paginate(10);
 
         return view('dashboard.adminStudent', compact('students'));

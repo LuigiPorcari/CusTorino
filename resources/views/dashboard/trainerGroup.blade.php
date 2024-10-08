@@ -1,5 +1,5 @@
 <x-layout documentTitle="Trainer Dashboard">
-    <ul class="nav nav-tabs mt-5 pt-5 admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Oggi</a>
         </li>
@@ -13,7 +13,7 @@
     {{-- Gruppi allenati --}}
     <div class="container mt-5">
         <h1 class="custom-title mt-md-5 pt-md-5 text-center">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>
-        <h2 class="custom-subtitle mt-5 mb-4">Gruppi in cui alleni</h2>
+        <h2 class="custom-title mt-5 mb-4 pt-4 pt-md-0">Gruppi in cui alleni</h2>
         @if (session('success'))
             <div class="alert custom-alert-success alert-dismissible">
                 {{ session('success') }}

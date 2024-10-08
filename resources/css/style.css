@@ -34,6 +34,9 @@ body {
 .admin-nav-tabs {
     background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
     border-bottom: 2px solid rgb(245, 189, 27); /* Bordo giallo */
+    position: fixed;
+    width: 100%;
+    margin-top: 5vh !important;
 }
 
 .admin-nav-item .nav-link {
@@ -83,7 +86,8 @@ body {
 .admin-btn-info,
 .admin-modal-btn-secondary,
 .admin-btn-warning:hover,
-.admin-btn-danger:hover {
+.admin-btn-danger:hover,
+.undo-btn-danger:hover {
     background-color: rgb(0, 108, 181);
     color: white;
 }
@@ -179,7 +183,19 @@ body {
 }
 
 .admin-btn-danger {
-    background-color: rgb(255, 2, 2);
+    background-color: rgb(201, 34, 63); /* Rosso */
+    border-color: rgb(201, 34, 63);
+    color: white;
+}
+
+.undo-btn-danger {
+    background-color: rgb(201, 34, 63); /* Rosso */
+    border-color: rgb(201, 34, 63);
+    color: white;
+    padding: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
 }
 
 /* Tabella responsive */
@@ -302,7 +318,58 @@ body {
 }
 
 .custom-carousel-control {
-    filter: invert(100%); /* Rende le icone di controllo bianche per visibilità */
+    filter: invert(
+        100%
+    ); /* Rende le icone di controllo bianche per visibilità */
+}
+
+/* Stile per i filtri checkbox */
+.admin-student-filter label {
+    display: block;
+    font-weight: bold;
+    color: rgb(22, 39, 101); /* Colore del testo in blu scuro */
+    margin-bottom: 5px;
+}
+
+.admin-student-filter input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: rgb(245, 189, 27); /* Giallo sportivo */
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Stile hover per i label dei checkbox */
+.admin-student-filter label:hover {
+    color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+}
+
+/* Stile per quando il checkbox è selezionato */
+.admin-student-filter input[type="checkbox"]:checked {
+    border-color: rgb(
+        245,
+        189,
+        27
+    ); /* Bordo giallo sportivo quando selezionato */
+}
+
+/* Stile per input focus */
+.admin-student-filter input[type="checkbox"]:focus {
+    outline: 2px solid rgb(0, 108, 181); /* Bordo blu chiaro al focus */
+}
+
+.filter-box {
+    border: 2px solid rgb(0, 108, 181); /* Bordo blu chiaro */
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(
+        0,
+        108,
+        181,
+        0.05
+    ); /* Sfondo leggero per evidenziare */
+    margin-bottom: 10px;
 }
 
 /* Media queries per dispositivi mobili */
@@ -319,4 +386,10 @@ body {
         height: 300px;
     }
 
+    .admin-nav-tabs {
+        background-color: rgb(22, 39, 101); /* Sfondo blu scuro */
+        border-bottom: 2px solid rgb(245, 189, 27); /* Bordo giallo */
+        position: fixed;
+        width: 100%;
+    }
 }

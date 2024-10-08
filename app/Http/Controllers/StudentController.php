@@ -44,7 +44,7 @@ class StudentController extends Controller
         }
 
         // Ordina gli alias per data di allenamento
-        $trainingAliases = $trainingAliasesQuery->orderBy('data_allenamento', 'asc')->paginate(10); // Mostra 10 risultati per pagina
+        $trainingAliases = $trainingAliasesQuery->orderBy('data_allenamento', 'asc')->paginate(4); // Mostra 4 risultati per pagina
 
         // Recupera gli alias recuperabili entro 2 settimane, escludendo la data odierna
         $recoverableAliases = $this->getRecoverableAliases($student)

@@ -1,16 +1,9 @@
 <x-layout documentTitle="Student Dashboard">
     <div class="container mt-5">
         <div class="row mt-5 justify-content-center">
-            <div class="d-flex justify-content-between">
+            <div>
                 <h1 class="custom-title mt-5 pt-5">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>
-                @if (Auth::user()->last_action || Auth::user()->last_alias_id)
-                    <form action="{{ route('student.undoLastAction') }}" method="POST" class="mt-5 pt-2">
-                        @csrf
-                        <button type="submit" class="btn admin-btn-danger btn-sm mt-5">Annulla Ultima Operazione</button>
-                    </form>
-                @endif
             </div>
-
             {{-- Tabella con il conteggio delle assenze e dei gettoni --}}
             <div class="col-12 mb-5 mt-2">
                 <h2 class="custom-subtitle mb-3">Statistiche Personali</h2>
@@ -178,6 +171,15 @@
                         </tbody>
                     </table>
                 </div>
+                <div class=" d-flex justify-content-center">
+                    @if (Auth::user()->last_action || Auth::user()->last_alias_id)
+                        <button type="button" class="btn undo-btn-danger btn-sm mt-5 mx-5" data-bs-toggle="modal"
+                            data-bs-target="#undoModal">
+                            Annulla Ultima
+                                Operazione
+                        </button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -241,4 +243,27 @@
             </div>
         </div>
     @endforeach
+    <!-- Modale di conferma Annulla Operazione -->
+    <div class="modal fade" id="undoModal" tabindex="-1" aria-labelledby="undoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header admin-modal-header">
+                    <h5 class="modal-title" id="undoModalLabel">Conferma
+                        Annulla Operazione</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler annullare l'ultima operazione effettuata?
+                </div>
+                <div class="modal-footer admin-modal-footer">
+                    <form action="{{ route('student.undoLastAction') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn admin-btn-danger px-3">Si</button>
+                    </form>
+                    <button type="button" class="btn admin-modal-btn-secondary"
+                        data-bs-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </x-layout>
