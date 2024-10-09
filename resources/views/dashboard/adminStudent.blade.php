@@ -25,14 +25,18 @@
             <div class="row">
                 <!-- Filtro per Nome e Cognome -->
                 <div class="col-md-4 my-auto">
-                    <input type="search" id="student_name" class="custom-form-input shadow-lg" placeholder="Nome o Cognome">
-                    <select id="group_filter" class="custom-form-input">
-                        <option value="">Tutti i Gruppi</option>
-                        <option value="no_group">Non è iscritto a nessun gruppo</option>
-                        @foreach ($groups as $group)
-                            <option value="{{ $group->nome }}">{{ $group->nome }}</option>
-                        @endforeach
-                    </select>
+                    <input type="search" id="student_name" class="custom-form-input shadow-lg"
+                        placeholder="Nome o Cognome">
+                    <input type="search" id="group_filter" class="custom-form-input shadow-lg" placeholder="Gruppi">
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <div class="filter-box shadow-lg">
+                        <p class="fw-bold">Gruppi</p>
+                        <label for="no_group_filter" class="mt-2">
+                            <input type="checkbox" id="no_group_filter" value="1"> Non iscritto a nessun gruppo
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Checkbox per CUS Card -->
@@ -113,7 +117,8 @@
                                     <p>Non è iscritto a nessun gruppo</p>
                                 @endforelse
                             </td>
-                            <td><a class="btn admin-btn-info" href="{{ route('admin.student.details', $student) }}">Visualizza dettagli</a></td>
+                            <td><a class="btn admin-btn-info"
+                                    href="{{ route('admin.student.details', $student) }}">Visualizza dettagli</a></td>
                         </tr>
                     @empty
                         <tr id="no_students_row">
@@ -129,13 +134,15 @@
 
     <script>
         document.querySelectorAll(
-            '#student_name, #pagamento_filter_ok, #pagamento_filter_nonok, #cus_card_filter_ok, #cus_card_filter_nonok, #visita_medica_filter_ok, #visita_medica_filter_nonok, #group_filter'
+            '#student_name, #pagamento_filter_ok, #pagamento_filter_nonok, #cus_card_filter_ok, #cus_card_filter_nonok, #visita_medica_filter_ok, #visita_medica_filter_nonok, #group_filter, #no_group_filter'
         ).forEach(function(input) {
             input.addEventListener('input', filterStudents);
         });
 
         function filterStudents() {
             const name = document.getElementById('student_name').value.toLowerCase();
+            const group = document.getElementById('group_filter').value.toLowerCase();
+            const noGroup = document.getElementById('no_group_filter').checked;
 
             // Checkboxes for Pagamento
             const pagamentoOk = document.getElementById('pagamento_filter_ok').checked;
@@ -148,9 +155,6 @@
             // Checkboxes for Visita Medica
             const visitaMedicaOk = document.getElementById('visita_medica_filter_ok').checked;
             const visitaMedicaNonOk = document.getElementById('visita_medica_filter_nonok').checked;
-
-            // Group filter
-            const selectedGroup = document.getElementById('group_filter').value.toLowerCase();
 
             let visibleRows = 0; // Contatore per righe visibili
 
@@ -184,9 +188,9 @@
                     (visitaMedicaOk && rowVisitaMedica === '1') ||
                     (visitaMedicaNonOk && rowVisitaMedica === '0');
 
-                const matchesGroup = !selectedGroup ||
-                    (selectedGroup === 'no_group' && rowGroups.trim() === '') ||
-                    (selectedGroup !== 'no_group' && rowGroups.includes(selectedGroup));
+                const matchesGroup = (!group && !noGroup) ||
+                    (group && rowGroups.includes(group)) ||
+                    (noGroup && rowGroups.trim() === '');
 
                 if (matchesName && matchesPagamento && matchesCusCard && matchesVisitaMedica && matchesGroup) {
                     row.style.display = '';

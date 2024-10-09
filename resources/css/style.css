@@ -204,8 +204,7 @@ body {
 }
 
 /* Filtri */
-.admin-student-filter,
-.admin-trainer-filter {
+.admin-student-filter {
     margin-bottom: 1.5rem;
 }
 
