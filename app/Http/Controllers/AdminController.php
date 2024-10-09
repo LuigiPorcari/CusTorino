@@ -47,54 +47,22 @@ class AdminController extends Controller
 
     public function dashboardTrainer(Request $request)
     {
-        // Trainer: Filtro per nome e cognome combinati
-        $trainerQuery = User::where('is_trainer', 1);
+        // Recupera tutti i trainer e i gruppi per la vista
+        $trainers = User::where('is_trainer', 1)->paginate(10);
+        $groups = Group::all(); // Recupera tutti i gruppi per il filtro dei gruppi
 
-        if ($request->filled('trainer_name')) {
-            $searchTerm = $request->input('trainer_name');
-            $trainerQuery->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('cognome', 'like', '%' . $searchTerm . '%')
-                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $searchTerm . '%']);
-            });
-        }
-
-        $trainers = $trainerQuery->paginate(10);
-
-        return view('dashboard.adminTrainer', compact('trainers'));
+        return view('dashboard.adminTrainer', compact('trainers', 'groups'));
     }
-
-
-    // public function dashboardStudent(Request $request)
-    // {
-    //     // Studenti: Filtro per nome e cognome combinati
-    //     $studentQuery = User::where('is_corsista', 1);
-
-    //     if ($request->filled('student_name')) {
-    //         $searchTerm = $request->input('student_name');
-    //         $studentQuery->where(function ($query) use ($searchTerm) {
-    //             $query->where('name', 'like', '%' . $searchTerm . '%')
-    //                 ->orWhere('cognome', 'like', '%' . $searchTerm . '%')
-    //                 ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $searchTerm . '%']);
-    //         });
-    //     }
-
-    //     $students = $studentQuery->paginate(10);
-
-    //     return view('dashboard.adminStudent', compact('students'));
-    // }
 
     public function dashboardStudent(Request $request)
     {
-        // Questo rimane invariato
-        $studentQuery = User::where('is_corsista', 1);
 
-        // Mantieni solo il codice di paginazione
+        $groups = Group::all();
+        $studentQuery = User::where('is_corsista', 1);
         $students = $studentQuery->paginate(10);
 
-        return view('dashboard.adminStudent', compact('students'));
+        return view('dashboard.adminStudent', compact('students', 'groups'));
     }
-
 
     public function trainerDetails(User $trainer)
     {
@@ -108,7 +76,6 @@ class AdminController extends Controller
 
         return view('dashboard.adminTrainerDetails', compact('trainer', 'aliasesTrainer'));
     }
-
 
     public function updateStudent(Request $request, User $student)
     {
