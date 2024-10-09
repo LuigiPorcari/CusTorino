@@ -47,22 +47,104 @@ class AdminController extends Controller
 
     public function dashboardTrainer(Request $request)
     {
-        // Recupera tutti i trainer e i gruppi per la vista
-        $trainers = User::where('is_trainer', 1)->paginate(10);
-        $groups = Group::all(); // Recupera tutti i gruppi per il filtro dei gruppi
+        // Aggiungiamo una query base per filtrare solo i trainer
+        $trainersQuery = User::where('is_trainer', 1);
 
-        return view('dashboard.adminTrainer', compact('trainers', 'groups'));
+        // Filtro per nome e cognome
+        if ($request->filled('trainer_name')) {
+            $search = $request->input('trainer_name');
+            $trainersQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('cognome', 'like', '%' . $search . '%')
+                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $search . '%']);
+            });
+        }
+
+        // Filtro per gruppo
+        if ($request->filled('group_filter')) {
+            $group = $request->input('group_filter');
+            if (!empty($group)) {
+                // Filtra per allenatori che allenano un gruppo specifico
+                $trainersQuery->whereHas('groups', function ($query) use ($group) {
+                    $query->where('nome', 'like', '%' . $group . '%');
+                });
+            }
+        }
+
+        // Filtro per "Non allena nessun gruppo"
+        if ($request->input('no_group') == '1') {
+            $trainersQuery->whereDoesntHave('groups');
+        }
+
+        $trainers = $trainersQuery->paginate(10)->appends($request->except('page'));
+
+        return view('dashboard.adminTrainer', compact('trainers'));
     }
+
 
     public function dashboardStudent(Request $request)
     {
+        // Aggiungiamo un filtro per assicurarsi che vengano mostrati solo gli utenti che sono corsisti
+        $studentsQuery = User::where('is_corsista', '1');
 
-        $groups = Group::all();
-        $studentQuery = User::where('is_corsista', 1);
-        $students = $studentQuery->paginate(10);
+        // Filtro per nome e cognome
+        if ($request->filled('student_name')) {
+            $search = $request->input('student_name');
+            $studentsQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('cognome', 'like', '%' . $search . '%')
+                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $search . '%']);
+            });
+        }
 
-        return view('dashboard.adminStudent', compact('students', 'groups'));
+        // Filtro per gruppo
+        if ($request->filled('group_name')) {
+            $group = $request->input('group_name');
+            if (!empty($group)) {
+                $studentsQuery->whereHas('groups', function ($query) use ($group) {
+                    $query->where('nome', 'like', '%' . $group . '%');
+                });
+            }
+        }
+
+        // Filtro per "Non iscritto a nessun gruppo"
+        if ($request->input('no_group') == '1') {
+            $studentsQuery->whereDoesntHave('groups');
+        }
+
+        // Filtro per CUS Card
+        if ($request->input('cus_card_ok') == '1') {
+            $studentsQuery->where('cus_card', 1);
+        } elseif ($request->input('cus_card_nonok') == '1') {
+            $studentsQuery->where('cus_card', 0);
+        }
+
+        // Filtro per Visita Medica
+        if ($request->input('visita_medica_ok') == '1') {
+            $studentsQuery->where('visita_medica', 1);
+        } elseif ($request->input('visita_medica_nonok') == '1') {
+            $studentsQuery->where('visita_medica', 0);
+        }
+
+        // Filtro per Pagamento
+        if ($request->input('pagamento_ok') == '1') {
+            $studentsQuery->where('pagamento', 1);
+        } elseif ($request->input('pagamento_nonok') == '1') {
+            $studentsQuery->where('pagamento', 0);
+        }
+
+        // Paginazione con 2 risultati per pagina
+        // Applichiamo i filtri ai link di paginazione
+        $students = $studentsQuery->paginate(10)->appends($request->except('page'));
+
+        return view('dashboard.adminStudent', compact('students'));
     }
+
+
+
+
+
+
 
     public function trainerDetails(User $trainer)
     {

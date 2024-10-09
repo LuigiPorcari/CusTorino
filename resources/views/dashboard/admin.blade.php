@@ -10,20 +10,20 @@
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
         </li>
     </ul>
-    @if (session('success'))
-        <div class="alert alert-dismissible custom-alert-success">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
     <div class="container mt-md-5 admin-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Gruppi</h2>
+        @if (session('success'))
+            <div class="alert alert-dismissible custom-alert-success">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="mb-4">
             <form method="GET" action="{{ route('admin.dashboard') }}">
                 <div class="row">
                     <div class="col-md-4">
-                        <input type="search" name="group_name" class="custom-form-input shadow-lg" placeholder="Nome Gruppo"
-                            value="{{ request('group_name') }}" onsearch="this.form.submit()">
+                        <input type="search" name="group_name" class="custom-form-input shadow-lg"
+                            placeholder="Nome Gruppo" value="{{ request('group_name') }}" onsearch="this.form.submit()">
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn w-100 admin-btn-info py-2 mt-1 fs-6 shadow-lg">Filtra</button>

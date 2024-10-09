@@ -11,74 +11,96 @@
         </li>
     </ul>
 
-    @if (session('success'))
-        <div class="alert alert-dismissible custom-alert-success">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
     <div class="container mt-md-5 admin-student-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Corsisti</h2>
-        <!-- Filtro Studenti -->
-        <div class="mb-4 admin-student-filter">
-            <div class="row">
-                <!-- Filtro per Nome e Cognome -->
-                <div class="col-md-4 my-auto">
-                    <input type="search" id="student_name" class="custom-form-input shadow-lg"
-                        placeholder="Nome o Cognome">
-                    <input type="search" id="group_filter" class="custom-form-input shadow-lg" placeholder="Gruppi">
-                </div>
+        @if (session('success'))
+            <div class="alert alert-dismissible custom-alert-success">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-                <div class="col-6 col-md-2">
-                    <div class="filter-box shadow-lg">
-                        <p class="fw-bold">Gruppi</p>
-                        <label for="no_group_filter" class="mt-2">
-                            <input type="checkbox" id="no_group_filter" value="1"> Non iscritto a nessun gruppo
-                        </label>
+        <!-- Form per inviare i filtri al server -->
+        <form id="filterForm" method="GET" action="{{ route('admin.dashboard.student') }}">
+            <div class="mb-4 admin-student-filter">
+                <div class="row">
+                    <!-- Filtro per Nome e Cognome -->
+                    <div class="col-md-4 my-auto">
+                        <input type="search" name="student_name" id="student_name" class="custom-form-input shadow-lg"
+                            placeholder="Nome o Cognome" value="{{ request('student_name') }}">
+                        <input type="search" name="group_name" id="group_name" class="custom-form-input shadow-lg"
+                            placeholder="Gruppi" value="{{ request('group_name') }}">
                     </div>
-                </div>
 
-                <!-- Checkbox per CUS Card -->
-                <div class="col-6 col-md-2">
-                    <div class="filter-box shadow-lg">
-                        <p class="fw-bold">CUS Card</p>
-                        <label for="cus_card_filter_ok">
-                            <input type="checkbox" id="cus_card_filter_ok" value="1"> OK
-                        </label>
-                        <label for="cus_card_filter_nonok">
-                            <input type="checkbox" id="cus_card_filter_nonok" value="0"> NonOK
-                        </label>
+                    <!-- Checkbox per "Non iscritto a nessun gruppo" -->
+                    <div class="col-6 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">Gruppi</p>
+                            <input type="hidden" name="no_group" value="0">
+                            <label for="no_group_filter" class="mt-2">
+                                <input type="checkbox" name="no_group" id="no_group_filter" value="1"
+                                    {{ request('no_group') == '1' ? 'checked' : '' }}> Non iscritto a nessun gruppo
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Checkbox per Visita Medica -->
-                <div class="col-6 col-md-2">
-                    <div class="filter-box shadow-lg">
-                        <p class="fw-bold">Visita Medica</p>
-                        <label for="visita_medica_filter_ok">
-                            <input type="checkbox" id="visita_medica_filter_ok" value="1"> OK
-                        </label>
-                        <label for="visita_medica_filter_nonok">
-                            <input type="checkbox" id="visita_medica_filter_nonok" value="0"> NonOK
-                        </label>
+                    <!-- Checkbox per CUS Card -->
+                    <div class="col-6 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">CUS Card</p>
+                            <input type="hidden" name="cus_card_ok" value="0">
+                            <label>
+                                <input type="checkbox" name="cus_card_ok" value="1"
+                                    {{ request('cus_card_ok') == '1' ? 'checked' : '' }}> OK
+                            </label>
+                            <input type="hidden" name="cus_card_nonok" value="0">
+                            <label>
+                                <input type="checkbox" name="cus_card_nonok" value="1"
+                                    {{ request('cus_card_nonok') == '1' ? 'checked' : '' }}> NonOK
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Checkbox per Pagamento -->
-                <div class="col-6 col-md-2">
-                    <div class="filter-box shadow-lg">
-                        <p class="fw-bold">Pagamento</p>
-                        <label for="pagamento_filter_ok">
-                            <input type="checkbox" id="pagamento_filter_ok" value="1"> OK
-                        </label>
-                        <label for="pagamento_filter_nonok">
-                            <input type="checkbox" id="pagamento_filter_nonok" value="0"> NonOK
-                        </label>
+                    <!-- Checkbox per Visita Medica -->
+                    <div class="col-6 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">Visita Medica</p>
+                            <input type="hidden" name="visita_medica_ok" value="0">
+                            <label>
+                                <input type="checkbox" name="visita_medica_ok" value="1"
+                                    {{ request('visita_medica_ok') == '1' ? 'checked' : '' }}> OK
+                            </label>
+                            <input type="hidden" name="visita_medica_nonok" value="0">
+                            <label>
+                                <input type="checkbox" name="visita_medica_nonok" value="1"
+                                    {{ request('visita_medica_nonok') == '1' ? 'checked' : '' }}> NonOK
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Checkbox per Pagamento -->
+                    <div class="col-6 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">Pagamento</p>
+                            <input type="hidden" name="pagamento_ok" value="0">
+                            <label>
+                                <input type="checkbox" name="pagamento_ok" value="1"
+                                    {{ request('pagamento_ok') == '1' ? 'checked' : '' }}> OK
+                            </label>
+                            <input type="hidden" name="pagamento_nonok" value="0">
+                            <label>
+                                <input type="checkbox" name="pagamento_nonok" value="1"
+                                    {{ request('pagamento_nonok') == '1' ? 'checked' : '' }}> NonOK
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <div class="table-responsive admin-table-responsive">
             <table class="table table-bordered admin-student-table">
@@ -133,80 +155,13 @@
     </div>
 
     <script>
-        document.querySelectorAll(
-            '#student_name, #pagamento_filter_ok, #pagamento_filter_nonok, #cus_card_filter_ok, #cus_card_filter_nonok, #visita_medica_filter_ok, #visita_medica_filter_nonok, #group_filter, #no_group_filter'
-        ).forEach(function(input) {
-            input.addEventListener('input', filterStudents);
-        });
-
-        function filterStudents() {
-            const name = document.getElementById('student_name').value.toLowerCase();
-            const group = document.getElementById('group_filter').value.toLowerCase();
-            const noGroup = document.getElementById('no_group_filter').checked;
-
-            // Checkboxes for Pagamento
-            const pagamentoOk = document.getElementById('pagamento_filter_ok').checked;
-            const pagamentoNonOk = document.getElementById('pagamento_filter_nonok').checked;
-
-            // Checkboxes for CUS Card
-            const cusCardOk = document.getElementById('cus_card_filter_ok').checked;
-            const cusCardNonOk = document.getElementById('cus_card_filter_nonok').checked;
-
-            // Checkboxes for Visita Medica
-            const visitaMedicaOk = document.getElementById('visita_medica_filter_ok').checked;
-            const visitaMedicaNonOk = document.getElementById('visita_medica_filter_nonok').checked;
-
-            let visibleRows = 0; // Contatore per righe visibili
-
-            // Nascondi la riga "Non ci sono corsisti disponibili"
-            const noResultsRow = document.getElementById('no_students_row');
-            if (noResultsRow) {
-                noResultsRow.remove();
-            }
-
-            // Filtro delle righe visibili
-            document.querySelectorAll('#student_table_body tr').forEach(function(row) {
-                const rowName = row.dataset.name.toLowerCase();
-                const rowCognome = row.dataset.cognome.toLowerCase();
-                const rowPagamento = row.dataset.pagamento;
-                const rowCusCard = row.dataset.cusCard;
-                const rowVisitaMedica = row.dataset.visitaMedica;
-                const rowGroups = row.dataset.groups.toLowerCase();
-
-                const matchesName = !name || rowName.includes(name) || rowCognome.includes(name) || (rowName + ' ' +
-                    rowCognome).includes(name);
-
-                const matchesPagamento = (!pagamentoOk && !pagamentoNonOk) ||
-                    (pagamentoOk && rowPagamento === '1') ||
-                    (pagamentoNonOk && rowPagamento === '0');
-
-                const matchesCusCard = (!cusCardOk && !cusCardNonOk) ||
-                    (cusCardOk && rowCusCard === '1') ||
-                    (cusCardNonOk && rowCusCard === '0');
-
-                const matchesVisitaMedica = (!visitaMedicaOk && !visitaMedicaNonOk) ||
-                    (visitaMedicaOk && rowVisitaMedica === '1') ||
-                    (visitaMedicaNonOk && rowVisitaMedica === '0');
-
-                const matchesGroup = (!group && !noGroup) ||
-                    (group && rowGroups.includes(group)) ||
-                    (noGroup && rowGroups.trim() === '');
-
-                if (matchesName && matchesPagamento && matchesCusCard && matchesVisitaMedica && matchesGroup) {
-                    row.style.display = '';
-                    visibleRows++; // Incrementa il contatore se la riga è visibile
-                } else {
-                    row.style.display = 'none';
+        // Aggiungi evento di aggiornamento automatico quando si cancella il contenuto degli input
+        document.querySelectorAll('#student_name, #group_name').forEach(function(input) {
+            input.addEventListener('input', function() {
+                if (this.value === '') {
+                    document.getElementById('filterForm').submit(); // Invia il form automaticamente
                 }
             });
-
-            // Se nessuna riga è visibile, aggiungi il messaggio "Non ci sono corsisti disponibili"
-            if (visibleRows === 0) {
-                const noResults = document.createElement('tr');
-                noResults.id = 'no_students_row';
-                noResults.innerHTML = '<td colspan="10" class="text-center">Non ci sono corsisti disponibili</td>';
-                document.getElementById('student_table_body').appendChild(noResults);
-            }
-        }
+        });
     </script>
 </x-layout>

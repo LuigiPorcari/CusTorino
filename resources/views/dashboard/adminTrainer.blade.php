@@ -10,35 +10,47 @@
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
         </li>
     </ul>
+
     @if (session('success'))
         <div class="alert alert-dismissible custom-alert-success">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+
     <div class="container mt-md-5 admin-trainer-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h2>
 
-        <!-- Filtro Allenatori -->
-        <div class="mb-4 admin-student-filter">
-            <div class="row">
-                <!-- Filtro per Nome e Cognome -->
-                <div class="col-md-4 my-auto">
-                    <input type="search" id="trainer_name" class="custom-form-input shadow-lg" placeholder="Nome o Cognome">
-                    <input type="search" id="group_filter" class="custom-form-input shadow-lg" placeholder="Gruppi">
-                </div>
+        <!-- Form per inviare i filtri al server -->
+        <form id="filterForm" method="GET" action="{{ route('admin.dashboard.trainer') }}">
+            <div class="mb-4 admin-student-filter">
+                <div class="row">
+                    <!-- Filtro per Nome e Cognome -->
+                    <div class="col-md-4 my-auto">
+                        <input type="search" name="trainer_name" id="trainer_name" class="custom-form-input shadow-lg"
+                            placeholder="Nome o Cognome" value="{{ request('trainer_name') }}">
+                        <input type="search" name="group_filter" id="group_filter" class="custom-form-input shadow-lg"
+                            placeholder="Gruppi" value="{{ request('group_filter') }}">
+                    </div>
 
-                <!-- Checkbox per Gruppi -->
-                <div class="col-6 col-md-2">
-                    <div class="filter-box shadow-lg">
-                        <p class="fw-bold">Gruppi</p>
-                        <label for="no_group_filter" class="mt-2 fw-bold">
-                            <input type="checkbox" id="no_group_filter" value="1"> Non allena nessun gruppo
-                        </label>
+                    <!-- Checkbox per "Non allena nessun gruppo" -->
+                    <div class="col-6 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">Gruppi</p>
+                            <input type="hidden" name="no_group" value="0">
+                            <label for="no_group_filter" class="mt-2">
+                                <input type="checkbox" name="no_group" id="no_group_filter" value="1"
+                                    {{ request('no_group') == '1' ? 'checked' : '' }}> Non allena nessun gruppo
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-center mt-3">
+                        <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <div class="table-responsive admin-table-responsive">
             <table class="table table-bordered admin-trainer-table">
@@ -67,17 +79,21 @@
                                     <p>Non allena nessun gruppo</p>
                                 @endforelse
                             </td>
-                            <td class="d-none d-md-table-cell">{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</td>
+                            <td class="d-none d-md-table-cell">{{ $trainer->calcolaStipendioAllenatore($trainer->id) }}
+                                €</td>
                             <td>
-                                <a href="{{ route('admin.trainer.details', $trainer) }}" class="btn admin-btn-info">Visualizza Dettagli</a>
+                                <a href="{{ route('admin.trainer.details', $trainer) }}"
+                                    class="btn admin-btn-info">Visualizza Dettagli</a>
                             </td>
                             <td>
                                 <form method="POST" action="{{ route('admin.user.make-trainer-student', $trainer) }}">
                                     @csrf
                                     <div class="d-flex">
                                         <select class="form-control mb-2 mb-md-0" name="is_corsista">
-                                            <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI</option>
-                                            <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO</option>
+                                            <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI
+                                            </option>
+                                            <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO
+                                            </option>
                                         </select>
                                         <button type="submit" class="btn admin-btn-info">Modifica</button>
                                     </div>
@@ -97,51 +113,13 @@
     </div>
 
     <script>
-        document.querySelectorAll('#trainer_name, #group_filter, #no_group_filter').forEach(function(input) {
-            input.addEventListener('input', filterTrainers);
-        });
-
-        function filterTrainers() {
-            const name = document.getElementById('trainer_name').value.toLowerCase();
-            const group = document.getElementById('group_filter').value.toLowerCase();
-            const noGroup = document.getElementById('no_group_filter').checked;
-
-            let visibleRows = 0; // Contatore per righe visibili
-
-            // Nascondi la riga "Non ci sono allenatori disponibili"
-            const noResultsRow = document.getElementById('no_trainers_row');
-            if (noResultsRow) {
-                noResultsRow.remove();
-            }
-
-            // Filtro delle righe visibili
-            document.querySelectorAll('#trainer_table_body tr').forEach(function(row) {
-                const rowName = row.dataset.name.toLowerCase();
-                const rowCognome = row.dataset.cognome.toLowerCase();
-                const rowGroups = row.dataset.groups.toLowerCase();
-
-                const matchesName = !name || rowName.includes(name) || rowCognome.includes(name) || (rowName + ' ' +
-                    rowCognome).includes(name);
-
-                const matchesGroup = (!group && !noGroup) ||
-                    (group && rowGroups.includes(group)) ||
-                    (noGroup && rowGroups.trim() === '');
-
-                if (matchesName && matchesGroup) {
-                    row.style.display = '';
-                    visibleRows++; // Incrementa il contatore se la riga è visibile
-                } else {
-                    row.style.display = 'none';
+        // Aggiungi evento di aggiornamento automatico quando si cancella il contenuto degli input
+        document.querySelectorAll('#trainer_name, #group_filter').forEach(function(input) {
+            input.addEventListener('input', function() {
+                if (this.value === '') {
+                    document.getElementById('filterForm').submit(); // Invia il form automaticamente
                 }
             });
-
-            // Se nessuna riga è visibile, aggiungi il messaggio "Non ci sono allenatori disponibili"
-            if (visibleRows === 0) {
-                const noResults = document.createElement('tr');
-                noResults.id = 'no_trainers_row';
-                noResults.innerHTML = '<td colspan="7" class="text-center">Non ci sono allenatori disponibili</td>';
-                document.getElementById('trainer_table_body').appendChild(noResults);
-            }
-        }
+        });
     </script>
 </x-layout>
