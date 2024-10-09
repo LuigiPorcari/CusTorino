@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 text-center mt-3">
+                    <div class="col-6 col-md-2 text-center d-flex justify-content-center align-items-center">
                         <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
                     </div>
                 </div>
