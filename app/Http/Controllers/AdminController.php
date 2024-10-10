@@ -60,26 +60,34 @@ class AdminController extends Controller
             });
         }
 
-        // Filtro per gruppo
+        // Filtro per gruppo, usando primoAllenatoreGroups e secondoAllenatoreGroups
         if ($request->filled('group_filter')) {
             $group = $request->input('group_filter');
             if (!empty($group)) {
-                // Filtra per allenatori che allenano un gruppo specifico
-                $trainersQuery->whereHas('groups', function ($query) use ($group) {
-                    $query->where('nome', 'like', '%' . $group . '%');
+                // Filtra per allenatori che allenano un gruppo specifico come primo o secondo allenatore
+                $trainersQuery->where(function ($query) use ($group) {
+                    $query->whereHas('primoAllenatoreGroups', function ($groupQuery) use ($group) {
+                        $groupQuery->where('nome', 'like', '%' . $group . '%');
+                    })->orWhereHas('secondoAllenatoreGroups', function ($groupQuery) use ($group) {
+                        $groupQuery->where('nome', 'like', '%' . $group . '%');
+                    });
                 });
             }
         }
 
-        // Filtro per "Non allena nessun gruppo"
+        // Filtro per "Non allena nessun gruppo" (né come primo né come secondo allenatore)
         if ($request->input('no_group') == '1') {
-            $trainersQuery->whereDoesntHave('groups');
+            $trainersQuery->whereDoesntHave('primoAllenatoreGroups')
+                ->whereDoesntHave('secondoAllenatoreGroups');
         }
 
-        $trainers = $trainersQuery->paginate(10)->appends($request->except('page'));
+        // Paginazione con appending dei filtri
+        $trainers = $trainersQuery->paginate(50)->appends($request->except('page'));
 
+        // Restituisce la vista con i dati filtrati
         return view('dashboard.adminTrainer', compact('trainers'));
     }
+
 
 
     public function dashboardStudent(Request $request)
@@ -135,7 +143,7 @@ class AdminController extends Controller
 
         // Paginazione con 2 risultati per pagina
         // Applichiamo i filtri ai link di paginazione
-        $students = $studentsQuery->paginate(10)->appends($request->except('page'));
+        $students = $studentsQuery->paginate(50)->appends($request->except('page'));
 
         return view('dashboard.adminStudent', compact('students'));
     }

@@ -73,11 +73,16 @@
                             <td class="d-none d-md-table-cell">{{ $trainer->name }}</td>
                             <td class="d-none d-md-table-cell">{{ $trainer->cognome }}</td>
                             <td class="d-none d-md-table-cell">
-                                @forelse ($trainer->groups as $group)
-                                    <p class="m-1">{{ $group->nome }}</p>
-                                @empty
+                                @if ($trainer->primoAllenatoreGroups->isEmpty() && $trainer->secondoAllenatoreGroups->isEmpty())
                                     <p>Non allena nessun gruppo</p>
-                                @endforelse
+                                @else
+                                    @foreach ($trainer->primoAllenatoreGroups as $group)
+                                        <p class="m-1">{{ $group->nome }}</p>
+                                    @endforeach
+                                    @foreach ($trainer->secondoAllenatoreGroups as $group)
+                                        <p class="m-1">{{ $group->nome }}</p>
+                                    @endforeach
+                                @endif
                             </td>
                             <td class="d-none d-md-table-cell">{{ $trainer->calcolaStipendioAllenatore($trainer->id) }}
                                 €</td>
