@@ -36,11 +36,21 @@
                     <tbody>
                         @foreach ($aliasesTrainer as $alias)
                             <tr>
-                                <td>{{ $alias->nome }}</td>
-                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>{{ $alias->primo_allenatore_id == $trainer->id ? 'Primo Allenatore' : 'Secondo Allenatore' }}
-                                    / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
-                                <td>
+                                <td
+                                    class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">
+                                    {{ $alias->nome }}
+                                </td>
+                                <td
+                                    class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">
+                                    {{ $alias->formatData($alias->data_allenamento) }}
+                                </td>
+                                <td
+                                    class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">
+                                    {{ $alias->primo_allenatore_id == $trainer->id ? 'Primo Allenatore' : 'Secondo Allenatore' }}
+                                    / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}
+                                </td>
+                                <td
+                                    class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">
                                     @if ($alias->primo_allenatore_id == $trainer->id)
                                         {{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}
                                     @else
@@ -50,9 +60,10 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="3" class="text-right" style="background-color: white;"><strong>Stipendio
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Stipendio
                                     Totale:</strong></td>
-                            <td style="background-color: white;">
+                            <td>
                                 <strong>{{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</strong>
                             </td>
                         </tr>

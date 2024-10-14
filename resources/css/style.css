@@ -371,6 +371,10 @@ body {
     margin-bottom: 10px;
 }
 
+.bg-green-salary{
+    background-color: rgb(39, 174, 96)  !important;
+}
+
 /* Media queries per dispositivi mobili */
 @media (max-width: 768px) {
     .admin-btn-info {

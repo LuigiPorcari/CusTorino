@@ -13,56 +13,45 @@ use Illuminate\Support\Facades\Validator;
 class AliasController extends Controller
 {
     //!Funzione per segnare assenza
-    // public function studentAbsence(Request $request, Alias $alias)
-    // {
-
-    //     $request->validate([
-    //         'studenti_ids' => 'required|array',
-    //         'studenti_ids.*' => 'required|integer|exists:users,id',
-    //     ]);
-
-    //     $studentIds = $request->studenti_ids;
-
-    //     // Rimuovi gli studenti selezionati dall'array studenti_id
-    //     $studenti = $alias->studenti_id ?? [];
-    //     foreach ($studentIds as $studentId) {
-    //         if (($key = array_search($studentId, $studenti)) !== false) {
-    //             unset($studenti[$key]);
-    //         }
-    //     }
-    //     $alias->studenti_id = array_values($studenti); // Reindex the array
-    //     $alias->save();
-    //     // Rimuovi la relazione N-N
-    //     $alias->users()->sync($alias->studenti_id);
-
-    //     return redirect()->back()->with('success', 'Assenze segnate con successo.');
-    // }
     public function studentAbsence(Request $request, Alias $alias)
-{
-    // Validazione della richiesta
-    $request->validate([
-        'studenti_ids' => 'nullable|array',
-        'studenti_ids.*' => 'integer|exists:users,id',
-    ]);
+    {
+        // Validazione della richiesta
+        $request->validate([
+            'studenti_ids' => 'nullable|array',
+            'studenti_ids.*' => 'integer|exists:users,id',
+        ]);
 
-    // Ottieni l'array degli ID degli studenti selezionati (ovvero gli studenti assenti)
-    $studentIds = $request->studenti_ids ?? [];
+        // Ottieni l'array degli ID degli studenti assenti selezionati nel form
+        $studentIds = $request->studenti_ids ?? [];
 
-    // Recupera l'array degli ID degli studenti attualmente associati all'alias (presenti)
-    $allStudents = $alias->group->users->pluck('id')->toArray();
+        // Recupera l'array degli ID di tutti gli studenti del gruppo associati all'alias
+        $allStudents = $alias->group->users->pluck('id')->toArray();
 
-    // Gli studenti non selezionati nel form sono considerati presenti
-    $presentStudents = array_diff($allStudents, $studentIds);
+        // Ottieni gli studenti attualmente segnati come recuperi
+        $recoveries = $alias->studenti_id ?? [];
 
-    // Aggiorna l'alias con gli studenti presenti
-    $alias->studenti_id = array_values($presentStudents); 
-    $alias->save();
+        // Gli studenti presenti sono quelli che non sono stati selezionati come assenti, ma includono i recuperi
+        $presentStudents = array_diff($allStudents, $studentIds);
 
-    // Sincronizza la relazione N-N tra alias e utenti
-    $alias->users()->sync($alias->studenti_id);
+        // Gli studenti presenti non devono essere rimossi dai recuperi, quindi uniamo i presenti con i recuperi
+        $updatedStudents = array_unique(array_merge($presentStudents, $recoveries));
 
-    return redirect()->back()->with('success', 'Assenze segnate con successo.');
-}
+        // Rimuovi gli studenti assenti dai recuperi (se presenti nei recuperi)
+        $updatedStudents = array_diff($updatedStudents, $studentIds);
+
+        // Aggiorna l'alias con la lista aggiornata di studenti (presenti e recuperi, escludendo gli assenti)
+        $alias->studenti_id = array_values($updatedStudents);
+        $alias->save();
+
+        // Sincronizza la relazione N-N tra alias e utenti
+        $alias->users()->sync($alias->studenti_id);
+
+        return redirect()->back()->with('success', 'Assenze segnate con successo.');
+    }
+
+
+
+
 
     //!Funzione per segnare i recuperi
     public function recoveriesStudent(Request $request, Alias $alias)
@@ -130,7 +119,7 @@ class AliasController extends Controller
         $trainers = User::where('is_trainer', 1)->get();
         $group = Group::find($alias->group_id);
         $students = $group->users;
-        return view('alias.details', compact('alias', 'trainers', 'students' , 'threeDaysCheck'));
+        return view('alias.details', compact('alias', 'trainers', 'students', 'threeDaysCheck'));
     }
 
     public function editStudent(Alias $alias)

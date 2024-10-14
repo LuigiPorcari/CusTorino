@@ -40,11 +40,11 @@
                     <tbody>
                         @foreach ($aliasesTrainer as $alias)
                             <tr>
-                                <td>{{ $alias->nome }}</td>
-                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
-                                <td>{{ $alias->primo_allenatore_id == Auth::user()->id ? 'Primo Allenatore' : 'Secondo Allenatore' }}
+                                <td class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">{{ $alias->nome }}</td>
+                                <td class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">{{ $alias->formatData($alias->data_allenamento) }}</td>
+                                <td class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">{{ $alias->primo_allenatore_id == Auth::user()->id ? 'Primo Allenatore' : 'Secondo Allenatore' }}
                                     / {{ $alias->condiviso == 'true' ? 'Si' : 'No' }}</td>
-                                <td>
+                                <td class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">
                                     @if ($alias->primo_allenatore_id == Auth::user()->id)
                                         {{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}
                                     @else
