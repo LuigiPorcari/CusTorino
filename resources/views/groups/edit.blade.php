@@ -103,6 +103,8 @@
                         <select class="custom-form-input" id="numero_massimo_partecipanti" name="numero_massimo_partecipanti" required>
                             <option @if ($group->numero_massimo_partecipanti == '6') selected @endif value="6">6</option>
                             <option @if ($group->numero_massimo_partecipanti == '8') selected @endif value="8">8</option>
+                            <option @if ($group->numero_massimo_partecipanti == '10') selected @endif value="10">10</option>
+                            <option @if ($group->numero_massimo_partecipanti == '16') selected @endif value="16">16</option>
                         </select>
                     </div>
                     {{-- LIVELLO --}}
