@@ -17,7 +17,8 @@
                             <!-- Campo per Cognome -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Cognome:</strong></label>
-                                <input type="text" class="form-control" name="cognome" value="{{ $student->cognome }}">
+                                <input type="text" class="form-control" name="cognome"
+                                    value="{{ $student->cognome }}">
                             </div>
                             <!-- Campo per Mail -->
                             <div class="mb-3">
@@ -34,18 +35,24 @@
                             <!-- Campo per Genere -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Genere:</strong></label>
-                                <select class="form-control" name="genere">
-                                    <option @if ($student->genere == 'M') selected @endif value="M">Maschio</option>
-                                    <option @if ($student->genere == 'F') selected @endif value="F">Femmina</option>
-                                    <option @if ($student->genere == 'Misto') selected @endif value="Misto">Misto</option>
-                                </select>
+                                @if ($student->genere != 'Misto')
+                                    <select class="form-control" name="genere">
+                                        <option @if ($student->genere == 'M') selected @endif value="M">Maschio
+                                        </option>
+                                        <option @if ($student->genere == 'F') selected @endif value="F">Femmina
+                                        </option>
+                                    </select>
+                                @else
+                                    <p class="form-control">{{ $student->genere }}</p>
+                                @endif
                             </div>
                             <!-- CUS Card -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>CUS Card:</strong></label>
                                 <select class="form-control" name="cus_card">
                                     <option @if ($student->cus_card == 1) selected @endif value="1">OK</option>
-                                    <option @if ($student->cus_card == 0) selected @endif value="0">NON OK</option>
+                                    <option @if ($student->cus_card == 0) selected @endif value="0">NON OK
+                                    </option>
                                 </select>
                             </div>
                             <!-- Visita Medica -->
@@ -53,7 +60,8 @@
                                 <label class="form-label"><strong>Visita Medica:</strong></label>
                                 <select class="form-control" name="visita_medica">
                                     <option @if ($student->visita_medica == 1) selected @endif value="1">OK</option>
-                                    <option @if ($student->visita_medica == 0) selected @endif value="0">NON OK</option>
+                                    <option @if ($student->visita_medica == 0) selected @endif value="0">NON OK
+                                    </option>
                                 </select>
                             </div>
                             <!-- Pagamento -->
@@ -61,31 +69,39 @@
                                 <label class="form-label"><strong>Pagamento:</strong></label>
                                 <select class="form-control" name="pagamento">
                                     <option @if ($student->pagamento == 1) selected @endif value="1">OK</option>
-                                    <option @if ($student->pagamento == 0) selected @endif value="0">NON OK</option>
+                                    <option @if ($student->pagamento == 0) selected @endif value="0">NON OK
+                                    </option>
                                 </select>
                             </div>
                             <!-- Trimestrale -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Trimestrale:</strong></label>
                                 <select class="form-control" name="trimestrale">
-                                    <option @if ($student->trimestrale == 1) selected @endif value="1">Si</option>
-                                    <option @if ($student->trimestrale == 0) selected @endif value="0">No</option>
+                                    <option @if ($student->trimestrale == 1) selected @endif value="1">Si
+                                    </option>
+                                    <option @if ($student->trimestrale == 0) selected @endif value="0">No
+                                    </option>
                                 </select>
                             </div>
                             <!-- Universitario -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Universitario:</strong></label>
                                 <select class="form-control" name="universitario">
-                                    <option @if ($student->universitario == 1) selected @endif value="1">SI</option>
-                                    <option @if ($student->universitario == 0) selected @endif value="0">NO</option>
+                                    <option @if ($student->universitario == 1) selected @endif value="1">SI
+                                    </option>
+                                    <option @if ($student->universitario == 0) selected @endif value="0">NO
+                                    </option>
                                 </select>
                             </div>
                             <!-- Questo Corsista è anche un Allenatore -->
                             <div class="mb-3">
-                                <label class="form-label"><strong>Questo Corsista è anche un Allenatore?</strong></label>
+                                <label class="form-label"><strong>Questo Corsista è anche un
+                                        Allenatore?</strong></label>
                                 <select class="form-control" name="is_trainer">
-                                    <option @if ($student->is_trainer == 1) selected @endif value="1">SI</option>
-                                    <option @if ($student->is_trainer == 0) selected @endif value="0">NO</option>
+                                    <option @if ($student->is_trainer == 1) selected @endif value="1">SI
+                                    </option>
+                                    <option @if ($student->is_trainer == 0) selected @endif value="0">NO
+                                    </option>
                                 </select>
                             </div>
                             <!-- Recuperi -->
@@ -102,7 +118,8 @@
                             </div>
                     </form>
                     <div class="text-center">
-                        <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info fs-6">Torna alla Lista
+                        <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info fs-6">Torna alla
+                            Lista
                             Corsisti</a>
                     </div>
                 </div>
@@ -110,11 +127,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="deleteModal{{ $student->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $student->id }}" aria-hidden="true">
+    <div class="modal fade" id="deleteModal{{ $student->id }}" tabindex="-1"
+        aria-labelledby="deleteModalLabel{{ $student->id }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header admin-modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalLabel{{ $student->id }}">Sicuro di voler eliminare lo studente {{ $student->name }} {{ $student->cognome }}?</h1>
+                    <h1 class="modal-title fs-5" id="deleteModalLabel{{ $student->id }}">Sicuro di voler eliminare
+                        lo studente {{ $student->name }} {{ $student->cognome }}?</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center admin-modal-body">
@@ -126,7 +145,8 @@
                     <button type="button" class="btn admin-modal-btn-secondary" data-bs-dismiss="modal">No</button>
                 </div>
                 <div class="modal-footer admin-modal-footer">
-                    <button type="button" class="btn admin-modal-btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn admin-modal-btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
