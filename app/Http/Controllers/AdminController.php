@@ -141,18 +141,30 @@ class AdminController extends Controller
             $studentsQuery->where('pagamento', 0);
         }
 
-        // Paginazione con 2 risultati per pagina
-        // Applichiamo i filtri ai link di paginazione
+        // Filtro per Trimestrale
+        if ($request->input('trimestrale_ok') == '1') {
+            $studentsQuery->where('trimestrale', 1);
+        } elseif ($request->input('trimestrale_nonok') == '1') {
+            $studentsQuery->where('trimestrale', 0);
+        }
+
+        // Filtro per Livello
+        if ($request->filled('student_level')) {
+            $level = $request->input('student_level');
+            $studentsQuery->where('livello', $level);
+        }
+
+        // Filtro per corsisti senza livello
+        if ($request->input('no_level') == '1') {
+            $studentsQuery->whereNull('livello');
+        }
+
+
+        // Paginazione con 50 risultati per pagina
         $students = $studentsQuery->paginate(50)->appends($request->except('page'));
 
         return view('dashboard.adminStudent', compact('students'));
     }
-
-
-
-
-
-
 
     public function trainerDetails(User $trainer)
     {
@@ -180,7 +192,8 @@ class AdminController extends Controller
             'Nrecuperi' => $request->Nrecuperi,
             'genere' => $request->genere,
             'name' => $request->name,
-            'cognome' => $request->cognome
+            'cognome' => $request->cognome,
+            'trimestrale' => $request->trimestrale,
         ]);
 
         return redirect(route('admin.dashboard.student'))->with('success', 'Corsista modificato con successo');

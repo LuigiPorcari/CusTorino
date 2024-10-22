@@ -23,9 +23,9 @@
         <!-- Form per inviare i filtri al server -->
         <form id="filterForm" method="GET" action="{{ route('admin.dashboard.student') }}">
             <div class="mb-4 admin-student-filter">
-                <div class="row">
+                <div class="row justify-content-center">
                     <!-- Filtro per Nome e Cognome -->
-                    <div class="col-md-4 my-auto">
+                    <div class="col-6 col-md-4 my-auto">
                         <input type="search" name="student_name" id="student_name" class="custom-form-input shadow-lg"
                             placeholder="Nome o Cognome" value="{{ request('student_name') }}">
                         <input type="search" name="group_name" id="group_name" class="custom-form-input shadow-lg"
@@ -77,6 +77,18 @@
                             </label>
                         </div>
                     </div>
+                </div>
+                <div class="row justify-content-center">
+                    {{-- Filtro per livello --}}
+                    <div class="col-6 col-md-4">
+                        <div>
+                            <input type="number" name="student_level" id="student_level" class="custom-form-input shadow-lg"
+                                placeholder="Livello" value="{{ request('student_level') }}" min="1" max="12" step="1">
+                            <label>
+                                <input type="checkbox" name="no_level" value="1" {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
+                            </label>
+                        </div>
+                    </div>
 
                     <!-- Checkbox per Pagamento -->
                     <div class="col-6 col-md-2">
@@ -95,7 +107,23 @@
                         </div>
                     </div>
 
-                    <div class="col-12 text-center mt-3">
+                    <!-- Checkbox per Trimestrale -->
+                    <div class="col-6 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">Trimestrale</p>
+                            <input type="hidden" name="trimestrale_ok" value="0">
+                            <label>
+                                <input type="checkbox" name="trimestrale_ok" value="1"
+                                    {{ request('trimestrale_ok') == '1' ? 'checked' : '' }}> Sì
+                            </label>
+                            <input type="hidden" name="trimestrale_nonok" value="0">
+                            <label>
+                                <input type="checkbox" name="trimestrale_nonok" value="1"
+                                    {{ request('trimestrale_nonok') == '1' ? 'checked' : '' }}> No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 d-flex align-items-center justify-content-center">
                         <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
                     </div>
                 </div>
@@ -108,10 +136,11 @@
                     <tr>
                         <th>Nome</th>
                         <th>Cognome</th>
-                        <th class="d-none d-md-table-cell">Email</th>
                         <th class="d-none d-md-table-cell">CUS Card</th>
                         <th class="d-none d-md-table-cell">Visita Medica</th>
                         <th class="d-none d-md-table-cell">Pagamento</th>
+                        <th class="d-none d-md-table-cell">Trimestrale</th>
+                        <th class="d-none d-md-table-cell">Livello</th>
                         <th class="d-none d-md-table-cell">Nrecuperi</th>
                         <th class="d-none d-md-table-cell">Gruppi</th>
                         <th>Dettagli</th>
@@ -127,10 +156,17 @@
                             data-groups="@foreach ($student->groups as $group){{ $group->nome }}@if (!$loop->last), @endif @endforeach">
                             <td>{{ $student->name }}</td>
                             <td>{{ $student->cognome }}</td>
-                            <td class="d-none d-md-table-cell">{{ $student->email }}</td>
                             <td class="d-none d-md-table-cell">{{ $student->cus_card ? 'OK' : 'NonOK' }}</td>
                             <td class="d-none d-md-table-cell">{{ $student->visita_medica ? 'OK' : 'NonOK' }}</td>
                             <td class="d-none d-md-table-cell">{{ $student->pagamento ? 'OK' : 'NonOK' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $student->trimestrale ? 'Sì' : 'No' }}</td>
+                            <td class="d-none d-md-table-cell">
+                                @if ($student->livello == null)
+                                    N.C.
+                                @else
+                                    {{ $student->livello }}
+                                @endif
+                            </td>
                             <td class="d-none d-md-table-cell">{{ $student->Nrecuperi }}</td>
                             <td class="d-none d-md-table-cell">
                                 @forelse ($student->groups as $group)

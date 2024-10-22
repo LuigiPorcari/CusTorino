@@ -33,7 +33,8 @@ class User extends Authenticatable
         'visita_medica',
         'pagamento',
         'Nrecuperi',
-        'universitario'
+        'universitario',
+        'trimestrale'
     ];
 
     protected $casts = [
@@ -42,6 +43,7 @@ class User extends Authenticatable
         'is_corsista' => 'boolean',
         'pagamento' => 'boolean',
         'visita_medica' => 'boolean',
+        'trimestrale' => 'boolean'
     ];
 
     /**

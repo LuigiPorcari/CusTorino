@@ -19,6 +19,11 @@
                                 <label class="form-label"><strong>Cognome:</strong></label>
                                 <input type="text" class="form-control" name="cognome" value="{{ $student->cognome }}">
                             </div>
+                            <!-- Campo per Mail -->
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Mail:</strong></label>
+                                <p class="form-control">{{ $student->email }}</p>
+                            </div>
                             <!-- Campo per Livello -->
                             <div class="mb-3">
                                 <label class="form-label"><strong>Livello:</strong></label>
@@ -56,6 +61,14 @@
                                 <select class="form-control" name="pagamento">
                                     <option @if ($student->pagamento == 1) selected @endif value="1">OK</option>
                                     <option @if ($student->pagamento == 0) selected @endif value="0">NON OK</option>
+                                </select>
+                            </div>
+                            <!-- Trimestrale -->
+                            <div class="mb-3">
+                                <label class="form-label"><strong>Trimestrale:</strong></label>
+                                <select class="form-control" name="trimestrale">
+                                    <option @if ($student->trimestrale == 1) selected @endif value="1">Si</option>
+                                    <option @if ($student->trimestrale == 0) selected @endif value="0">No</option>
                                 </select>
                             </div>
                             <!-- Universitario -->
