@@ -37,6 +37,7 @@
                                 <select class="form-control" name="genere">
                                     <option @if ($student->genere == 'M') selected @endif value="M">Maschio</option>
                                     <option @if ($student->genere == 'F') selected @endif value="F">Femmina</option>
+                                    <option @if ($student->genere == 'Misto') selected @endif value="Misto">Misto</option>
                                 </select>
                             </div>
                             <!-- CUS Card -->

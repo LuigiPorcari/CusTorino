@@ -17,15 +17,16 @@ class TrainerController extends Controller
         // Ottieni l'ID dell'allenatore attualmente autenticato
         $allenatore_id = Auth::user()->id;
 
-        // Ottieni la data odierna
+        // Ottieni la data odierna e la data di una settimana in avanti
         $today = Carbon::today()->toDateString();
+        $nextWeek = Carbon::today()->addWeek()->toDateString();
 
-        // Filtra gli alias per primo o secondo allenatore e solo per la data odierna
+        // Filtra gli alias per primo o secondo allenatore e tra oggi e una settimana in avanti
         $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
             $query->where('primo_allenatore_id', $allenatore_id)
                 ->orWhere('secondo_allenatore_id', $allenatore_id);
         })
-            ->whereDate('data_allenamento', $today) // Filtra solo gli alias con data odierna
+            ->whereBetween('data_allenamento', [$today, $nextWeek]) // Filtra per la data tra oggi e una settimana in avanti
             ->orderBy('orario', 'asc') // Ordina per orario crescente
             ->paginate(10); // Pagina con 10 risultati per pagina
 

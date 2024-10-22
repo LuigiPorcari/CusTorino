@@ -1,7 +1,7 @@
 <x-layout documentTitle="Trainer Dashboard">
     <ul class="nav nav-tabs admin-nav-tabs">
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Oggi</a>
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link active" aria-current="page" href="{{route('trainer.group')}}">Gruppi</a>

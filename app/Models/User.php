@@ -149,7 +149,15 @@ class User extends Authenticatable
                     $student->genere == $alias->tipo
                 ) {
                     $recoverableStudent[] = $student;
+                } else {
+                    if (
+                        !in_array($student->id, $alias->studenti_id) &&
+                        !in_array($student->id, $group->studenti_id) && $group->tipo == "misto" && $student->genere == "Misto"
+                    ) {
+                        $recoverableStudent[] = $student;
+                    }
                 }
+
             }
         }
         $recoverableStudent = array_unique($recoverableStudent);
@@ -211,52 +219,55 @@ class User extends Authenticatable
     public function countAbsenceTrainer($trainer)
     {
         $countAbsenceTrainer = 0;
+
         // Itera attraverso tutti i gruppi in cui il trainer è primo allenatore
         foreach ($trainer->primoAllenatoreGroups as $group) {
-            // Itera attraverso tutti gli alias associati al gruppo
             foreach ($group->aliases as $alias) {
-                // Verifica se il trainer è presente nell'alias (presenza)
-                if ($alias->primo_allenatore_id != $trainer->id) {
+                // Se il trainer non è né primo né secondo allenatore, conta come assenza
+                if ($alias->primo_allenatore_id != $trainer->id && $alias->secondo_allenatore_id != $trainer->id) {
                     $countAbsenceTrainer += 1;
                 }
             }
         }
+
         // Itera attraverso tutti i gruppi in cui il trainer è secondo allenatore
         foreach ($trainer->secondoAllenatoreGroups as $group) {
-            // Itera attraverso tutti gli alias associati al gruppo
             foreach ($group->aliases as $alias) {
-                // Verifica se il trainer è presente nell'alias (presenza)
-                if ($alias->secondo_allenatore_id != $trainer->id) {
+                // Se il trainer non è né secondo né primo allenatore, conta come assenza
+                if ($alias->secondo_allenatore_id != $trainer->id && $alias->primo_allenatore_id != $trainer->id) {
                     $countAbsenceTrainer += 1;
                 }
             }
         }
+
         return $countAbsenceTrainer;
     }
 
     public function countAttendanceTrainer($trainer)
     {
         $countAttendanceTrainer = 0;
+
         // Itera attraverso tutti i gruppi in cui il trainer è primo allenatore
         foreach ($trainer->primoAllenatoreGroups as $group) {
-            // Itera attraverso tutti gli alias associati al gruppo
             foreach ($group->aliases as $alias) {
-                // Verifica se il trainer è presente nell'alias (presenza)
-                if ($alias->primo_allenatore_id == $trainer->id) {
+                // Conta la presenza se è primo o secondo allenatore
+                if ($alias->primo_allenatore_id == $trainer->id || $alias->secondo_allenatore_id == $trainer->id) {
                     $countAttendanceTrainer += 1;
                 }
             }
         }
+
         // Itera attraverso tutti i gruppi in cui il trainer è secondo allenatore
         foreach ($trainer->secondoAllenatoreGroups as $group) {
-            // Itera attraverso tutti gli alias associati al gruppo
             foreach ($group->aliases as $alias) {
-                // Verifica se il trainer è presente nell'alias (presenza)
-                if ($alias->secondo_allenatore_id == $trainer->id) {
+                // Conta la presenza se è secondo o primo allenatore
+                if ($alias->secondo_allenatore_id == $trainer->id || $alias->primo_allenatore_id == $trainer->id) {
                     $countAttendanceTrainer += 1;
                 }
             }
         }
+
         return $countAttendanceTrainer;
     }
+
 }
