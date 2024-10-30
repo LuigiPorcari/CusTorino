@@ -31,17 +31,18 @@ class TrainerController extends Controller
             $endOfWeek = $today->copy()->endOfWeek(Carbon::SATURDAY);
         }
 
-        // Filtra gli alias per primo o secondo allenatore e tra sabato a sabato
+        // Filtra gli alias per primo o secondo allenatore e tra sabato a sabato, ordinando per data
         $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
             $query->where('primo_allenatore_id', $allenatore_id)
                 ->orWhere('secondo_allenatore_id', $allenatore_id);
         })
             ->whereBetween('data_allenamento', [$startOfWeek->toDateString(), $endOfWeek->toDateString()]) // Filtra per la data tra sabato a sabato
-            ->orderBy('orario', 'asc') // Ordina per orario crescente
-            ->paginate(10); // Pagina con 10 risultati per pagina
+            ->orderBy('data_allenamento', 'asc') // Ordina per data crescente
+            ->get();
 
         return view('dashboard.trainer', compact('aliasesTrainer'));
     }
+
 
     public function dashboardGroup(Request $request)
     {
