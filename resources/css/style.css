@@ -242,10 +242,16 @@ body {
 
 /* Imposta tutte le card alla stessa altezza */
 .equal-height-card {
-    min-height: 500px; /* Imposta l'altezza minima per uniformare le card */
+    height: auto; /* Imposta l'altezza minima per uniformare le card */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+/* Rendere scrollabile la lista degli studenti nella colonna "Segna Recuperi" */
+.custom-scrollable-list {
+    max-height: 300px; /* Definisci un'altezza massima. Puoi aumentarla o diminuirla in base alle necessità */
+    overflow-y: auto; /* Aggiunge lo scroll verticale */
 }
 
 /* Stile per il link Indietro senza sottolineatura */

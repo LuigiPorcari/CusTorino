@@ -16,6 +16,8 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
+
+
 //!ROTTE REGISTRAZIONE ADMIN
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
 Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
@@ -35,11 +37,8 @@ Route::middleware([CheckAdminOrTrainer::class])->group(function () {
     //!ROTTA ELIMINA TRAINER
     Route::delete('/trainer/delete/{id}', [LoginController::class, 'destroyTrainer'])->name('trainer.destroy');
     //!ROTTE MODIFICA ALIAS
-    Route::post('/alias/student-absence/{alias}', [AliasController::class, 'studentAbsence'])->name('student.absence');
-    Route::post('/alias/student-recoveries/{alias}', [AliasController::class, 'recoveriesStudent'])->name('student.recoveries');
-    Route::post('/alias/trainer-absence/{alias}', [AliasController::class, 'aliasUpdate'])->name('alias.update');
+    Route::post('/trainer/update-all/{alias}', [AliasController::class, 'updateAll'])->name('trainer.update.all');
     Route::get('/alias/details/{alias}', [AliasController::class, 'showDetails'])->name('alias.details');
-    Route::get('/alias/edit/student/{alias}', [AliasController::class, 'editStudent'])->name('student.edit');
 });
 //!MIDDLEWERE UTENTE LOGGATO
 Route::middleware('auth')->group(function () {

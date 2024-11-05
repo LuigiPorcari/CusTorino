@@ -7,88 +7,80 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <div class="row my-5 justify-content-center">
-            {{-- ! Descrizione gruppo alias --}}
-            <div class="col-11 col-md-3">
-                <h3 class="custom-subtitle text-center mb-4">Dettagli</h3>
-                <div class="custom-card equal-height-card mx-1 my-2">
-                    <div class="custom-card-body">
-                        <h5 class="card-title">{{ $alias->nome }}</h5>
-                        <p class="card-text">Sede: <span class="text-uppercase">{{ $alias->location }}</span></p>
-                        <h6 class="custom-date card-subtitle mb-2">{{ $alias->formatData($alias->data_allenamento) }}
-                        </h6>
-                        <p class="custom-paragraph"><span class="fw-bold">Tipo:</span>
-                            {{ $alias->tipo }}</p>
-                        <p class="custom-paragraph"><span class="fw-bold">Orario:</span>
-                            {{ $alias->formatHours($alias->orario) }}</p>
-                        @if ($alias->condiviso == 'false')
-                            @if ($alias->primo_allenatore_id != null)
-                                <p class="custom-paragraph"><span class="fw-bold">Primo allenatore:</span> <br>
-                                    {{ $alias->primoAllenatore->name }} {{ $alias->primoAllenatore->cognome }}</p>
-                            @endif
-                            @if ($alias->secondo_allenatore_id != null)
-                                <p class="custom-paragraph"><span class="fw-bold">Secondo allenatore:</span> <br>
-                                    {{ $alias->secondoAllenatore->name }} {{ $alias->secondoAllenatore->cognome }}</p>
-                            @endif
-                        @endif
-                        @if ($alias->condiviso == 'true')
-                            @if ($alias->primo_allenatore_id != null)
-                                <p class="custom-paragraph"><span class="fw-bold">Allenatore condiviso:</span> <br>
-                                    {{ $alias->primoAllenatore->name }} {{ $alias->primoAllenatore->cognome }}</p>
-                            @endif
-                            @if ($alias->secondo_allenatore_id != null)
-                                <p class="custom-paragraph"><span class="fw-bold">Allenatore condiviso:</span> <br>
-                                    {{ $alias->secondoAllenatore->name }} {{ $alias->secondoAllenatore->cognome }}</p>
-                            @endif
-                            <p class="custom-paragraph">Condiviso</p>
-                        @endif
-                        <div class="row border rounded-3">
-                            <div class="col-6 p-0 border-end">
-                                <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Corsisti:</span></p>
-                                @foreach ($alias->group->users as $student)
-                                    <p
-                                        class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
-                                        {{ $student->name }} {{ $student->cognome }}
+        @if ($errors->any())
+            <div class="alert alert-dismissible alert-danger">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @endforeach
+            </div>
+        @endif
+        <!-- Form principale per tutte le modifiche -->
+        <form method="POST" action="{{ route('trainer.update.all', $alias) }}">
+            @csrf
+            <div class="row my-5 justify-content-center">
+                {{-- Colonna: Dettagli gruppo alias --}}
+                <div class="col-11 col-md-3">
+                    <h3 class="custom-subtitle text-center mb-4">Dettagli</h3>
+                    <div class="custom-card equal-height-card mx-1 my-2">
+                        <div class="custom-card-body">
+                            <h5 class="card-title">{{ $alias->nome }}</h5>
+                            <p class="card-text">Sede: <span class="text-uppercase">{{ $alias->location }}</span></p>
+                            <h6 class="custom-date card-subtitle mb-2">
+                                {{ $alias->formatData($alias->data_allenamento) }}</h6>
+                            <p class="custom-paragraph"><span class="fw-bold">Tipo:</span> {{ $alias->tipo }}</p>
+                            <p class="custom-paragraph"><span class="fw-bold">Orario:</span>
+                                {{ $alias->formatHours($alias->orario) }}</p>
+                            <!-- Corsisti e recuperi -->
+                            <div class="row border rounded-3">
+                                <div class="col-6 p-0 border-end">
+                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Corsisti:</span>
                                     </p>
-                                @endforeach
-                            </div>
-                            <div class="col-6 p-0">
-                                <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Recuperi:</span></p>
-                                @foreach ($alias->compareStudents($alias->group->id, $alias->id) as $recupero)
-                                    @if (!in_array($recupero->id, $alias->group->studenti_id))
-                                        <p class="my-0 py-1 card-text border-bottom">{{ $recupero->name }}
-                                            {{ $recupero->cognome }}</p>
-                                    @endif
-                                @endforeach
+                                    @foreach ($alias->group->users as $student)
+                                        <p
+                                            class="my-0 py-1 card-text border-bottom {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                            {{ $student->name }} {{ $student->cognome }}
+                                        </p>
+                                    @endforeach
+                                </div>
+                                <div class="col-6 p-0">
+                                    <p class="my-0 py-2 card-text border-bottom"><span class="fw-bold">Recuperi:</span>
+                                    </p>
+                                    @foreach ($alias->compareStudents($alias->group->id, $alias->id) as $recupero)
+                                        @if (!in_array($recupero->id, $alias->group->studenti_id))
+                                            <p class="my-0 py-1 card-text border-bottom">{{ $recupero->name }}
+                                                {{ $recupero->cognome }}</p>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {{-- !Segna assenze studenti --}}
-            <div class="col-11 col-md-3">
-                <h3 class="custom-subtitle text-center mb-4">Segna Assenze</h3>
-                <div class="custom-card equal-height-card mx-1 my-2">
-                    <div class="custom-card-body d-flex flex-column justify-content-between align-items-center">
-                        @if ($threeDaysCheck || Auth::user()->is_admin)
-                            <form method="POST" action="{{ route('student.absence', $alias) }}">
+                {{-- Colonna: Segna assenze studenti --}}
+                <div class="col-11 col-md-3">
+                    <h3 class="custom-subtitle text-center mb-4">Segna Assenze</h3>
+                    <div class="custom-card equal-height-card mx-1 my-2">
+                        <div class="custom-card-body">
+                            @if ($threeDaysCheck || Auth::user()->is_admin)
                                 <div class="boxesTrainer container mt-2">
                                     <div class="row justify-content-center">
-                                        @csrf
-                                        <div class="col-12">
+                                        <div class="col-12 list-group">
                                             @foreach ($alias->group->users as $student)
                                                 <label class="checkbox">
-                                                    <input class="form-check-input me-1 ms-4" type="checkbox"
-                                                        value="{{ $student->id }}" name="studenti_ids[]"
-                                                        @if (!in_array($student->id, $alias->studenti_id)) checked @endif>
+                                                    <input type="checkbox" class="form-check-input me-1 ms-4"
+                                                        name="student_absences[]" value="{{ $student->id }}"
+                                                        {{ in_array($student->id, $alias->studenti_id) ? '' : 'checked' }}>
                                                     {{ $student->name }} {{ $student->cognome }}
                                                 </label>
                                             @endforeach
                                             @foreach ($alias->users as $student)
+                                                <input type="hidden" name="all_students[]"
+                                                    value="{{ $student->id }}">
                                                 @if (!in_array($student->id, $alias->group->studenti_id))
                                                     <label class="checkbox">
                                                         <input class="form-check-input me-1 ms-4" type="checkbox"
-                                                            value="{{ $student->id }}" name="studenti_ids[]"
+                                                            value="{{ $student->id }}" name="student_absences[]"
                                                             @if (!in_array($student->id, $alias->studenti_id)) checked @endif>
                                                         {{ $student->name }} {{ $student->cognome }}
                                                     </label>
@@ -97,111 +89,124 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-flex flex-column align-items-center">
-                                    <button type="submit" class="custom-btn-submit mt-3">Conferma assenze</button>
-                                </div>
-                            </form>
-                        @else
-                            <p class="text-center fs-3">Sono passati 3 o più giorni</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            {{-- !Segna recuperi studenti --}}
-            <div class="col-11 col-md-3">
-                <h3 class="custom-subtitle text-center mb-4 text-decoration-none">Segna Recuperi</h3>
-                <div class="custom-card equal-height-card mx-1 my-2">
-                    <div class="custom-card-body d-flex flex-column justify-content-between align-items-center">
-                        @if ($threeDaysCheck || Auth::user()->is_admin)
-                            @if ($alias->studenti_id == null || $alias->numero_massimo_partecipanti > count($alias->studenti_id))
-                                @if (empty(Auth::user()->getRecoverableStudent($alias)))
-                                    <p class="text-center">Non ci sono Corsisti che possono recuperare in questa data
-                                    </p>
-                                @else
-                                    <a class="custom-btn-submit text-center text-decoration-none"
-                                        href="{{ route('student.edit', $alias) }}">Segna recuperi</a>
-                                @endif
                             @else
-                                <p class="text-center">Questo gruppo è già al completo</p>
+                                <p class="text-center fs-3">Sono passati 3 o più giorni</p>
                             @endif
-                        @else
-                            <p class="text-center fs-3">Sono passati 3 o più giorni</p>
-                        @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            {{-- !Segna assenze allenatori --}}
-            <div class="col-11 col-md-3">
-                <h3 class="custom-subtitle text-center mb-4 pb-1 fs-4">Assenza Allenatore</h3>
-                <div class="custom-card equal-height-card mx-1 mt-4 mb-2">
-                    <div class="custom-card-body d-flex flex-column justify-content-between align-items-center">
-                        @if ($threeDaysCheck || Auth::user()->is_admin)
-                            <form method="POST" action="{{ route('alias.update', $alias) }}">
-                                @csrf
-                                {{-- PRIMO ALLENATORE --}}
+                {{-- Colonna: Segna recuperi studenti --}}
+                <div class="col-11 col-md-3">
+                    <h3 class="custom-subtitle text-center mb-4">Segna Recuperi</h3>
+                    <div class="custom-card equal-height-card mx-1 my-2">
+                        <div class="custom-card-body">
+                            <input type="text" id="searchInput" class="custom-form-input mb-3"
+                                placeholder="Cerca corsisti...">
+                            <div id="studentsList" class="list-group custom-scrollable-list">
+                                @foreach (Auth::user()->getRecoverableStudent($alias) as $student)
+                                    <label class="checkbox">
+                                        <input class="form-check-input me-1" type="checkbox"
+                                            value="{{ $student->id }}" name="student_recoveries[]">
+                                        {{ $student->name }} {{ $student->cognome }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- Colonna: Assenza Allenatore --}}
+                <div class="col-11 col-md-3">
+                    <h3 class="custom-subtitle text-center mb-4">Allenatori</h3>
+                    <div class="custom-card equal-height-card mx-1 my-2">
+                        <div class="custom-card-body">
+                            @if ($threeDaysCheck || Auth::user()->is_admin)
+                                {{-- Primo Allenatore --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="primo_allenatore_id">Primo Allenatore</label>
-                                    <select class="custom-form-input" id="primo_allenatore_id"
-                                        name="primo_allenatore_id" required>
+                                    <label for="primo_allenatore_id" class="custom-form-label">Primo Allenatore</label>
+                                    <select name="primo_allenatore_id" id="primo_allenatore_id"
+                                        class="custom-form-input">
                                         @foreach ($trainers as $trainer)
-                                            <option {{ $alias->primo_allenatore_id == $trainer->id ? 'selected' : '' }}
-                                                value="{{ $trainer->id }}">{{ $trainer->name }}
-                                                {{ $trainer->cognome }}
+                                            <option value="{{ $trainer->id }}"
+                                                {{ $alias->primo_allenatore_id == $trainer->id ? 'selected' : '' }}>
+                                                {{ $trainer->name }} {{ $trainer->cognome }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- SECONDO ALLENATORE --}}
+                                {{-- Secondo Allenatore --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="secondo_allenatore_id">Secondo
+                                    <label for="secondo_allenatore_id" class="custom-form-label">Secondo
                                         Allenatore</label>
-                                    <select class="custom-form-input" id="secondo_allenatore_id"
-                                        name="secondo_allenatore_id">
-                                        @if ($alias->secondo_allenatore_id == null)
-                                            <option value="" selected>Nessuno</option>
-                                        @else
-                                            <option value="">Nessuno</option>
-                                        @endif
+                                    <select name="secondo_allenatore_id" id="secondo_allenatore_id"
+                                        class="custom-form-input">
+                                        <option value=""
+                                            {{ is_null($alias->secondo_allenatore_id) ? 'selected' : '' }}>Nessuno
+                                        </option>
                                         @foreach ($trainers as $trainer)
-                                            <option
-                                                {{ $alias->secondo_allenatore_id == $trainer->id ? 'selected' : '' }}
-                                                value="{{ $trainer->id }}">{{ $trainer->name }}
-                                                {{ $trainer->cognome }}
+                                            <option value="{{ $trainer->id }}"
+                                                {{ $alias->secondo_allenatore_id == $trainer->id ? 'selected' : '' }}>
+                                                {{ $trainer->name }} {{ $trainer->cognome }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- CONDIVISO --}}
+                                {{-- Condiviso --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="condiviso">Condiviso</label>
-                                    <select class="custom-form-input" id="condiviso" name="condiviso" required>
-                                        @if ($alias->condiviso == 'true')
-                                            <option selected value="true">Sì</option>
-                                            <option value="false">No</option>
-                                        @else
-                                            <option value="true">Sì</option>
-                                            <option selected value="false">No</option>
-                                        @endif
+                                    <label for="condiviso" class="custom-form-label">Condiviso</label>
+                                    <select name="condiviso" id="condiviso" class="custom-form-input">
+                                        <option value="true" {{ $alias->condiviso == 'true' ? 'selected' : '' }}>Sì
+                                        </option>
+                                        <option value="false" {{ $alias->condiviso == 'false' ? 'selected' : '' }}>No
+                                        </option>
                                     </select>
                                 </div>
-                                <button type="submit" class="custom-btn-submit">Modifica presenze allenatori</button>
-                            </form>
-                        @else
-                            <p class="text-center fs-3">Sono passati 3 o più giorni</p>
-                        @endif
+                            @else
+                                <p class="text-center fs-3">Sono passati 3 o più giorni</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Pulsante di Ritorno -->
-            @if (Auth::user()->is_admin)
-                <div class="text-center">
-                    <a class="custom-link-btn" href="{{ route('admin.group.details', $alias->group) }}">Indietro</a>
-                </div>
-            @else
-                <div class="text-center">
-                    <a class="custom-link-btn" href="{{ route('trainer.group') }}">Indietro</a>
-                </div>
-            @endif
+            <!-- Unico pulsante di conferma -->
+            <div class="text-center mb-4">
+                <button type="submit" class="custom-btn-submit w-50">Conferma tutte le modifiche</button>
+            </div>
+        </form>
+        <!-- Pulsante di Ritorno -->
+        <div class="text-center">
+            <a class="custom-link-btn"
+                href="{{ Auth::user()->is_admin ? route('admin.group.details', $alias->group) : route('trainer.group') }}">Indietro</a>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function() {
+                const value = searchInput.value.toLowerCase();
+                document.querySelectorAll('#studentsList label').forEach(function(label) {
+                    label.style.display = label.textContent.toLowerCase().includes(value) ? '' :
+                        'none';
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleziona tutte le colonne con la classe .equal-height-card
+            const columns = document.querySelectorAll('.equal-height-card');
+
+            // Controlla se ci sono colonne nella pagina
+            if (columns.length > 0) {
+                // Ottieni l'altezza della prima colonna
+                const firstColumnHeight = columns[0].offsetHeight;
+
+                // Applica l'altezza della prima colonna a tutte le altre
+                columns.forEach((column, index) => {
+                    if (index !== 0) { // Ignora la prima colonna
+                        column.style.height = `${firstColumnHeight}px`;
+                    }
+                });
+            }
+        });
+    </script>
 </x-layout>

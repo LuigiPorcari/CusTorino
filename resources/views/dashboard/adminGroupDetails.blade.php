@@ -160,9 +160,9 @@
                                         </td>
                                     </div>
                                     <td><a href="{{ route('alias.details', $alias) }}"
-                                            class="btn admin-btn-info fs-md-6 w-50 mb-2">Dettagli</a>
+                                            class="btn admin-btn-info fs-md-6 mb-2 px-3">Dettagli</a>
                                         <button type="button"
-                                            class="btn custom-btn-danger-nav text-uppercase text-white fw-bolder fs-6 w-50"
+                                            class="btn custom-btn-danger-nav text-uppercase text-white fw-bolder fs-6"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteModalAlias{{ $alias->id }}">
                                             Elimina
