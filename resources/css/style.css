@@ -242,10 +242,10 @@ body {
 
 /* Imposta tutte le card alla stessa altezza */
 .equal-height-card {
-    height: auto; /* Imposta l'altezza minima per uniformare le card */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: auto; /* Consente di modificare dinamicamente l'altezza */
 }
 
 /* Rendere scrollabile la lista degli studenti nella colonna "Segna Recuperi" */
@@ -377,8 +377,8 @@ body {
     margin-bottom: 10px;
 }
 
-.bg-green-salary{
-    background-color: rgb(39, 174, 96)  !important;
+.bg-green-salary {
+    background-color: rgb(39, 174, 96) !important;
 }
 
 /* Media queries per dispositivi mobili */

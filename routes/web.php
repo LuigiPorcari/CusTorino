@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Controllers\AliasController;
 use App\Http\Middleware\CheckAdmin;
-use App\Http\Middleware\CheckAdminOrTrainer;
 use App\Http\Middleware\CheckStudent;
 use App\Http\Middleware\CheckTrainer;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AliasController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Middleware\CheckAdminOrTrainer;
 use App\Http\Controllers\Auth\RegisterController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
@@ -52,9 +53,6 @@ Route::middleware('auth')->group(function () {
 Route::middleware(CheckAdmin::class)->group(function () {
     //!ROTTE CAMBIO RUOLI TRAINER E CORSISTA
     Route::post('/admin/user/{trainer}/make-trainer-student', [AdminController::class, 'makeTrainerAndStudent'])->name('admin.user.make-trainer-student');
-    //!ROTTE REGISTRAZIONE ADMIN
-    // Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
-    // Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
     //!ROTTA ELIMINA ADMIN
     Route::delete('/admin/delete/{id}', [LoginController::class, 'destroyAdmin'])->name('admin.destroy');
     //!ROTTA ADMIN ELIMINA CORSISTA
@@ -75,6 +73,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
     //!ROTTE ADMIN DASHBOARD
+    Route::get('/admin/logs', [LogController::class, 'index'])->name('logs.index');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/dashboard/trainer', [AdminController::class, 'dashboardTrainer'])->name('admin.dashboard.trainer');
     Route::get('/admin/dashboard/trainer/details/{trainer}', [AdminController::class, 'trainerDetails'])->name('admin.trainer.details');

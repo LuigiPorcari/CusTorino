@@ -98,19 +98,23 @@
                 {{-- Colonna: Segna recuperi studenti --}}
                 <div class="col-11 col-md-3">
                     <h3 class="custom-subtitle text-center mb-4">Segna Recuperi</h3>
-                    <div class="custom-card equal-height-card mx-1 my-2">
+                    <div class="custom-card equal-height-card mx-1 my-2 d-flex">
                         <div class="custom-card-body">
-                            <input type="text" id="searchInput" class="custom-form-input mb-3"
-                                placeholder="Cerca corsisti...">
-                            <div id="studentsList" class="list-group custom-scrollable-list">
-                                @foreach (Auth::user()->getRecoverableStudent($alias) as $student)
-                                    <label class="checkbox">
-                                        <input class="form-check-input me-1" type="checkbox"
-                                            value="{{ $student->id }}" name="student_recoveries[]">
-                                        {{ $student->name }} {{ $student->cognome }}
-                                    </label>
-                                @endforeach
-                            </div>
+                            @if ($threeDaysCheck || Auth::user()->is_admin)
+                                <input type="text" id="searchInput" class="custom-form-input mb-3"
+                                    placeholder="Cerca corsisti...">
+                                <div id="studentsList" class="list-group custom-scrollable-list">
+                                    @foreach (Auth::user()->getRecoverableStudent($alias) as $student)
+                                        <label class="checkbox">
+                                            <input class="form-check-input me-1" type="checkbox"
+                                                value="{{ $student->id }}" name="student_recoveries[]">
+                                            {{ $student->name }} {{ $student->cognome }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="text-center fs-3">Sono passati 3 o più giorni</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -197,14 +201,15 @@
 
             // Controlla se ci sono colonne nella pagina
             if (columns.length > 0) {
-                // Ottieni l'altezza della prima colonna
-                const firstColumnHeight = columns[0].offsetHeight;
+                // Trova l'altezza massima tra tutte le colonne
+                let maxHeight = 0;
+                columns.forEach(column => {
+                    maxHeight = Math.max(maxHeight, column.offsetHeight);
+                });
 
-                // Applica l'altezza della prima colonna a tutte le altre
-                columns.forEach((column, index) => {
-                    if (index !== 0) { // Ignora la prima colonna
-                        column.style.height = `${firstColumnHeight}px`;
-                    }
+                // Applica l'altezza massima a tutte le colonne
+                columns.forEach(column => {
+                    column.style.height = `${maxHeight}px`;
                 });
             }
         });

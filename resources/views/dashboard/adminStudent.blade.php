@@ -9,6 +9,9 @@
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
         </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+        </li>
     </ul>
 
     <div class="container mt-md-5 admin-student-dashboard">
@@ -32,14 +35,18 @@
                             placeholder="Gruppi" value="{{ request('group_name') }}">
                     </div>
 
-                    <!-- Checkbox per "Non iscritto a nessun gruppo" -->
-                    <div class="col-6 col-md-2">
+                    <!-- Checkbox per "Non iscritto a nessun gruppo" e "Iscritto a un gruppo" -->
+                    <div class="col-6 col-md-3">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">Gruppi</p>
                             <input type="hidden" name="no_group" value="0">
                             <label for="no_group_filter" class="mt-2">
                                 <input type="checkbox" name="no_group" id="no_group_filter" value="1"
-                                    {{ request('no_group') == '1' ? 'checked' : '' }}> Non iscritto a nessun gruppo
+                                    {{ request('no_group') == '1' ? 'checked' : '' }}> Iscritto a nessun Gruppo
+                            </label>
+                            <label for="group_enrolled_filter" class="mt-2">
+                                <input type="checkbox" name="group_enrolled" id="group_enrolled_filter" value="1"
+                                    {{ request('group_enrolled') == '1' ? 'checked' : '' }}> Iscritto a un Gruppo
                             </label>
                         </div>
                     </div>
@@ -79,19 +86,21 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    {{-- Filtro per livello --}}
+                    <!-- Filtro per livello -->
                     <div class="col-6 col-md-4">
                         <div>
-                            <input type="number" name="student_level" id="student_level" class="custom-form-input shadow-lg"
-                                placeholder="Livello" value="{{ request('student_level') }}" min="1" max="12" step="1">
+                            <input type="number" name="student_level" id="student_level"
+                                class="custom-form-input shadow-lg" placeholder="Livello"
+                                value="{{ request('student_level') }}" min="1" max="12" step="1">
                             <label>
-                                <input type="checkbox" name="no_level" value="1" {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
+                                <input type="checkbox" name="no_level" value="1"
+                                    {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
                             </label>
                         </div>
                     </div>
 
                     <!-- Checkbox per Pagamento -->
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-md-3">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">Pagamento</p>
                             <input type="hidden" name="pagamento_ok" value="0">

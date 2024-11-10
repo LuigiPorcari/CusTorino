@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Alias extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $fillable = [
         'nome',
@@ -90,4 +92,8 @@ class Alias extends Model
         return $formattedTime;
     }
 
+    public function logs()
+    {
+        return $this->hasMany(Log::class, 'alias_id');
+    }
 }

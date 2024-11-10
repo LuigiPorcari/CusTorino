@@ -9,6 +9,9 @@
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
         </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+        </li>
     </ul>
     <div class="container mt-md-5 admin-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Gruppi</h2>

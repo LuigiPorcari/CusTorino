@@ -120,6 +120,11 @@ class AdminController extends Controller
             $studentsQuery->whereDoesntHave('groups');
         }
 
+        // Filtro per "Iscritto a un gruppo"
+        if ($request->input('group_enrolled') == '1') {
+            $studentsQuery->whereHas('groups');
+        }
+
         // Filtro per CUS Card
         if ($request->input('cus_card_ok') == '1') {
             $studentsQuery->where('cus_card', 1);
@@ -159,12 +164,12 @@ class AdminController extends Controller
             $studentsQuery->whereNull('livello');
         }
 
-
         // Paginazione con 50 risultati per pagina
         $students = $studentsQuery->paginate(50)->appends($request->except('page'));
 
         return view('dashboard.adminStudent', compact('students'));
     }
+
 
     public function trainerDetails(User $trainer)
     {

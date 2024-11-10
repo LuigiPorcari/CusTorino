@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\LogsActivity;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -270,4 +272,21 @@ class User extends Authenticatable
         return $countAttendanceTrainer;
     }
 
+    /**
+     * Relazione uno-a-molti con Log per le azioni eseguite dall'utente.
+     * Un utente può avere molti log di azioni eseguite.
+     */
+    public function actionLogs()
+    {
+        return $this->hasMany(Log::class, 'user_id');
+    }
+
+    /**
+     * Relazione uno-a-molti con Log per le modifiche ricevute dall'utente.
+     * Un utente può essere stato modificato in molti log.
+     */
+    public function modificationLogs()
+    {
+        return $this->hasMany(Log::class, 'user_modified_id');
+    }
 }
