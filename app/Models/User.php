@@ -180,6 +180,8 @@ class User extends Authenticatable
         $now = Carbon::now();
         // Calcola la data e l'orario limite per l'incremento (12 ore prima dell'alias)
         $deadline = $aliasDateTime->copy()->subHours(12);
+        // Definisci mezzogiorno di oggi
+        $noonToday = Carbon::now()->startOfDay()->addHours(12);
         // Verifica che lo studente abbia la carta CUS, la visita medica e il pagamento effettuato
         if (!Auth::user()->cus_card) {
             $string .= 'Non hai possibilità di recuperare questa assenza perchè non hai una carta CUS valida.<br>';
@@ -190,9 +192,9 @@ class User extends Authenticatable
         if (!Auth::user()->pagamento) {
             $string .= 'Non hai possibilità di recuperare questa assenza perchè non hai completato il pagamento.<br>';
         }
-        // Verifica se l'assenza è richiesta con almeno 12 ore di anticipo
-        if ($now->gt($deadline)) {
-            $string .= 'Non hai possibilità di recuperare questa assenza perchè il termine delle 12 ore è già passato.<br>';
+        // Verifica se la data di allenamento è oggi e se è passata mezzogiorno
+        if ($alias->data_allenamento === $now->toDateString() && $now->gt($noonToday)) {
+            $string .= 'Non hai possibilità di recuperare questa assenza perchè sono passate le 12:00.<br>';
         }
         // Verifica che tutte le condizioni siano soddisfatte
         if (empty($string) && $now->lte($deadline)) {
@@ -216,6 +218,40 @@ class User extends Authenticatable
             }
         }
         return $countAbsences;
+    }
+
+    public function countAbsStudent($student)
+    {
+        $absencesAlias = [];
+        $student = User::findOrFail($student->id);
+        // Itera attraverso tutti i gruppi a cui lo studente è iscritto
+        foreach ($student->groups as $group) {
+            // Itera attraverso tutti gli alias associati al gruppo
+            foreach ($group->aliases as $alias) {
+                // Verifica se lo studente non è presente nell'alias (assenza)
+                if (!in_array($student->id, $alias->studenti_id)) {
+                    $absencesAlias[] = $alias;
+                }
+            }
+        }
+        return $absencesAlias;
+    }
+
+    public function countRecStudent($student)
+    {
+        $recAlias = [];
+        $studentGroupId = [];
+        $student = User::findOrFail($student->id);
+        // Itera attraverso tutti i gruppi a cui lo studente è iscritto
+        foreach ($student->groups as $group) {
+            $studentGroupId[] = $group->id;
+        }
+        foreach ($student->aliases as $alias) {
+            if (!in_array($alias->group_id, $studentGroupId)) {
+                $recAlias[] = $alias;
+            }
+        }
+        return $recAlias;
     }
 
     public function countAbsenceTrainer($trainer)

@@ -67,12 +67,12 @@ class Log extends Model
 
     public function formatData($date)
     {
-        $formattedDate = Carbon::parse($date)->addHour()->translatedFormat('l d F H:i');
+        $formattedDate = Carbon::parse($date)->translatedFormat('l d F H:i');
         return $formattedDate;
     }
     public function formatDataMod($date)
     {
-        $formattedDate = Carbon::parse($date)->addHour()->translatedFormat('l d F');
+        $formattedDate = Carbon::parse($date)->translatedFormat('l d F');
         return $formattedDate;
     }
 }

@@ -1,7 +1,57 @@
 <x-layout documentTitle="Admin Student Details">
     <div class="container mt-5 pt-5 admin-student-details">
+        <!-- Inizio nuove tabelle affiancate -->
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                <h3 class=" custom-subtitle">Assenze</h3>
+                <table class="table table-bordered admin-table">
+                    <thead>
+                        <tr>
+                            <th>Data Assenza</th>
+                            <th>Gruppo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse (Auth::user()->countAbsStudent($student) as $alias)
+                            <tr>
+                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
+                                <td><a href="{{ route('alias.details', $alias) }}">{{ $alias->nome }}</a></td>
+                            </tr>
+                        @empty
+                            <tr id="no_students_row">
+                                <td colspan="4" class="text-center">Non ci sono assenze per questo corsista</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h3 class=" custom-subtitle">Recuperi</h3>
+                <table class="table table-bordered admin-table">
+                    <thead>
+                        <tr>
+                            <th>Data Recupero</th>
+                            <th>Gruppo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse (Auth::user()->countRecStudent($student) as $alias)
+                            <tr>
+                                <td>{{ $alias->formatData($alias->data_allenamento) }}</td>
+                                <td><a href="{{ route('alias.details', $alias) }}">{{ $alias->nome }}</a></td>
+                            </tr>
+                        @empty
+                            <tr id="no_students_row">
+                                <td colspan="4" class="text-center">Non ci sono recuperi per questo corsista</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Fine nuove tabelle affiancate -->
         <div class="row justify-content-center">
-            <div class="col-md-8 mt-5 pt-3">
+            <div class="col-md-8 mt-1">
                 <div class="card shadow-sm admin-student-card">
                     <div class="admin-student-card-header">
                         <h3>Scheda del corsista {{ $student->name }} {{ $student->cognome }}</h3>

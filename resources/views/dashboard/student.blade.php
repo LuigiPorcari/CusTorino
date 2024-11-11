@@ -65,18 +65,34 @@
                         </thead>
                         <tbody>
                             @forelse ($trainingAliases as $alias)
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn admin-btn-danger btn-sm"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#absenceConfirmationModal-{{ $alias->id }}">
-                                            Segna Assenza
-                                        </button>
-                                    </td>
-                                    <td>{{ $alias->formatData($alias->data_allenamento) }} / <span
-                                            class="text-uppercase">{{ $alias->location }}</span></td>
-                                    <td>{{ $alias->formatHours($alias->orario) }}</td>
-                                </tr>
+                                @if (in_array($alias->group_id, $userGroupsId))
+                                    <tr>
+                                        <td>
+                                            <button type="button" class="btn admin-btn-danger btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#absenceConfirmationModal-{{ $alias->id }}">
+                                                Segna Assenza
+                                            </button>
+                                        </td>
+                                        <td>{{ $alias->formatData($alias->data_allenamento) }} / <span
+                                                class="text-uppercase">{{ $alias->location }}</span></td>
+                                        <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td class="bg-warning">
+                                            <button type="button" class="btn admin-btn-danger btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#absenceConfirmationModal-{{ $alias->id }}">
+                                                Segna Assenza
+                                            </button>
+                                        </td>
+                                        <td class="bg-warning">{{ $alias->formatData($alias->data_allenamento) }} /
+                                            <span class="text-uppercase">{{ $alias->location }}</span></td>
+                                        <td class="bg-warning">{{ $alias->formatHours($alias->orario) }}</td>
+                                    </tr>
+                                @endif
+
                             @empty
                                 <tr>
                                     <td colspan="3">
@@ -176,7 +192,7 @@
                         <button type="button" class="btn undo-btn-danger btn-sm mt-5 mx-5" data-bs-toggle="modal"
                             data-bs-target="#undoModal">
                             Annulla Ultima
-                                Operazione
+                            Operazione
                         </button>
                     @endif
                 </div>
@@ -227,22 +243,31 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Sei sicuro di voler recuperare l'assenza per il gruppo in data
-                        {{ $alias->formatData($alias->data_allenamento) }} all'ora
-                        {{ $alias->formatHours($alias->orario) }}?
+                        @if ($alias->data_allenamento == now()->toDateString() && now()->hour >= 12)
+                            Non puoi recuperare l'assenza per il gruppo in data
+                            {{ $alias->formatData($alias->data_allenamento) }} all'ora
+                            {{ $alias->formatHours($alias->orario) }} perchè sono passate le 12:00.
+                        @else
+                            Sei sicuro di voler recuperare l'assenza per il gruppo in data
+                            {{ $alias->formatData($alias->data_allenamento) }} all'ora
+                            {{ $alias->formatHours($alias->orario) }}?
+                        @endif
                     </div>
                     <div class="modal-footer admin-modal-footer">
                         <button type="button" class="btn admin-modal-btn-secondary"
                             data-bs-dismiss="modal">Annulla</button>
-                        <form action="{{ route('student.recAbsence', $alias->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn admin-btn-danger">Conferma</button>
-                        </form>
+                        @if (!($alias->data_allenamento == now()->toDateString() && now()->hour >= 12))
+                            <form action="{{ route('student.recAbsence', $alias->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn admin-btn-danger">Conferma</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     @endforeach
+
     <!-- Modale di conferma Annulla Operazione -->
     <div class="modal fade" id="undoModal" tabindex="-1" aria-labelledby="undoModalLabel" aria-hidden="true">
         <div class="modal-dialog">

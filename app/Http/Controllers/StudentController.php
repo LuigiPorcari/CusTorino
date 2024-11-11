@@ -16,10 +16,15 @@ class StudentController extends Controller
     use LogsActivity;
     public function dashboard(Request $request)
     {
+        $userGroupsId = [];
         $student = Auth::user();
         $today = Carbon::today();
         $tomorrow = Carbon::tomorrow(); // Data di domani
         $twoWeeksLater = Carbon::today()->addWeeks(2); // Data limite tra due settimane
+
+        foreach (Auth::user()->groups as $group) {
+            $userGroupsId[] = $group->id;
+        }
 
         // Recupera le date disponibili per gli alias dove lo studente è presente (assenze)
         $availableTrainingDates = $student->aliases()
@@ -51,8 +56,8 @@ class StudentController extends Controller
 
         // Recupera gli alias recuperabili entro 2 settimane, escludendo la data odierna
         $recoverableAliases = $this->getRecoverableAliases($student)
-            ->filter(function ($alias) use ($tomorrow, $twoWeeksLater) {
-                return Carbon::parse($alias->data_allenamento)->between($tomorrow, $twoWeeksLater);
+            ->filter(function ($alias) use ($today, $twoWeeksLater) {
+                return Carbon::parse($alias->data_allenamento)->between($today, $twoWeeksLater);
             });
 
         // Estrai le date valide per il recupero e ordinali per data di allenamento
@@ -80,7 +85,7 @@ class StudentController extends Controller
         $recoverableAliases = $recoverableAliases->sortBy('data_allenamento');
 
         // Restituisce la vista con gli alias ordinati
-        return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates', 'availableRecoveryDates'));
+        return view('dashboard.student', compact('trainingAliases', 'recoverableAliases', 'availableTrainingDates', 'availableRecoveryDates', 'userGroupsId'));
     }
 
     private function getRecoverableAliases($student)
@@ -113,17 +118,29 @@ class StudentController extends Controller
         $student = Auth::user();
         $alias = Alias::findOrFail($aliasId);
 
-        // Logica per segnare l'assenza
-        $aliasDateTime = Carbon::parse($alias->data_allenamento . ' ' . $alias->orario)->addHour();
-        $now = Carbon::now()->addHour();
-        $deadline = $aliasDateTime->copy()->subHours(12);
+        // Calcola l'orario dell'alias e l'ora corrente
+        $aliasDateTime = Carbon::parse($alias->data_allenamento . ' ' . $alias->orario);
+        $now = Carbon::now();
 
-        if ($now->lte($deadline) && $student->cus_card && $student->visita_medica && $student->pagamento) {
-            $student->increment('Nrecuperi');
+        // Verifica delle condizioni
+        if ($student->cus_card && $student->visita_medica && $student->pagamento) {
+            // Se la data di allenamento è oggi, l'incremento avviene solo se prima delle 12:00
+            if ($alias->data_allenamento === Carbon::now()->toDateString()) {
+                $noonDeadline = Carbon::now()->startOfDay()->addHours(12);
+                if ($now->lt($noonDeadline)) {
+                    $student->increment('Nrecuperi');
+                }
+            }
+            // Se la data di allenamento non è oggi, l'incremento avviene senza altre verifiche di orario
+            else {
+                $student->increment('Nrecuperi');
+            }
         }
 
+        // Rimozione dell'associazione tra studente e alias
         $alias->users()->detach($student->id);
 
+        // Rimozione dello studente dalla lista degli studenti nell'alias
         $studenti = $alias->studenti_id ?? [];
         if (($key = array_search($student->id, $studenti)) !== false) {
             unset($studenti[$key]);
@@ -131,14 +148,17 @@ class StudentController extends Controller
         $alias->studenti_id = array_values($studenti);
         $alias->save();
 
-        // Salva l'ultima azione nel database
+        // Salvataggio dell'ultima azione nel database
         $student->last_action = 'mark_absence';
         $student->last_alias_id = $alias->id;
-        $student->save();  // Assicurati che il salvataggio venga effettuato
+        $student->save();
 
+        // Log dell'azione personalizzata
         self::logCustomAction('custom_action_name', $alias, null, 'Assenza');
+
         return redirect()->back()->with('success', 'Assenza segnata con successo.');
     }
+
 
     public function recAbsence($aliasId)
     {
@@ -181,7 +201,7 @@ class StudentController extends Controller
 
         if ($student->last_action == 'mark_absence') {
             // Annulla la segnatura di un'assenza:
-            if ($student->cus_card && $student->visita_medica && $student->pagamento) {
+            if ($student->cus_card && $student->visita_medica && $student->pagamento && $student->Nrecuperi > 0) {
                 $student->decrement('Nrecuperi');
             }
             $alias->users()->attach($student->id); // Riassegna lo studente all'alias
