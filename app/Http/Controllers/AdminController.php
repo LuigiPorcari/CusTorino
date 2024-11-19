@@ -23,8 +23,13 @@ class AdminController extends Controller
 
     public function groupDetails(Group $group, Request $request)
     {
-        // Filtro per data
-        $aliasQuery = $group->aliases()->orderBy('data_allenamento', 'asc');
+        // Calcola l'inizio della settimana corrente
+        $startOfCurrentWeek = Carbon::now()->startOfWeek();
+
+        // Filtro per data, includendo solo alias a partire dalla settimana corrente
+        $aliasQuery = $group->aliases()
+            ->where('data_allenamento', '>=', $startOfCurrentWeek)
+            ->orderBy('data_allenamento', 'asc');
 
         if ($request->filled('data_allenamento')) {
             $aliasQuery->whereDate('data_allenamento', $request->data_allenamento);
@@ -34,15 +39,27 @@ class AdminController extends Controller
 
         // Ottieni tutte le date uniche degli alias per il filtro
         $availableDates = $group->aliases()
+            ->where('data_allenamento', '>=', $startOfCurrentWeek)
             ->select('data_allenamento')
             ->orderBy('data_allenamento', 'asc')
             ->distinct()
             ->get();
 
+        // Aggiungi un array con gli alias precedenti alla settimana corrente
+        $otherAliasQuery = $group->aliases()
+            ->where('data_allenamento', '<', $startOfCurrentWeek)
+            ->orderBy('data_allenamento', 'asc');
 
+        if ($request->filled('data_allenamento')) {
+            $otherAliasQuery->whereDate('data_allenamento', $request->data_allenamento);
+        }
+
+        $otherAliases = $otherAliasQuery->get();
+
+        // Recupera le date mancanti
         $dateMancanti = $this->getMissingAliasDates($group);
 
-        return view('dashboard.adminGroupDetails', compact('group', 'aliases', 'availableDates', 'dateMancanti'));
+        return view('dashboard.adminGroupDetails', compact('group', 'aliases', 'availableDates', 'otherAliases', 'dateMancanti'));
     }
 
     public function dashboardTrainer(Request $request)
