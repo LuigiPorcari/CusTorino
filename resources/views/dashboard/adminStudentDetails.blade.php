@@ -4,7 +4,7 @@
         <div class="row mb-3 mt-3">
             <div class="col-md-6">
                 <h3 class=" custom-subtitle">Assenze</h3>
-                <table class="table table-bordered admin-table">
+                <table id="table-assenze" class="table table-bordered admin-table">
                     <thead>
                         <tr>
                             <th>Data Assenza</th>
@@ -24,10 +24,11 @@
                         @endforelse
                     </tbody>
                 </table>
+                <button id="toggle-assenze" class="btn btn-primary mt-2 fw-bold">Mostra tutto</button>
             </div>
             <div class="col-md-6">
                 <h3 class=" custom-subtitle">Recuperi</h3>
-                <table class="table table-bordered admin-table">
+                <table id="table-recuperi" class="table table-bordered admin-table">
                     <thead>
                         <tr>
                             <th>Data Recupero</th>
@@ -47,6 +48,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                <button id="toggle-recuperi" class="btn btn-primary mt-2 fw-bold">Mostra tutto</button>
             </div>
         </div>
         <!-- Fine nuove tabelle affiancate -->
@@ -176,7 +178,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="deleteModal{{ $student->id }}" tabindex="-1"
         aria-labelledby="deleteModalLabel{{ $student->id }}" aria-hidden="true">
         <div class="modal-dialog">
@@ -201,5 +202,27 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleTableRows(tableId, buttonId) {
+            const table = document.getElementById(tableId);
+            const button = document.getElementById(buttonId);
+            const rows = table.querySelectorAll('tbody tr');
+            let isExpanded = false;
 
+            rows.forEach((row, index) => {
+                if (index >= 3) row.style.display = 'none';
+            });
+
+            button.addEventListener('click', () => {
+                isExpanded = !isExpanded;
+                rows.forEach((row, index) => {
+                    row.style.display = isExpanded || index < 3 ? '' : 'none';
+                });
+                button.textContent = isExpanded ? 'Mostra meno' : 'Mostra tutto';
+            });
+        }
+
+        toggleTableRows('table-assenze', 'toggle-assenze');
+        toggleTableRows('table-recuperi', 'toggle-recuperi');
+    </script>
 </x-layout>

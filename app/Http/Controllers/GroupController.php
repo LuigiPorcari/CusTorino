@@ -20,6 +20,7 @@ class GroupController extends Controller
 
     public function editStudent(Group $group)
     {
+        $possibleDates = $this->calculatePossibleAliasDates($group->data_inizio_corso, $group->data_fine_corso, $group->giorno_settimana);
         // FILTRO STUDENTI IMPLEMENTABILE
         $students = User::where('is_corsista', 1)->get();
         $studentsAvaiable = [];
@@ -28,7 +29,7 @@ class GroupController extends Controller
                 $studentsAvaiable[] = $student;
             }
         }
-        return view('groups.createStudent', compact('group', 'studentsAvaiable'));
+        return view('groups.createStudent', compact('group', 'studentsAvaiable', 'possibleDates'));
     }
 
     public function store(Request $request)
@@ -155,6 +156,9 @@ class GroupController extends Controller
         $validator = Validator::make($request->all(), [
             'studenti_id' => 'nullable|array',
             'studenti_id.*' => 'required|integer|exists:users,id',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'all_dates' => 'nullable|boolean', // Checkbox tutte le date
         ]);
 
         // Aggiungere una regola di validazione personalizzata per il numero massimo di partecipanti
@@ -179,38 +183,71 @@ class GroupController extends Controller
         $group->users()->sync($studentiNuovi);
 
         // Modifica degli alias
+        $allDatesChecked = $request->boolean('all_dates');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
         foreach ($group->aliases as $alias) {
-            // Inizializza gli studenti dell'alias come array vuoto se null
-            $studentiAlias = $alias->studenti_id ?? [];
+            // Controlla se l'alias deve essere modificato in base alla selezione dell'utente
+            $modifyAlias = $allDatesChecked ||
+                ($startDate && $endDate &&
+                    $alias->data_allenamento >= $startDate &&
+                    $alias->data_allenamento <= $endDate);
 
-            // Trova gli studenti presenti sia nel vecchio array che nell'alias
-            $studentPresenti = array_intersect($studentOld, $studentiAlias);
+            if ($modifyAlias) {
+                // Inizializza gli studenti dell'alias come array vuoto se null
+                $studentiAlias = $alias->studenti_id ?? [];
 
-            // Trova gli studenti extra che sono solo nell'alias e non nel gruppo
-            $studentiExtraAlias = array_diff($studentiAlias, $studentOld);
+                // Trova gli studenti presenti sia nel vecchio array che nell'alias
+                $studentPresenti = array_intersect($studentOld, $studentiAlias);
 
-            // Unisci gli studenti presenti con quelli aggiunti e mantieni gli studenti extra
-            $corsisti = array_merge($studentPresenti, $studentAggiunti, $studentiExtraAlias);
+                // Trova gli studenti extra che sono solo nell'alias e non nel gruppo
+                $studentiExtraAlias = array_diff($studentiAlias, $studentOld);
 
-            // Rimuovi gli studenti deselezionati dal gruppo, ma non gli studenti extra dell'alias
-            $corsisti = array_diff($corsisti, $studentiRimossi);
+                // Unisci gli studenti presenti con quelli aggiunti e mantieni gli studenti extra
+                $corsisti = array_merge($studentPresenti, $studentAggiunti, $studentiExtraAlias);
 
-            // Elimina eventuali duplicati e reindicizza l'array
-            $corsisti = array_unique($corsisti);
-            $corsisti = array_values($corsisti);
+                // Rimuovi gli studenti deselezionati dal gruppo, ma non gli studenti extra dell'alias
+                $corsisti = array_diff($corsisti, $studentiRimossi);
 
-            // Aggiorna l'alias con i nuovi studenti
-            $alias->update([
-                'studenti_id' => $corsisti,
-            ]);
+                // Elimina eventuali duplicati e reindicizza l'array
+                $corsisti = array_unique($corsisti);
+                $corsisti = array_values($corsisti);
 
-            // Sincronizza l'alias con i nuovi studenti
-            $alias->users()->sync($corsisti);
+                // Aggiorna l'alias con i nuovi studenti
+                $alias->update([
+                    'studenti_id' => $corsisti,
+                ]);
+
+                // Sincronizza l'alias con i nuovi studenti
+                $alias->users()->sync($corsisti);
+            }
         }
 
         return redirect(route('admin.group.details', ['group' => $group->id]))
             ->with('success', 'Operazione avvenuta con successo');
     }
+
+
+    private function calculatePossibleAliasDates($startDate, $endDate, $dayOfWeek)
+    {
+        $dates = [];
+        $currentDate = Carbon::parse($startDate)->startOfDay();
+
+        while ($currentDate->lte(Carbon::parse($endDate))) {
+            // Ottieni il giorno della settimana dalla data corrente
+            $formattedDay = $this->removeAccentWithStrtr($currentDate->isoFormat('dddd'));
+            // Confronta entrambi i valori in minuscolo
+            if ($formattedDay == $dayOfWeek) {
+                $dates[] = $currentDate->toDateString();
+            }
+            $currentDate->addDay();
+        }
+
+        return $dates;
+    }
+
+
 
 
 
@@ -241,5 +278,17 @@ class GroupController extends Controller
         return redirect()->route('admin.group.details', ['group' => $group->id])
             ->with('success', 'Gruppo Alias cancellato');
     }
+
+    private function removeAccentWithStrtr($string)
+    {
+        // Mappatura per i caratteri accentati italiani
+        $replaceMap = [
+            'ì' => 'i',
+        ];
+
+        // Sostituisci i caratteri accentati con quelli non accentati
+        return strtr($string, $replaceMap);
+    }
+
 
 }
