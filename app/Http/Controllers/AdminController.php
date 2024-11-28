@@ -181,6 +181,20 @@ class AdminController extends Controller
             $studentsQuery->whereNull('livello');
         }
 
+        // Filtro per genere (Maschi e Femmine)
+        $genereMaschi = $request->input('genere_m') === 'M';
+        $genereFemmine = $request->input('genere_f') === 'F';
+
+        if ($genereMaschi && $genereFemmine) {
+            // Se entrambe le checkbox sono selezionate, non applicare filtro (tutti i generi)
+        } elseif ($genereMaschi) {
+            $studentsQuery->where('genere', 'M');
+        } elseif ($genereFemmine) {
+            $studentsQuery->where('genere', 'F');
+        }
+
+        // Ordinamento per Nrecuperi in ordine decrescente
+        $studentsQuery->orderBy('Nrecuperi', 'desc');
         // Paginazione con 50 risultati per pagina
         $students = $studentsQuery->paginate(50)->appends($request->except('page'));
 
@@ -232,7 +246,8 @@ class AdminController extends Controller
 
     public function studentDetails(User $student)
     {
-        return view('dashboard.adminStudentDetails', compact('student'));
+        $logs = $student->actionLogs->sortByDesc('created_at');
+        return view('dashboard.adminStudentDetails', compact('student' , 'logs'));
     }
 
     public function getMissingAliasDates(Group $group)

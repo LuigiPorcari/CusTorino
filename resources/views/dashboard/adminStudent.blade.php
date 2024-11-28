@@ -15,7 +15,9 @@
     </ul>
 
     <div class="container mt-md-5 admin-student-dashboard">
-        <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Corsisti</h2>
+        <div class="mt-4 pt-1 pt-md-0">
+            <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Corsisti</h2>
+        </div>
         @if (session('success'))
             <div class="alert alert-dismissible custom-alert-success">
                 {{ session('success') }}
@@ -28,15 +30,27 @@
             <div class="mb-4 admin-student-filter">
                 <div class="row justify-content-center">
                     <!-- Filtro per Nome e Cognome -->
-                    <div class="col-6 col-md-4 my-auto">
+                    <div class="col-12 col-md-4 my-auto">
                         <input type="search" name="student_name" id="student_name" class="custom-form-input shadow-lg"
                             placeholder="Nome o Cognome" value="{{ request('student_name') }}">
                         <input type="search" name="group_name" id="group_name" class="custom-form-input shadow-lg"
                             placeholder="Gruppi" value="{{ request('group_name') }}">
                     </div>
+                    <!-- Filtro per livello -->
+                    <div class="col-12 col-md-4 d-md-none d-block mb-2">
+                        <div>
+                            <input type="number" name="student_level" id="student_level"
+                                class="custom-form-input shadow-lg" placeholder="Livello"
+                                value="{{ request('student_level') }}" min="1" max="12" step="1">
+                            <label>
+                                <input type="checkbox" name="no_level" value="1"
+                                    {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
+                            </label>
+                        </div>
+                    </div>
 
                     <!-- Checkbox per "Non iscritto a nessun gruppo" e "Iscritto a un gruppo" -->
-                    <div class="col-6 col-md-3">
+                    <div class="col-12 col-md-3">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">Gruppi</p>
                             <input type="hidden" name="no_group" value="0">
@@ -52,7 +66,7 @@
                     </div>
 
                     <!-- Checkbox per CUS Card -->
-                    <div class="col-6 col-md-2">
+                    <div class="col-12 col-md-2">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">CUS Card</p>
                             <input type="hidden" name="cus_card_ok" value="0">
@@ -69,7 +83,7 @@
                     </div>
 
                     <!-- Checkbox per Visita Medica -->
-                    <div class="col-6 col-md-2">
+                    <div class="col-12 col-md-2">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">Visita Medica</p>
                             <input type="hidden" name="visita_medica_ok" value="0">
@@ -87,7 +101,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <!-- Filtro per livello -->
-                    <div class="col-6 col-md-4">
+                    <div class="col-12 col-md-4 d-none d-md-block">
                         <div>
                             <input type="number" name="student_level" id="student_level"
                                 class="custom-form-input shadow-lg" placeholder="Livello"
@@ -97,10 +111,13 @@
                                     {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
                             </label>
                         </div>
+                        <div class="mt-3">
+                            <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
+                        </div>
                     </div>
 
                     <!-- Checkbox per Pagamento -->
-                    <div class="col-6 col-md-3">
+                    <div class="col-12 col-md-3">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">Pagamento</p>
                             <input type="hidden" name="pagamento_ok" value="0">
@@ -117,7 +134,7 @@
                     </div>
 
                     <!-- Checkbox per Trimestrale -->
-                    <div class="col-6 col-md-2">
+                    <div class="col-12 col-md-2">
                         <div class="filter-box shadow-lg">
                             <p class="fw-bold">Trimestrale</p>
                             <input type="hidden" name="trimestrale_ok" value="0">
@@ -132,8 +149,25 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-6 col-md-2 d-flex align-items-center justify-content-center">
-                        <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
+
+                    <!-- Filtro per genere -->
+                    <div class="col-12 col-md-2">
+                        <div class="filter-box shadow-lg">
+                            <p class="fw-bold">Genere</p>
+                            <input type="hidden" name="genere_m" value="0">
+                            <label>
+                                <input type="checkbox" name="genere_m" value="M"
+                                    {{ request('genere_m') === 'M' ? 'checked' : '' }}> Maschi
+                            </label>
+                            <input type="hidden" name="genere_f" value="0">
+                            <label>
+                                <input type="checkbox" name="genere_f" value="F"
+                                    {{ request('genere_f') === 'F' ? 'checked' : '' }}> Femmine
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 d-md-none d-block d-flex justify-content-center">
+                            <button type="submit" class="btn admin-btn-info px-5">Applica Filtri</button>
                     </div>
                 </div>
             </div>

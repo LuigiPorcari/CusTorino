@@ -234,6 +234,8 @@ class User extends Authenticatable
                 }
             }
         }
+        // Ordina gli alias per data_allenamento in ordine decrescente
+        $absencesAlias = collect($absencesAlias)->sortByDesc('data_allenamento')->values()->all();
         return $absencesAlias;
     }
 
@@ -251,6 +253,8 @@ class User extends Authenticatable
                 $recAlias[] = $alias;
             }
         }
+        // Ordina gli alias per data_allenamento in ordine decrescente
+        $recAlias = collect($recAlias)->sortByDesc('data_allenamento')->values()->all();
         return $recAlias;
     }
 

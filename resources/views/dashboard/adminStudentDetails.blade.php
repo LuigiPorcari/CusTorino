@@ -50,6 +50,88 @@
                 </table>
                 <button id="toggle-recuperi" class="btn btn-primary mt-2 fw-bold">Mostra tutto</button>
             </div>
+            <div class="col-12">
+                <!-- Log dei Corsisti -->
+                <h3 class="mb-3 mt-3 custom-subtitle">Log</h3>
+                <table id="corsistaLogsTable" class="table table-bordered admin-table">
+                    <thead>
+                        <tr>
+                            <th>Utente</th>
+                            <th>Azione</th>
+                            <th>Tipo elemento</th>
+                            <th>Elemento Modificato</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($logs as $log)
+                            @if (($log->model_type != 'User' && $log->custom_action != null))
+                                <tr class="corsista-log-row">
+                                    <td>
+                                        {{ $log->user_name }}
+                                        {{ $log->user_cognome }}
+                                    </td>
+                                    <td>
+                                        @if ($log->custom_action)
+                                            {{ $log->custom_action }}
+                                        @elseif($log->action == 'creating')
+                                            Elemento creato
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($log->alias)
+                                            Alias
+                                        @elseif($log->group)
+                                            Group
+                                        @elseif($log->userModified)
+                                            Utente
+                                        @else
+                                            {{ $log->model_type }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($log->alias)
+                                            <a href="{{ route('alias.details', $log->alias) }}">{{ $log->alias->nome }}
+                                                /
+                                                {{ $log->alias->formatData($log->alias->data_allenamento) }}</a>
+                                        @elseif($log->group)
+                                            <a
+                                                href="{{ route('admin.group.details', $log->group) }}">{{ $log->group->nome }}</a>
+                                        @elseif($log->userModified)
+                                            @if ($log->userModified->is_corsista)
+                                                <a href="{{ route('admin.student.details', $log->userModified) }}">{{ $log->userModified->name }}
+                                                    {{ $log->userModified->cognome }}</a>
+                                            @elseif($log->userModified->is_trainer)
+                                                <a href="{{ route('admin.trainer.details', $log->userModified) }}">{{ $log->userModified->name }}
+                                                    {{ $log->userModified->cognome }}</a>
+                                            @else
+                                                {{ $log->userModified->name }}
+                                                {{ $log->userModified->cognome }}
+                                            @endif
+                                        @else
+                                            {{ $log->model_name }}
+                                            @if ($log->model_cognome != null)
+                                                {{ $log->model_cognome }}
+                                            @endif
+                                            @if ($log->data_allenamento != null)
+                                                / {{ $log->formatDataMod($log->data_allenamento) }}
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td>{{ $log->formatData($log->created_at) }}</td>
+                                </tr>
+                            @endif
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Nessun log disponibile per i corsisti.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                <button id="toggle-logs" class="btn btn-primary mt-2 fw-bold">Mostra tutto</button>
+            </div>
         </div>
         <!-- Fine nuove tabelle affiancate -->
         <div class="row justify-content-center">
@@ -89,9 +171,11 @@
                                 <label class="form-label"><strong>Genere:</strong></label>
                                 @if ($student->genere != 'Misto')
                                     <select class="form-control" name="genere">
-                                        <option @if ($student->genere == 'M') selected @endif value="M">Maschio
+                                        <option @if ($student->genere == 'M') selected @endif value="M">
+                                            Maschio
                                         </option>
-                                        <option @if ($student->genere == 'F') selected @endif value="F">Femmina
+                                        <option @if ($student->genere == 'F') selected @endif value="F">
+                                            Femmina
                                         </option>
                                     </select>
                                 @else
@@ -102,7 +186,8 @@
                             <div class="mb-3">
                                 <label class="form-label"><strong>CUS Card:</strong></label>
                                 <select class="form-control" name="cus_card">
-                                    <option @if ($student->cus_card == 1) selected @endif value="1">OK</option>
+                                    <option @if ($student->cus_card == 1) selected @endif value="1">OK
+                                    </option>
                                     <option @if ($student->cus_card == 0) selected @endif value="0">NON OK
                                     </option>
                                 </select>
@@ -111,7 +196,8 @@
                             <div class="mb-3">
                                 <label class="form-label"><strong>Visita Medica:</strong></label>
                                 <select class="form-control" name="visita_medica">
-                                    <option @if ($student->visita_medica == 1) selected @endif value="1">OK</option>
+                                    <option @if ($student->visita_medica == 1) selected @endif value="1">OK
+                                    </option>
                                     <option @if ($student->visita_medica == 0) selected @endif value="0">NON OK
                                     </option>
                                 </select>
@@ -120,7 +206,8 @@
                             <div class="mb-3">
                                 <label class="form-label"><strong>Pagamento:</strong></label>
                                 <select class="form-control" name="pagamento">
-                                    <option @if ($student->pagamento == 1) selected @endif value="1">OK</option>
+                                    <option @if ($student->pagamento == 1) selected @endif value="1">OK
+                                    </option>
                                     <option @if ($student->pagamento == 0) selected @endif value="0">NON OK
                                     </option>
                                 </select>
@@ -209,10 +296,12 @@
             const rows = table.querySelectorAll('tbody tr');
             let isExpanded = false;
 
+            // Mostra solo le prime 3 righe all'inizio
             rows.forEach((row, index) => {
                 if (index >= 3) row.style.display = 'none';
             });
 
+            // Gestione click sul pulsante
             button.addEventListener('click', () => {
                 isExpanded = !isExpanded;
                 rows.forEach((row, index) => {
@@ -222,7 +311,9 @@
             });
         }
 
+        // Gestione delle altre tabelle
         toggleTableRows('table-assenze', 'toggle-assenze');
         toggleTableRows('table-recuperi', 'toggle-recuperi');
+        toggleTableRows('corsistaLogsTable', 'toggle-logs');
     </script>
 </x-layout>
