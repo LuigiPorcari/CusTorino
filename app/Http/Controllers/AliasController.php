@@ -99,7 +99,20 @@ class AliasController extends Controller
             'secondo_allenatore_id' => $request->input('secondo_allenatore_id'),
             'condiviso' => $request->input('condiviso'),
         ], $alias);
+        if (Auth::user()->is_trainer) {
+            $alias->update([
+                'check_conf' => 1,
+            ]);
+        }
         return redirect()->back()->with('success', 'Modifiche confermate con successo!');
+    }
+
+    public function checkConf(Alias $alias)
+    {
+        $alias->update([
+            'check_conf' => 1,
+        ]);
+        return redirect()->back()->with('success', 'Assenze confermate con successo!');
     }
     public function showDetails(Alias $alias)
     {

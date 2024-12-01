@@ -18,6 +18,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 
+Route::post('/aliases/check-conf/{alias}', [AliasController::class, 'checkConf'])->name('aliases.checkConf');
 
 //!ROTTE REGISTRAZIONE ADMIN
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');

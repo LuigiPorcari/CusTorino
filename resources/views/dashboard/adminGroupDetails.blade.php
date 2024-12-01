@@ -118,8 +118,8 @@
                         </thead>
                         <tbody>
                             @foreach ($aliases as $alias)
-                                <tr class="bg-white main-row" data-date="{{ $alias->data_allenamento }}">
-                                    <td>
+                                <tr class="main-row" data-date="{{ $alias->data_allenamento }}">
+                                    <td class="{{ $alias->check_conf ? 'bg-warning' : '' }}">
                                         <p class="fw-bold">{{ $alias->formatData($alias->data_allenamento) }}</p>
                                     </td>
                                     <td>
@@ -198,7 +198,7 @@
                         <tbody>
                             @foreach ($otherAliases as $alias)
                                 <tr class="archive-row bg-light" data-date="{{ $alias->data_allenamento }}">
-                                    <td>
+                                    <td class="{{ $alias->check_conf ? 'bg-warning' : '' }}">
                                         <p class="fw-bold">{{ $alias->formatData($alias->data_allenamento) }}</p>
                                     </td>
                                     <td>

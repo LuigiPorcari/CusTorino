@@ -27,6 +27,7 @@ class Alias extends Model
         'livello',
         'studenti_id',
         'location',
+        'check_conf',
     ];
 
     protected $casts = [

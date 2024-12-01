@@ -11,10 +11,18 @@
         </li>
     </ul>
     <div class="container">
-        <div class="row my-5 justify-content-center">
+        <div class="mt-5 pt-5">
+            @if (session('success'))
+                <div class="alert alert-dismissible custom-alert-success mt-5">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
+        <div class="row mb-5 justify-content-center">
             {{-- ! Descrizione gruppo alias --}}
             @forelse($aliasesTrainer as $alias)
-                <div class="col-11 col-md-3 mt-5 pt-4">
+                <div class="col-11 col-md-4 mt-5 pt-4">
                     <div class="custom-card equal-height-card mx-1 mb-2 mt-5">
                         <div class="custom-card-body">
                             <h5 class="card-title">{{ $alias->nome }}</h5>
@@ -72,8 +80,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            <a class="custom-link-btn mb-4" href="{{ route('alias.details', $alias) }}">Modifica</a>
+                        <div class="text-center row">
+                            <div class="col-6">
+                                <a class="custom-link-btn mb-4"
+                                    href="{{ route('alias.details', $alias) }}">Modifica</a>
+                            </div>
+                            <div class="col-6">
+                                <form action="{{ route('aliases.checkConf', $alias->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="custom-link-btn border-0">
+                                        Conferma
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
