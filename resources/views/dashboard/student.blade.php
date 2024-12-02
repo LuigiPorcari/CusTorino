@@ -103,7 +103,7 @@
 
                             @empty
                                 <tr>
-                                    <td colspan="3">
+                                    <td colspan="4">
                                         <h2 class="custom-subtitle text-black">Non sei ancora iscritto ad un gruppo</h2>
                                     </td>
                                 </tr>
@@ -174,7 +174,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3">
+                                        <td colspan="4">
                                             <h2 class="custom-subtitle text-black">Non ci sono gruppi adatti al tuo
                                                 recupero</h2>
                                         </td>
