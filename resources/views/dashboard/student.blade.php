@@ -59,8 +59,9 @@
                         <thead>
                             <tr>
                                 <th>Pulsante Assenza</th>
-                                <th>Data / Sede</th>
-                                <th>Orario</th>
+                                <th>Data</th>
+                                <th>Sede</th>
+                                <th>Allenatore</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,9 +75,12 @@
                                                 Segna Assenza
                                             </button>
                                         </td>
-                                        <td>{{ $alias->formatData($alias->data_allenamento) }} / <span
-                                                class="text-uppercase">{{ $alias->location }}</span></td>
-                                        <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                        <td>{{ $alias->formatDayStudent($alias->data_allenamento) }} <br>
+                                            {{ $alias->formatDataStudent($alias->data_allenamento) }} <br>
+                                            {{ $alias->formatHours($alias->orario) }}
+                                        </td>
+                                        <td class="text-uppercase">{{ $alias->location }}</td>
+                                        <td>{{ $alias->primoAllenatore->name }}</td>
                                     </tr>
                                 @else
                                     <tr>
@@ -87,9 +91,13 @@
                                                 Segna Assenza
                                             </button>
                                         </td>
-                                        <td class="bg-warning">{{ $alias->formatData($alias->data_allenamento) }} /
-                                            <span class="text-uppercase">{{ $alias->location }}</span></td>
-                                        <td class="bg-warning">{{ $alias->formatHours($alias->orario) }}</td>
+                                        <td class="bg-warning">
+                                            {{ $alias->formatDayStudent($alias->data_allenamento) }} <br>
+                                            {{ $alias->formatDataStudent($alias->data_allenamento) }} <br>
+                                            {{ $alias->formatHours($alias->orario) }}
+                                        </td>
+                                        <td class="bg-warning text-uppercase">{{ $alias->location }}</td>
+                                        <td class="bg-warning">{{ $alias->primoAllenatore->name }}</td>
                                     </tr>
                                 @endif
 
@@ -142,8 +150,9 @@
                         <thead>
                             <tr>
                                 <th>Pulsante Recupero</th>
-                                <th>Data / Sede</th>
-                                <th>Orario</th>
+                                <th>Data</th>
+                                <th>Sede</th>
+                                <th>Allenatore</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -157,9 +166,11 @@
                                                 Recupera Assenza
                                             </button>
                                         </td>
-                                        <td>{{ $alias->formatData($alias->data_allenamento) }} / <span
-                                                class="text-uppercase">{{ $alias->location }}</span></td>
-                                        <td>{{ $alias->formatHours($alias->orario) }}</td>
+                                        <td>{{ $alias->formatDayStudent($alias->data_allenamento) }} <br>
+                                            {{ $alias->formatDataStudent($alias->data_allenamento) }} <br>
+                                            {{ $alias->formatHours($alias->orario) }}</td>
+                                        <td class="text-uppercase">{{ $alias->location }}</td>
+                                        <td>{{ $alias->primoAllenatore->name }}</td>
                                     </tr>
                                 @empty
                                     <tr>

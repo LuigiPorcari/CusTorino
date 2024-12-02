@@ -177,6 +177,9 @@
                                         <option @if ($student->genere == 'F') selected @endif value="F">
                                             Femmina
                                         </option>
+                                        <option @if ($student->genere == 'misto') selected @endif value="misto">
+                                            Misto
+                                        </option>
                                     </select>
                                 @else
                                     <p class="form-control">{{ $student->genere }}</p>
