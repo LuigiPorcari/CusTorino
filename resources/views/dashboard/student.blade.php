@@ -182,7 +182,7 @@
                                 @endforelse
                             @else
                                 <tr>
-                                    <td colspan="3">
+                                    <td colspan="4">
                                         <h2 class="fw-bold text-uppercase">Non puoi recuperare perchè <br>
                                             @if (Auth::user()->countAbsences() > 0)
                                                 non hai rispettato i criteri opportuni quando hai segnato la tua assenza
