@@ -176,6 +176,12 @@ class AdminController extends Controller
             $studentsQuery->where('livello', $level);
         }
 
+        // Filtro per Livello Cellulare
+        if ($request->filled('student_level_mobile')) {
+            $level = $request->input('student_level_mobile');
+            $studentsQuery->where('livello', $level);
+        }
+
         // Filtro per corsisti senza livello
         if ($request->input('no_level') == '1') {
             $studentsQuery->whereNull('livello');

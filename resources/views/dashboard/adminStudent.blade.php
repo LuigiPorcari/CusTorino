@@ -39,9 +39,9 @@
                     <!-- Filtro per livello -->
                     <div class="col-12 col-md-4 d-md-none d-block mb-2">
                         <div>
-                            <input type="number" name="student_level" id="student_level"
-                                class="custom-form-input shadow-lg" placeholder="Livello"
-                                value="{{ request('student_level') }}" min="1" max="12" step="1">
+                            <input type="number" name="student_level_mobile" class="custom-form-input shadow-lg d-md-none d-block"
+                                placeholder="Livello" value="{{ request('student_level_mobile') }}" min="1"
+                                max="12" step="1">
                             <label>
                                 <input type="checkbox" name="no_level" value="1"
                                     {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
@@ -103,9 +103,9 @@
                     <!-- Filtro per livello -->
                     <div class="col-12 col-md-4 d-none d-md-block">
                         <div>
-                            <input type="number" name="student_level" id="student_level"
-                                class="custom-form-input shadow-lg" placeholder="Livello"
-                                value="{{ request('student_level') }}" min="1" max="12" step="1">
+                            <input type="number" name="student_level" class="custom-form-input shadow-lg d-none d-md-block"
+                                placeholder="Livello" value="{{ request('student_level') }}" min="1"
+                                max="12" step="1">
                             <label>
                                 <input type="checkbox" name="no_level" value="1"
                                     {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
@@ -167,7 +167,7 @@
                         </div>
                     </div>
                     <div class="col-12 d-md-none d-block d-flex justify-content-center">
-                            <button type="submit" class="btn admin-btn-info px-5">Applica Filtri</button>
+                        <button type="submit" class="btn admin-btn-info px-5">Applica Filtri</button>
                     </div>
                 </div>
             </div>

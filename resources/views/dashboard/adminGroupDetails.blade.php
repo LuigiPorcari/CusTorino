@@ -32,7 +32,8 @@
                         @foreach ($group->users as $student)
                             <div class="d-flex">
                                 <p class="mt-3 fw-bold">{{ $student->name }} {{ $student->cognome }} - </p>
-                                <div class="btn-group dropend">
+                                <p class="mt-3 ms-2">LV: {{ $student->livello }}</p>
+                                {{-- <div class="btn-group dropend">
                                     <button type="button" class="btn btn-sm dropdown-toggle text-white"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         Documentazione
@@ -69,7 +70,7 @@
                                             </p>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                         @endforeach
                         <div class="d-flex flex-column align-items-center mt-5">
@@ -92,85 +93,14 @@
                 </div>
             </div>
             <div class="col-12 col-md-8">
-                <h1 class="custom-title mt-4 mt-md-0">Date degli allenamenti</h1>
-                <div class="mb-3">
-                    <label for="data_allenamento" class="form-label">Filtra per data:</label>
-                    <select id="data_allenamento" class="custom-form-input">
-                        <option value="">Tutte le date</option>
-                        @foreach ($availableDates as $date)
-                            <option value="{{ $date->data_allenamento }}">
-                                {{ \Carbon\Carbon::parse($date->data_allenamento)->translatedFormat('l d F') }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered admin-table">
-                        <thead>
-                            <tr>
-                                <th>Alias</th>
-                                <th>Corsisti</th>
-                                <th>Recuperi</th>
-                                <th class="d-none d-md-table-cell">Allenatori</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($aliases as $alias)
-                                <tr class="main-row" data-date="{{ $alias->data_allenamento }}">
-                                    <td class="{{ $alias->check_conf ? 'bg-warning' : '' }}">
-                                        <p class="fw-bold">{{ $alias->formatData($alias->data_allenamento) }}</p>
-                                    </td>
-                                    <td>
-                                        @foreach ($group->users as $student)
-                                            <div
-                                                class="border-bottom py-2 {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
-                                                {{ $student->name }} {{ $student->cognome }}
-                                            </div>
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
-                                            <div class="border-bottom py-2">{{ $recupero->name }}
-                                                {{ $recupero->cognome }}</div>
-                                        @endforeach
-                                    </td>
-                                    <td class="p-0 d-none d-md-table-cell">
-                                        @if ($alias->primo_allenatore_id != null)
-                                            <p class="card-text">Primo allenatore:
-                                                <br>{{ $alias->primoAllenatore->name }}
-                                                {{ $alias->primoAllenatore->cognome }}
-                                            </p>
-                                        @endif
-                                        @if ($alias->secondo_allenatore_id != null)
-                                            <p class="card-text">Secondo allenatore:
-                                                <br>{{ $alias->secondoAllenatore->name }}
-                                                {{ $alias->secondoAllenatore->cognome }}
-                                            </p>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('alias.details', $alias) }}"
-                                            class="btn admin-btn-info fs-md-6 mb-2 px-3">Dettagli</a>
-                                        <button type="button"
-                                            class="btn custom-btn-danger-nav text-uppercase text-white fw-bolder fs-6"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteModalAlias{{ $alias->id }}">
-                                            Elimina
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
                 <!-- Pulsanti Mostra/Nascondi Archivio -->
                 <div class="d-flex justify-content-between mt-4">
-                    <button id="showArchiveButton" class="btn admin-btn-info" type="button">Mostra archivio</button>
+                    <button id="showArchiveButton" class="btn admin-btn-info mb-3" type="button">Mostra archivio</button>
                     <button id="hideArchiveButton" class="btn admin-btn-info d-none" type="button">Nascondi
                         archivio</button>
                 </div>
+
                 <!-- Tabella Archivio -->
                 <div id="archiveSection" class="table-responsive d-none">
                     <h2 class="custom-title mt-4">Archivio Alias</h2>
@@ -244,6 +174,82 @@
                         </tbody>
                     </table>
                 </div>
+
+                <h1 class="custom-title mt-4 mt-md-0">Date degli allenamenti</h1>
+
+                <div class="mb-3">
+                    <label for="data_allenamento" class="form-label">Filtra per data:</label>
+                    <select id="data_allenamento" class="custom-form-input">
+                        <option value="">Tutte le date</option>
+                        @foreach ($availableDates as $date)
+                            <option value="{{ $date->data_allenamento }}">
+                                {{ \Carbon\Carbon::parse($date->data_allenamento)->translatedFormat('l d F') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered admin-table">
+                        <thead>
+                            <tr>
+                                <th>Alias</th>
+                                <th>Corsisti</th>
+                                <th>Recuperi</th>
+                                <th class="d-none d-md-table-cell">Allenatori</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($aliases as $alias)
+                                <tr class="main-row" data-date="{{ $alias->data_allenamento }}">
+                                    <td class="{{ $alias->check_conf ? 'bg-warning' : '' }}">
+                                        <p class="fw-bold">{{ $alias->formatData($alias->data_allenamento) }}</p>
+                                    </td>
+                                    <td>
+                                        @foreach ($group->users as $student)
+                                            <div
+                                                class="border-bottom py-2 {{ in_array($student->id, $alias->studenti_id) ? '' : 'bg-danger text-white' }}">
+                                                {{ $student->name }} {{ $student->cognome }}
+                                            </div>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($alias->compareStudents($group->id, $alias->id) as $recupero)
+                                            <div class="border-bottom py-2">{{ $recupero->name }}
+                                                {{ $recupero->cognome }}</div>
+                                        @endforeach
+                                    </td>
+                                    <td class="p-0 d-none d-md-table-cell">
+                                        @if ($alias->primo_allenatore_id != null)
+                                            <p class="card-text">Primo allenatore:
+                                                <br>{{ $alias->primoAllenatore->name }}
+                                                {{ $alias->primoAllenatore->cognome }}
+                                            </p>
+                                        @endif
+                                        @if ($alias->secondo_allenatore_id != null)
+                                            <p class="card-text">Secondo allenatore:
+                                                <br>{{ $alias->secondoAllenatore->name }}
+                                                {{ $alias->secondoAllenatore->cognome }}
+                                            </p>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('alias.details', $alias) }}"
+                                            class="btn admin-btn-info fs-md-6 mb-2 px-3">Dettagli</a>
+                                        <button type="button"
+                                            class="btn custom-btn-danger-nav text-uppercase text-white fw-bolder fs-6"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModalAlias{{ $alias->id }}">
+                                            Elimina
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
