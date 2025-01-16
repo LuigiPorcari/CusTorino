@@ -11,7 +11,7 @@ class ExportController extends Controller
     public function export()
     {
         // 🔹 Elenco delle tabelle da esportare
-        $tables = ['aliases', 'groups', 'users', 'logs'];
+        $tables = ['groups', 'users'];
 
         return Excel::download(new DatabaseExport($tables), 'database_export.xlsx');
     }
