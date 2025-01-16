@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AliasController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 
+Route::get('/export-db', [ExportController::class, 'export']);
 Route::post('/aliases/check-conf/{alias}', [AliasController::class, 'checkConf'])->name('aliases.checkConf');
 
 //!ROTTE REGISTRAZIONE ADMIN
