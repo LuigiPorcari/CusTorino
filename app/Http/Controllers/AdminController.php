@@ -111,7 +111,7 @@ class AdminController extends Controller
     {
         // Aggiungiamo un filtro per assicurarsi che vengano mostrati solo gli utenti che sono corsisti
         $studentsQuery = User::where('is_corsista', '1');
-
+        $uniCount = User::where('is_corsista', '1')->where('universitario', 1)->count();
         // Filtro per nome e cognome
         if ($request->filled('student_name')) {
             $search = $request->input('student_name');
@@ -204,7 +204,7 @@ class AdminController extends Controller
         // Paginazione con 50 risultati per pagina
         $students = $studentsQuery->paginate(50)->appends($request->except('page'));
 
-        return view('dashboard.adminStudent', compact('students'));
+        return view('dashboard.adminStudent', compact('students', 'uniCount'));
     }
 
 

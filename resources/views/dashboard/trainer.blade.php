@@ -93,6 +93,11 @@
                                     </button>
                                 </form>
                             </div>
+                            @if ($alias->check_conf)
+                                <div class="col-12">
+                                    <p class="custom-subtitle text-success">Gruppo Confermato</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

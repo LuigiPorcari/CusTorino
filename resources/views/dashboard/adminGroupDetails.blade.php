@@ -96,7 +96,8 @@
 
                 <!-- Pulsanti Mostra/Nascondi Archivio -->
                 <div class="d-flex justify-content-between mt-4">
-                    <button id="showArchiveButton" class="btn admin-btn-info mb-3" type="button">Mostra archivio</button>
+                    <button id="showArchiveButton" class="btn admin-btn-info mb-3" type="button">Mostra
+                        archivio</button>
                     <button id="hideArchiveButton" class="btn admin-btn-info d-none" type="button">Nascondi
                         archivio</button>
                 </div>

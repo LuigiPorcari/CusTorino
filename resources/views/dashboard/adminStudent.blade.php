@@ -174,6 +174,7 @@
         </form>
 
         <div class="table-responsive admin-table-responsive">
+            <p class="fw-bold text-uppercase fs-4">Numero Universitari: {{$uniCount}}</p>
             <table class="table table-bordered admin-student-table">
                 <thead>
                     <tr>
