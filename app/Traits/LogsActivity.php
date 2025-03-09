@@ -60,6 +60,11 @@ trait LogsActivity
             }
         }
 
+        // Assicuriamoci che il custom action venga sempre salvato per la conferma assenze
+        if ($customActionValue === 'Elemento confermato') {
+            $logData['custom_action'] = 'Elemento confermato';
+        }
+
         // Crea il log con i dati specifici
         Log::create($logData);
     }

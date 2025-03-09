@@ -1,17 +1,19 @@
 <x-layout documentTitle="Admin Group Dashboard">
-    <ul class="nav nav-tabs admin-nav-tabs mt-5 pt-5 pt-md-0">
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
-        </li>
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-0">
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                    Corsisti
+                </a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+            </li>
     </ul>
     <div class="container mt-md-5 admin-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Gruppi</h2>
@@ -21,6 +23,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+
         <div class="mb-4">
             <form method="GET" action="{{ route('admin.dashboard') }}">
                 <div class="row">

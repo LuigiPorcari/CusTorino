@@ -1,19 +1,20 @@
 <x-layout documentTitle="Admin Student">
-    <ul class="nav nav-tabs admin-nav-tabs mt-5 pt-5 pt-md-0">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-0">
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-    </ul>
-
+</ul>
     <div class="container mt-md-5 admin-student-dashboard">
         <div class="mt-4 pt-1 pt-md-0">
             <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Corsisti</h2>
@@ -24,7 +25,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         <!-- Form per inviare i filtri al server -->
         <form id="filterForm" method="GET" action="{{ route('admin.dashboard.student') }}">
             <div class="mb-4 admin-student-filter">
@@ -39,9 +39,10 @@
                     <!-- Filtro per livello -->
                     <div class="col-12 col-md-4 d-md-none d-block mb-2">
                         <div>
-                            <input type="number" name="student_level_mobile" class="custom-form-input shadow-lg d-md-none d-block"
-                                placeholder="Livello" value="{{ request('student_level_mobile') }}" min="1"
-                                max="12" step="1">
+                            <input type="number" name="student_level_mobile"
+                                class="custom-form-input shadow-lg d-md-none d-block" placeholder="Livello"
+                                value="{{ request('student_level_mobile') }}" min="1" max="12"
+                                step="1">
                             <label>
                                 <input type="checkbox" name="no_level" value="1"
                                     {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
@@ -103,9 +104,9 @@
                     <!-- Filtro per livello -->
                     <div class="col-12 col-md-4 d-none d-md-block">
                         <div>
-                            <input type="number" name="student_level" class="custom-form-input shadow-lg d-none d-md-block"
-                                placeholder="Livello" value="{{ request('student_level') }}" min="1"
-                                max="12" step="1">
+                            <input type="number" name="student_level"
+                                class="custom-form-input shadow-lg d-none d-md-block" placeholder="Livello"
+                                value="{{ request('student_level') }}" min="1" max="12" step="1">
                             <label>
                                 <input type="checkbox" name="no_level" value="1"
                                     {{ request('no_level') == '1' ? 'checked' : '' }}> Senza Livello
@@ -113,6 +114,10 @@
                         </div>
                         <div class="mt-3">
                             <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
+                            <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info"
+                                id="clearFilters">
+                                Pulisci Filtri
+                            </a>
                         </div>
                     </div>
 
@@ -167,14 +172,18 @@
                         </div>
                     </div>
                     <div class="col-12 d-md-none d-block d-flex justify-content-center">
-                        <button type="submit" class="btn admin-btn-info px-5">Applica Filtri</button>
+                        <button type="submit" class="btn admin-btn-info me-5">Applica Filtri</button>
+                        <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info"
+                                id="clearFilters">
+                                Pulisci Filtri
+                            </a>
                     </div>
                 </div>
             </div>
         </form>
 
         <div class="table-responsive admin-table-responsive">
-            <p class="fw-bold text-uppercase fs-4">Numero Universitari: {{$uniCount}}</p>
+            <p class="fw-bold text-uppercase fs-4">Numero Universitari: {{ $uniCount }}</p>
             <table class="table table-bordered admin-student-table">
                 <thead>
                     <tr>
@@ -241,6 +250,11 @@
                 if (this.value === '') {
                     document.getElementById('filterForm').submit(); // Invia il form automaticamente
                 }
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("clearFilters").addEventListener("click", function() {
+                localStorage.removeItem("studentFilters"); // Rimuove i filtri salvati
             });
         });
     </script>

@@ -2,8 +2,9 @@
     <div class="container-fluid">
         <img src="{{ asset('img/CUS_Torino_Logo.png') }}" alt="Logo" class="img-fluid img-nav me-3 ms-0">
         <a class="navbar-brand custom-navbar-brand mb-2" href="{{ route('homepage') }}">CusTorino</a>
-        <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
             <i class="fa-solid fa-bars text-white"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">

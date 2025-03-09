@@ -1,6 +1,35 @@
 <x-layout documentTitle="Dettagli Alias">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
+        @if (Auth::check() && Auth::user()->is_admin)
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                    Corsisti
+                </a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+            </li>
+        @endif
+        @if (Auth::check() && Auth::user()->is_trainer)
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
+            </li>
+        @endif
+    </ul>
     <div class="container mt-5 pt-5">
-        <h1 class="custom-title text-center mb-3 mt-4">Dettagli del Gruppo</h1>
+        <h1 class="custom-title text-center mb-3 mt-5 pt-3">Dettagli del Gruppo</h1>
         @if (session('success'))
             <div class="alert alert-dismissible custom-alert-success">
                 {{ session('success') }}

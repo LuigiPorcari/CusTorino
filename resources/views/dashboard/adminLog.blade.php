@@ -1,21 +1,22 @@
 <x-layout documentTitle="Admin Log">
-    <ul class="nav nav-tabs admin-nav-tabs mt-5 pt-5 pt-md-0">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-0">
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('logs.index') }}">Log</a>
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-    </ul>
+</ul>
     <div class="container mt-md-5 admin-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Log delle Operazioni</h2>
-
         <!-- Log degli Admin -->
         <h3 class="mb-3 custom-subtitle">Admin</h3>
         <table id="adminLogsTable" class="table table-bordered admin-table">
@@ -23,7 +24,7 @@
                 <tr>
                     <th>Utente</th>
                     <th>Azione</th>
-                    <th>Tipo elemento</th>
+                    {{-- <th>Tipo elemento</th> --}}
                     <th>Elemento Modificato</th>
                     <th>Data</th>
                 </tr>
@@ -43,7 +44,7 @@
                                 N/A
                             @endif
                         </td>
-                        <td>
+                        {{-- <td>
                             @if ($log->alias)
                                 Alias
                             @elseif($log->group)
@@ -53,7 +54,7 @@
                             @else
                                 {{ $log->model_type }}
                             @endif
-                        </td>
+                        </td> --}}
                         <td>
                             @if ($log->alias)
                                 <a href="{{ route('alias.details', $log->alias) }}">{{ $log->alias->nome }} /
@@ -104,14 +105,14 @@
                 <tr>
                     <th>Utente</th>
                     <th>Azione</th>
-                    <th>Tipo elemento</th>
+                    {{-- <th>Tipo elemento</th> --}}
                     <th>Elemento Modificato</th>
                     <th>Data</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($trainerLogs as $log)
-                    @if ($log->model_type != 'User' && $log->custom_action == null)
+                    @if ($log->model_type != 'User')
                         <tr class="trainer-log-row">
                             <td>
                                 @if ($log->user)
@@ -123,7 +124,9 @@
                                 @endif
                             </td>
                             <td>
-                                @if ($log->action == 'deleting')
+                                @if ($log->custom_action)
+                                    {{ $log->custom_action }}
+                                @elseif ($log->action == 'deleting')
                                     Elemento eliminato
                                 @elseif($log->action == 'creating')
                                     Elemento creato
@@ -132,8 +135,9 @@
                                 @else
                                     N/A
                                 @endif
+
                             </td>
-                            <td>
+                            {{-- <td>
                                 @if ($log->alias)
                                     Alias
                                 @elseif($log->group)
@@ -143,7 +147,7 @@
                                 @else
                                     {{ $log->model_type }}
                                 @endif
-                            </td>
+                            </td> --}}
                             <td>
                                 @if ($log->alias)
                                     <a href="{{ route('alias.details', $log->alias) }}">{{ $log->alias->nome }} /
@@ -197,14 +201,16 @@
                 <tr>
                     <th>Utente</th>
                     <th>Azione</th>
-                    <th>Tipo elemento</th>
+                    {{-- <th>Tipo elemento</th> --}}
                     <th>Elemento Modificato</th>
                     <th>Data</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($corsistaLogs as $log)
-                    @if (($log->model_type != 'User' && $log->custom_action != null) || $log->user_name == null)
+                    @if (
+                        ($log->model_type != 'User' && $log->custom_action != null && $log->custom_action != 'Elemento confermato') ||
+                            $log->user_name == null)
                         <tr class="corsista-log-row">
                             <td>
                                 @if ($log->user)
@@ -226,7 +232,7 @@
                                     N/A
                                 @endif
                             </td>
-                            <td>
+                            {{-- <td>
                                 @if ($log->alias)
                                     Alias
                                 @elseif($log->group)
@@ -236,7 +242,7 @@
                                 @else
                                     {{ $log->model_type }}
                                 @endif
-                            </td>
+                            </td> --}}
                             <td>
                                 @if ($log->alias)
                                     <a href="{{ route('alias.details', $log->alias) }}">{{ $log->alias->nome }} /

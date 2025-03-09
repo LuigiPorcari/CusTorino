@@ -1,4 +1,20 @@
 <x-layout documentTitle="Admin Trainer Details">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+        </li>
+</ul>
     <div class="container mt-5 admin-trainer-details">
         <div class="row">
             <h1 class="mt-5 custom-title">Dettagli pagamenti {{ $trainer->name }} {{ $trainer->cognome }}</h1>

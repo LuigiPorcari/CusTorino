@@ -1,15 +1,15 @@
 <x-layout documentTitle="Trainer Dashboard">
-    <ul class="nav nav-tabs admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{route('trainer.group')}}">Gruppi</a>
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
         </li>
-    </ul>
+</ul>
     {{-- Gruppi allenati --}}
     <div class="container mt-5">
         <h1 class="custom-title mt-md-5 pt-md-5 text-center">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>

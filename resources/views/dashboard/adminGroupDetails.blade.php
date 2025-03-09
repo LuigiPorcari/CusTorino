@@ -1,7 +1,23 @@
 <x-layout documentTitle="Admin Group Details">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+        </li>
+</ul>
     <div class="container mt-5 pt-5 admin-group-details">
-        <div class="row mt-4">
-            <div class="col-12 col-md-4">
+        <div class="row mt-5">
+            <div class="col-12 col-md-4 mt-md-5">
                 @if (session('success'))
                     <div class="alert alert-dismissible custom-alert-success">
                         {{ session('success') }}
@@ -92,7 +108,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-8 mt-md-5">
 
                 <!-- Pulsanti Mostra/Nascondi Archivio -->
                 <div class="d-flex justify-content-between mt-4">

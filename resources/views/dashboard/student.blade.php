@@ -1,4 +1,17 @@
 <x-layout documentTitle="Student Dashboard">
+    @if (Auth::check() && Auth::user()->is_trainer)
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-0">
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
+            </li>
+    </ul>
+    @endif
     <div class="container mt-5">
         <div class="row mt-5 justify-content-center">
             <div>
@@ -58,7 +71,7 @@
                     <table class="table table-bordered admin-trainer-table">
                         <thead>
                             <tr>
-                                <th>Pulsante Assenza</th>
+                                <th></th>
                                 <th>Data</th>
                                 <th>Sede</th>
                                 <th>Allenatore</th>
@@ -149,7 +162,7 @@
                     <table class="table table-bordered admin-trainer-table">
                         <thead>
                             <tr>
-                                <th>Pulsante Recupero</th>
+                                <th></th>
                                 <th>Data</th>
                                 <th>Sede</th>
                                 <th>Allenatore</th>

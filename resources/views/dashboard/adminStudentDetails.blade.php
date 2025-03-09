@@ -1,4 +1,20 @@
 <x-layout documentTitle="Admin Student Details">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+        </li>
+</ul>
     <div class="container mt-5 pt-5 admin-student-details">
         <!-- Inizio nuove tabelle affiancate -->
         <div class="row mb-3 mt-3">
@@ -65,7 +81,7 @@
                     </thead>
                     <tbody>
                         @forelse($logs as $log)
-                            @if (($log->model_type != 'User' && $log->custom_action != null))
+                            @if ($log->model_type != 'User' && $log->custom_action != null)
                                 <tr class="corsista-log-row">
                                     <td>
                                         {{ $log->user_name }}
@@ -260,9 +276,12 @@
                             </div>
                     </form>
                     <div class="text-center">
-                        <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info fs-6">Torna alla
+                        <a class="btn admin-btn-info fs-6"
+                            href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                            Torna alla
                             Lista
-                            Corsisti</a>
+                            Corsisti
+                        </a>
                     </div>
                 </div>
             </div>

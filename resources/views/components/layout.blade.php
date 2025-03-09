@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
-
 <body>
     <x-nav />
     <div class="min-vh-100">
@@ -20,7 +19,7 @@
     {{-- SCRIPT FONTAWESOME --}}
     <script src="https://kit.fontawesome.com/cfb9a37921.js" crossorigin="anonymous"></script>
     {{-- ! SCRIPT IUBENDA SERVER PERSONALE --}}
-    {{-- <script type="text/javascript">
+    <script type="text/javascript">
         var _iub = _iub || [];
         _iub.csConfiguration = {
             "siteId": 3767111,
@@ -29,9 +28,9 @@
         };
     </script>
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3767111.js"></script>
-    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script> --}}
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
     {{-- ! SCRIPT IUBENDA SERVER CUSTORINO --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         var _iub = _iub || [];
         _iub.csConfiguration = {
             "siteId": 3770174,
@@ -40,7 +39,7 @@
         };
     </script>
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3770174.js"></script>
-    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script> --}}
 </body>
 
 </html>

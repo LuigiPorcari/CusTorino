@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Log;
 use App\Models\User;
 use App\Models\Alias;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Event;
+use App\Traits\LogsActivity;
 
 class AliasController extends Controller
 {
+    use LogsActivity;
     //!Funzione per segnare assenza
     public function studentAbsence($absentStudentIds, Alias $alias)
     {
@@ -99,21 +103,35 @@ class AliasController extends Controller
             'secondo_allenatore_id' => $request->input('secondo_allenatore_id'),
             'condiviso' => $request->input('condiviso'),
         ], $alias);
-        if (Auth::user()->is_trainer) {
-            $alias->update([
-                'check_conf' => 1,
-            ]);
-        }
         return redirect()->back()->with('success', 'Modifiche confermate con successo!');
     }
 
+    // public function checkConf(Alias $alias)
+// {
+//     // Aggiorna lo stato della conferma
+//     $alias->update([
+//         'check_conf' => 1,
+//     ]);
+//     self::logCustomAction('custom_action_name', $alias, null, 'Elemento confermato');
+//     return redirect()->back()->with('success', 'Assenze confermate con successo!');
+// }
+
     public function checkConf(Alias $alias)
     {
-        $alias->update([
-            'check_conf' => 1,
-        ]);
+        // Disabilita temporaneamente gli eventi del modello
+        Alias::withoutEvents(function () use ($alias) {
+            $alias->update([
+                'check_conf' => 1,
+            ]);
+        });
+
+        // Genera manualmente il log solo per 'Elemento confermato'
+        self::logCustomAction('custom_action_name', $alias, null, 'Elemento confermato');
+
         return redirect()->back()->with('success', 'Assenze confermate con successo!');
     }
+
+
     public function showDetails(Alias $alias)
     {
         $threeDaysCheck = 1;

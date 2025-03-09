@@ -1,4 +1,20 @@
 <x-layout documentTitle="Modify Groups">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+        </li>
+</ul>
     <div class="container mt-5 pt-1">
         <h1 class="custom-title mt-5 pt-5 text-center">Modifica Gruppo</h1>
         <div class="row justify-content-center">

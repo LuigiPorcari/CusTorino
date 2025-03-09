@@ -1,5 +1,5 @@
 <x-layout documentTitle="Admin Trainer Details">
-    <ul class="nav nav-tabs admin-nav-tabs">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
         </li>
@@ -7,9 +7,9 @@
             <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" href="{{ route('trainer.salary') }}">Compensi</a>
+            <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
         </li>
-    </ul>
+</ul>
     <div class="container mt-5">
         <div class="row mt-5 pt-5">
             <h1 class="custom-title my-5 pt-5">Dettagli pagamenti</h1>

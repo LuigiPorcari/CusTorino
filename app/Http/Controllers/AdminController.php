@@ -64,6 +64,7 @@ class AdminController extends Controller
 
     public function dashboardTrainer(Request $request)
     {
+
         // Aggiungiamo una query base per filtrare solo i trainer
         $trainersQuery = User::where('is_trainer', 1);
 
@@ -109,6 +110,21 @@ class AdminController extends Controller
 
     public function dashboardStudent(Request $request)
     {
+        // Salva i filtri nella sessione
+        session()->put('student_filters', $request->all());
+
+        $studentsQuery = User::where('is_corsista', '1');
+        $uniCount = User::where('is_corsista', '1')->where('universitario', 1)->count();
+
+        // Applica i filtri 
+        if ($request->filled('student_name')) {
+            $search = $request->input('student_name');
+            $studentsQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('cognome', 'like', '%' . $search . '%')
+                    ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $search . '%']);
+            });
+        }
         // Aggiungiamo un filtro per assicurarsi che vengano mostrati solo gli utenti che sono corsisti
         $studentsQuery = User::where('is_corsista', '1');
         $uniCount = User::where('is_corsista', '1')->where('universitario', 1)->count();
@@ -253,7 +269,7 @@ class AdminController extends Controller
     public function studentDetails(User $student)
     {
         $logs = $student->actionLogs->sortByDesc('created_at');
-        return view('dashboard.adminStudentDetails', compact('student' , 'logs'));
+        return view('dashboard.adminStudentDetails', compact('student', 'logs'));
     }
 
     public function getMissingAliasDates(Group $group)

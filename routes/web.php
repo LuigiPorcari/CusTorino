@@ -20,7 +20,8 @@ use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 
 Route::get('/export-db', [ExportController::class, 'export']);
-Route::post('/aliases/check-conf/{alias}', [AliasController::class, 'checkConf'])->name('aliases.checkConf');
+
+
 
 //!ROTTE REGISTRAZIONE ADMIN
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
@@ -87,6 +88,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
 //!MIDDLEWERE TRAINER
 Route::middleware(CheckTrainer::class)->group(function () {
     //!ROTTE DASHBOARD TRAINER
+    Route::post('/aliases/check-conf/{alias}', [AliasController::class, 'checkConf'])->name('aliases.checkConf');
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
     Route::get('/trainer/dashboard/group', [TrainerController::class, 'dashboardGroup'])->name('trainer.group');
     Route::get('/trainer/dashboard/salary', [TrainerController::class, 'salary'])->name('trainer.salary');

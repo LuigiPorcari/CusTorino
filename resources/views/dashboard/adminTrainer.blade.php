@@ -1,29 +1,28 @@
 <x-layout documentTitle="Admin Trainer Dashboard">
-    <ul class="nav nav-tabs admin-nav-tabs mt-5 pt-5 pt-md-0">
-        <li class="nav-item admin-nav-item">
-            <a class="nav-link mt-3" href="{{ route('admin.dashboard') }}">Gruppi</a>
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-0">
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.student') }}">Corsisti</a>
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
+                Corsisti
+            </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-    </ul>
-
+</ul>
     @if (session('success'))
         <div class="alert alert-dismissible custom-alert-success">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
     <div class="container mt-md-5 admin-trainer-dashboard">
         <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h2>
-
         <!-- Form per inviare i filtri al server -->
         <form id="filterForm" method="GET" action="{{ route('admin.dashboard.trainer') }}">
             <div class="mb-4 admin-student-filter">
