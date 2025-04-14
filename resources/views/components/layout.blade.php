@@ -19,7 +19,7 @@
     {{-- SCRIPT FONTAWESOME --}}
     <script src="https://kit.fontawesome.com/cfb9a37921.js" crossorigin="anonymous"></script>
     {{-- ! SCRIPT IUBENDA SERVER PERSONALE --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         var _iub = _iub || [];
         _iub.csConfiguration = {
             "siteId": 3767111,
@@ -28,9 +28,9 @@
         };
     </script>
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3767111.js"></script>
-    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script> --}}
     {{-- ! SCRIPT IUBENDA SERVER CUSTORINO --}}
-    {{-- <script type="text/javascript">
+    <script type="text/javascript">
         var _iub = _iub || [];
         _iub.csConfiguration = {
             "siteId": 3770174,
@@ -39,7 +39,7 @@
         };
     </script>
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3770174.js"></script>
-    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script> --}}
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
 </body>
 
 </html>
