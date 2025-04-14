@@ -6,8 +6,10 @@ use App\Models\Alias;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
-class TrainerSalarySheetExport implements FromView
+
+class TrainerSalarySheetExport implements FromView, WithTitle
 {
     public $trainer;
 
@@ -36,4 +38,9 @@ class TrainerSalarySheetExport implements FromView
             'trainer' => $this->trainer,
         ]);
     }
+    public function title(): string
+    {
+        return $this->trainer->name;
+    }
+
 }
