@@ -1,4 +1,5 @@
 <h3>{{ $trainerName ?? 'Allenatore' }}</h3>
+
 <table>
     <thead>
         <tr>
@@ -32,11 +33,11 @@
                 <td>{{ $alias->nome }}</td>
                 <td>{{ \Carbon\Carbon::parse($alias->data_allenamento)->format('d/m/Y') }}</td>
                 <td>
-                    {{ $alias->primo_allenatore_id == Auth::id() ? 'Primo Allenatore' : 'Secondo Allenatore' }} /
+                    {{ $alias->primo_allenatore_id == $trainer->id ? 'Primo Allenatore' : 'Secondo Allenatore' }} /
                     {{ $alias->condiviso == 'true' ? 'Sì' : 'No' }}
                 </td>
                 <td>
-                    @if ($alias->primo_allenatore_id == Auth::id())
+                    @if ($alias->primo_allenatore_id == $trainer->id)
                         {{ $alias->condiviso == 'true' ? '15.00' : '22.50' }}
                     @else
                         {{ $alias->condiviso == 'true' ? '15.00' : '7.50' }}

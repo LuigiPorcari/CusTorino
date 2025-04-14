@@ -33,6 +33,7 @@ class TrainerSalarySheetExport implements FromView
             'totalPresence' => $totalPresence,
             'totalAbsence' => $totalAbsence,
             'trainerName' => $this->trainer->name,
+            'trainer' => $this->trainer,
         ]);
     }
 }
