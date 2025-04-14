@@ -1,10 +1,13 @@
 <?php
 
+
 use App\Http\Middleware\CheckAdmin;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Middleware\CheckStudent;
 use App\Http\Middleware\CheckTrainer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogController;
+use App\Exports\AllTrainersSalaryExport;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AliasController;
 use App\Http\Controllers\GroupController;
@@ -21,6 +24,8 @@ use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 Route::get('/export-db', [ExportController::class, 'export']);
 
+Route::get('/export-all-trainers-salary', function () {
+    return Excel::download(new AllTrainersSalaryExport, 'stipendi_allenatori.xlsx');});
 
 
 //!ROTTE REGISTRAZIONE ADMIN
