@@ -211,7 +211,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class=" d-flex justify-content-center">
+                {{-- <div class=" d-flex justify-content-center">
                     @if (Auth::user()->last_action || Auth::user()->last_alias_id)
                         <button type="button" class="btn undo-btn-danger btn-sm mt-5 mx-5" data-bs-toggle="modal"
                             data-bs-target="#undoModal">
@@ -219,7 +219,7 @@
                             Operazione
                         </button>
                     @endif
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
