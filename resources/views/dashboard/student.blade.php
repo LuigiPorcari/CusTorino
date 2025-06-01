@@ -1,6 +1,6 @@
 <x-layout documentTitle="Student Dashboard">
     @if (Auth::check() && Auth::user()->is_trainer)
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-0">
+        <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-0">
             <li class="nav-item admin-nav-item mt-3">
                 <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
             </li>
@@ -10,11 +10,11 @@
             <li class="nav-item admin-nav-item mt-3">
                 <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
             </li>
-    </ul>
+        </ul>
     @endif
     <div class="container mt-5">
         <div class="row mt-5 justify-content-center">
-            <div>
+            <div class="mt-4">
                 <h1 class="custom-title mt-5 pt-5">{{ Auth::user()->name }} {{ Auth::user()->cognome }}</h1>
             </div>
             {{-- Tabella con il conteggio delle assenze e dei gettoni --}}
@@ -169,41 +169,52 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Auth::user()->Nrecuperi > 0)
-                                @forelse ($recoverableAliases as $alias)
-                                    <tr>
-                                        <td>
-                                            <button type="button" class="btn admin-btn-danger btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#recoveryConfirmationModal-{{ $alias->id }}">
-                                                Recupera Assenza
-                                            </button>
-                                        </td>
-                                        <td>{{ $alias->formatDayStudent($alias->data_allenamento) }} <br>
-                                            {{ $alias->formatDataStudent($alias->data_allenamento) }} <br>
-                                            {{ $alias->formatHours($alias->orario) }}</td>
-                                        <td class="text-uppercase">{{ $alias->location }}</td>
-                                        <td>{{ $alias->primoAllenatore->name }}</td>
-                                    </tr>
-                                @empty
+                            @if (Auth::user()->pagamento)
+                                @if (Auth::user()->Nrecuperi > 0)
+                                    @forelse ($recoverableAliases as $alias)
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="btn admin-btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#recoveryConfirmationModal-{{ $alias->id }}">
+                                                    Recupera Assenza
+                                                </button>
+                                            </td>
+                                            <td>{{ $alias->formatDayStudent($alias->data_allenamento) }} <br>
+                                                {{ $alias->formatDataStudent($alias->data_allenamento) }} <br>
+                                                {{ $alias->formatHours($alias->orario) }}</td>
+                                            <td class="text-uppercase">{{ $alias->location }}</td>
+                                            <td>{{ $alias->primoAllenatore->name }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4">
+                                                <h2 class="custom-subtitle text-black">Non ci sono gruppi adatti al tuo
+                                                    recupero</h2>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                @else
                                     <tr>
                                         <td colspan="4">
-                                            <h2 class="custom-subtitle text-black">Non ci sono gruppi adatti al tuo
-                                                recupero</h2>
+                                            <h2 class="fw-bold text-uppercase">Non puoi recuperare perchè <br>
+                                                @if (Auth::user()->countAbsences() > 0)
+                                                    non hai rispettato i criteri opportuni quando hai segnato la tua
+                                                    assenza
+                                                    <br>
+                                                    o hai recuperato tutte le tue assenze
+                                                @else
+                                                    non hai mai fatto un'assenza
+                                                @endif
+                                            </h2>
                                         </td>
                                     </tr>
-                                @endforelse
+                                @endif
                             @else
                                 <tr>
                                     <td colspan="4">
                                         <h2 class="fw-bold text-uppercase">Non puoi recuperare perchè <br>
-                                            @if (Auth::user()->countAbsences() > 0)
-                                                non hai rispettato i criteri opportuni quando hai segnato la tua assenza
-                                                <br>
-                                                o hai recuperato tutte le tue assenze
-                                            @else
-                                                non hai mai fatto un'assenza
-                                            @endif
+                                            non hai effettuato il pagamento per questo periodo
                                         </h2>
                                     </td>
                                 </tr>
@@ -293,7 +304,7 @@
     @endforeach
 
     <!-- Modale di conferma Annulla Operazione -->
-    <div class="modal fade" id="undoModal" tabindex="-1" aria-labelledby="undoModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="undoModal" tabindex="-1" aria-labelledby="undoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header admin-modal-header">
@@ -314,5 +325,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </x-layout>

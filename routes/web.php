@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/password/change', [PasswordController::class, 'changePassword']);
     //!ROTTE LOGOUT UTENTI
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    //!ROTTA CONFERMA ALIAS
+    Route::post('/aliases/check-conf/{alias}', [AliasController::class, 'checkConf'])->name('aliases.checkConf');
 });
 //!MIDDLEWERE ADMIN
 Route::middleware(CheckAdmin::class)->group(function () {
@@ -82,6 +84,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
     //!ROTTE ADMIN DASHBOARD
+    Route::get('/admin/week/group', [AdminController::class, 'weekGroup'])->name('admin.week');
     Route::get('/admin/logs', [LogController::class, 'index'])->name('logs.index');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/dashboard/trainer', [AdminController::class, 'dashboardTrainer'])->name('admin.dashboard.trainer');
@@ -93,7 +96,6 @@ Route::middleware(CheckAdmin::class)->group(function () {
 //!MIDDLEWERE TRAINER
 Route::middleware(CheckTrainer::class)->group(function () {
     //!ROTTE DASHBOARD TRAINER
-    Route::post('/aliases/check-conf/{alias}', [AliasController::class, 'checkConf'])->name('aliases.checkConf');
     Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard'])->name('trainer.dashboard');
     Route::get('/trainer/dashboard/group', [TrainerController::class, 'dashboardGroup'])->name('trainer.group');
     Route::get('/trainer/dashboard/salary', [TrainerController::class, 'salary'])->name('trainer.salary');

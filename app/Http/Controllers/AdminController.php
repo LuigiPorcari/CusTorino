@@ -21,6 +21,31 @@ class AdminController extends Controller
         return view('dashboard.admin', compact('groups'));
     }
 
+    public function weekGroup(Request $request)
+    {
+        // Ottieni la data odierna
+        $today = Carbon::today();
+
+        // Calcola l'intervallo settimanale (sabato-sabato)
+        if ($today->isSaturday()) {
+            $startOfWeek = $today;
+            $endOfWeek = $today->copy()->addWeek()->endOfWeek(Carbon::SATURDAY);
+        } else {
+            $startOfWeek = $today->copy()->startOfWeek(Carbon::SATURDAY);
+            $endOfWeek = $today->copy()->endOfWeek(Carbon::SATURDAY);
+        }
+
+        // Filtra solo per la data tra sabato a sabato, ordinando per data crescente
+        $aliases = Alias::whereBetween('data_allenamento', [
+                $startOfWeek->toDateString(),
+                $endOfWeek->toDateString()
+            ])
+            ->orderBy('data_allenamento', 'asc')
+            ->get();
+
+        return view('dashboard.adminWeekGroup', compact('aliases'));
+    }
+
     public function groupDetails(Group $group, Request $request)
     {
         // Calcola l'inizio della settimana corrente
@@ -116,7 +141,7 @@ class AdminController extends Controller
         $studentsQuery = User::where('is_corsista', '1');
         $uniCount = User::where('is_corsista', '1')->where('universitario', 1)->count();
 
-        // Applica i filtri 
+        // Applica i filtri
         if ($request->filled('student_name')) {
             $search = $request->input('student_name');
             $studentsQuery->where(function ($query) use ($search) {

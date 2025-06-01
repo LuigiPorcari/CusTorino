@@ -12,12 +12,17 @@
             </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-</ul>
+    </ul>
     <div class="container mt-5 admin-trainer-details">
         <div class="row">
-            <h1 class="mt-5 custom-title">Dettagli pagamenti {{ $trainer->name }} {{ $trainer->cognome }}</h1>
+            <div class="pt-5 pt-md-0">
+                <h1 class="mt-5 custom-title">Dettagli pagamenti {{ $trainer->name }} {{ $trainer->cognome }}</h1>
+            </div>
             <div class="col-12">
                 <div class="d-flex">
                     <h2 class="mt-5 mb-4 me-5 fw-bolder fs-1">{{ $trainer->name }} {{ $trainer->cognome }}</h2>

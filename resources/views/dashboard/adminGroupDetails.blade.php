@@ -12,12 +12,15 @@
             </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-</ul>
+    </ul>
     <div class="container mt-5 pt-5 admin-group-details">
         <div class="row mt-5">
-            <div class="col-12 col-md-4 mt-md-5">
+            <div class="col-12 col-md-4 mt-5">
                 @if (session('success'))
                     <div class="alert alert-dismissible custom-alert-success">
                         {{ session('success') }}
@@ -47,7 +50,8 @@
                         <p class="card-text mb-0">Corsisti:</p>
                         @foreach ($group->users as $student)
                             <div class="d-flex">
-                                <p class="mt-3 fw-bold">{{ $student->name }} {{ $student->cognome }} - </p>
+                                <a class="mt-3 fw-bold text-white" href="{{ route('admin.student.details', $student) }}">{{ $student->name }}
+                                    {{ $student->cognome }}</a>
                                 <p class="mt-3 ms-2">LV: {{ $student->livello }}</p>
                                 {{-- <div class="btn-group dropend">
                                     <button type="button" class="btn btn-sm dropdown-toggle text-white"

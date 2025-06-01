@@ -14,9 +14,11 @@
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-</ul>
+    </ul>
     <div class="container mt-5 pt-5">
-        <h1 class="custom-title mb-4 mt-5 pt-4 text-center">Lista Corsisti</h1>
+        <div class="pt-5 pt-md-0">
+            <h1 class="custom-title mb-4 mt-5 pt-4 text-center">Lista Corsisti</h1>
+        </div>
         @if ($errors->any())
             <div class="alert alert-dismissible custom-alert-success">
                 @foreach ($errors->all() as $error)
@@ -44,7 +46,8 @@
                 <div class="mb-5">
                     <!-- Checkbox Tutte le Date -->
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input me-2 fs-3" id="selectAllDates" name="all_dates" value="1" checked><span class="fs-4">Tutte le date</span>
+                        <input type="checkbox" class="form-check-input me-2 fs-3" id="selectAllDates" name="all_dates"
+                            value="1" checked><span class="fs-4">Tutte le date</span>
                     </label>
                 </div>
                 <!-- Select Data Inizio Modifica -->

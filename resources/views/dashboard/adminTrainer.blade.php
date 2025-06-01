@@ -12,9 +12,12 @@
             </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-</ul>
+    </ul>
     @if (session('success'))
         <div class="alert alert-dismissible custom-alert-success">
             {{ session('success') }}
@@ -22,7 +25,9 @@
         </div>
     @endif
     <div class="container mt-md-5 admin-trainer-dashboard">
-        <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h2>
+        <div class="pt-5 pt-md-0">
+            <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h2>
+        </div>
         <!-- Form per inviare i filtri al server -->
         <form id="filterForm" method="GET" action="{{ route('admin.dashboard.trainer') }}">
             <div class="mb-4 admin-student-filter">

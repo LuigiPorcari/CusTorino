@@ -12,11 +12,16 @@
             </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
-</ul>
+    </ul>
     <div class="container mt-md-5 admin-dashboard">
-        <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Log delle Operazioni</h2>
+        <div class="pt-5 pt-md-0">
+            <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Log delle Operazioni</h2>
+        </div>
         <!-- Log degli Admin -->
         <h3 class="mb-3 custom-subtitle">Admin</h3>
         <table id="adminLogsTable" class="table table-bordered admin-table">
@@ -40,6 +45,8 @@
                                 Elemento creato
                             @elseif($log->action == 'updating')
                                 Elemento modificato
+                            @elseif($log->custom_action)
+                                {{ $log->custom_action }}
                             @else
                                 N/A
                             @endif

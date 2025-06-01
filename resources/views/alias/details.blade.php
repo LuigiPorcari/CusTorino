@@ -13,6 +13,9 @@
                 </a>
             </li>
             <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
                 <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
             </li>
         @endif
@@ -29,7 +32,9 @@
         @endif
     </ul>
     <div class="container mt-5 pt-5">
-        <h1 class="custom-title text-center mb-3 mt-5 pt-3">Dettagli del Gruppo</h1>
+        <div class="pt-5 pt-md-0">
+            <h1 class="custom-title text-center mb-3 mt-5 pt-3">Dettagli del Gruppo</h1>
+        </div>
         @if (session('success'))
             <div class="alert alert-dismissible custom-alert-success">
                 {{ session('success') }}
@@ -155,7 +160,8 @@
                             @if ($threeDaysCheck || Auth::user()->is_admin)
                                 {{-- Primo Allenatore --}}
                                 <div class="mb-3">
-                                    <label for="primo_allenatore_id" class="custom-form-label">Primo Allenatore</label>
+                                    <label for="primo_allenatore_id" class="custom-form-label">Primo
+                                        Allenatore</label>
                                     <select name="primo_allenatore_id" id="primo_allenatore_id"
                                         class="custom-form-input">
                                         @foreach ($trainers as $trainer)
