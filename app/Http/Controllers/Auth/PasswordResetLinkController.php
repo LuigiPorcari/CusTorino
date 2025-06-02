@@ -50,7 +50,7 @@ class PasswordResetLinkController extends Controller
             $brevo->sendEmail(
                 $user->email,
                 'Reset Password',
-                'emails.reset-password',
+                'emails.password.reset',
                 [
                     'nome' => $user->name,
                     'link' => $resetLink,
