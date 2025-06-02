@@ -36,41 +36,26 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($status === Password::RESET_LINK_SENT) {
-            // Recupera l'utente
-            $user = \App\Models\User::where('email', $request->email)->first();
-
-            if ($user) {
-                // Genera il link di reset
-                $token = app('auth.password.broker')->createToken($user);
-                $resetLink = url(route('password.reset', [
-                    'token' => $token,
-                    'email' => $user->getEmailForPasswordReset(),
-                ], false));
-
-                // Invia l'email con BrevoMailer
-                $brevo = new BrevoMailer();
-                $brevo->sendEmail(
-                    $user->email,
-                    'Reset Password',
-                    'emails.password.reset',
-                    [
-                        'nome' => $user->name,
-                        'link' => $resetLink,
-                    ]
-                );
-            }
-            return back()->with('status', __($status));
+        $user = \App\Models\User::where('email', $request->email)->first();
+        if ($user) {
+            $token = app('auth.password.broker')->createToken($user);
+            $resetLink = url(route('password.reset', [
+                'token' => $token,
+                'email' => $user->getEmailForPasswordReset(),
+            ], false));
+            $brevo = new BrevoMailer();
+            $brevo->sendEmail(
+                $user->email,
+                'Reset Password',
+                'emails.reset-password',
+                [
+                    'nome' => $user->name,
+                    'link' => $resetLink,
+                ]
+            );
+            return back()->with('status', 'Email di reset inviata correttamente!');
         }
-
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        return back()->withErrors(['email' => 'Email non trovata.']);
     }
 
     /**
