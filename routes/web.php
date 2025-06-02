@@ -19,6 +19,7 @@ use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Middleware\CheckAdminOrTrainer;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 
@@ -42,6 +43,9 @@ Route::post('/register/corsista', [RegisterController::class, 'registerCorsista'
 //!ROTTE RESET PASSWORD
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.email');
 //!MIDDLEWERE ADMIN + TRAINER
 Route::middleware([CheckAdminOrTrainer::class])->group(function () {
     //!ROTTA ELIMINA TRAINER
