@@ -36,13 +36,16 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request)
     {
         $request->validate(['email' => 'required|email']);
+
         $user = \App\Models\User::where('email', $request->email)->first();
+
         if ($user) {
             $token = app('auth.password.broker')->createToken($user);
             $resetLink = url(route('password.reset', [
                 'token' => $token,
                 'email' => $user->getEmailForPasswordReset(),
             ], false));
+
             $brevo = new BrevoMailer();
             $brevo->sendEmail(
                 $user->email,
@@ -53,8 +56,10 @@ class PasswordResetLinkController extends Controller
                     'link' => $resetLink,
                 ]
             );
+
             return back()->with('status', 'Email di reset inviata correttamente!');
         }
+
         return back()->withErrors(['email' => 'Email non trovata.']);
     }
 
