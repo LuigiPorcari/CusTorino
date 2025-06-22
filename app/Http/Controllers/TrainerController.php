@@ -21,22 +21,22 @@ class TrainerController extends Controller
         $today = Carbon::today();
 
         // Verifica se oggi è sabato
-        if ($today->isSaturday()) {
-            // Se oggi è sabato, mostra fino al sabato della settimana successiva
+        if ($today->isSunday()) {
+            // Se oggi è domenica, mostra fino al domenica della settimana successiva
             $startOfWeek = $today;
-            $endOfWeek = $today->copy()->addWeek()->endOfWeek(Carbon::SATURDAY);
+            $endOfWeek = $today->copy()->addWeek()->endOfWeek(Carbon::SUNDAY);
         } else {
-            // Altrimenti mostra da sabato scorso a sabato di questa settimana
-            $startOfWeek = $today->copy()->startOfWeek(Carbon::SATURDAY);
-            $endOfWeek = $today->copy()->endOfWeek(Carbon::SATURDAY);
+            // Altrimenti mostra da domenica scorso a domenica di questa settimana
+            $startOfWeek = $today->copy()->startOfWeek(Carbon::SUNDAY);
+            $endOfWeek = $today->copy()->endOfWeek(Carbon::SUNDAY);
         }
 
-        // Filtra gli alias per primo o secondo allenatore e tra sabato a sabato, ordinando per data
+        // Filtra gli alias per primo o secondo allenatore e tra domenica a domenica, ordinando per data
         $aliasesTrainer = Alias::where(function ($query) use ($allenatore_id) {
             $query->where('primo_allenatore_id', $allenatore_id)
                 ->orWhere('secondo_allenatore_id', $allenatore_id);
         })
-            ->whereBetween('data_allenamento', [$startOfWeek->toDateString(), $endOfWeek->toDateString()]) // Filtra per la data tra sabato a sabato
+            ->whereBetween('data_allenamento', [$startOfWeek->toDateString(), $endOfWeek->toDateString()]) // Filtra per la data tra domenica a domenica
             ->orderBy('data_allenamento', 'asc') // Ordina per data crescente
             ->get();
 

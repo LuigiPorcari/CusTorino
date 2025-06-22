@@ -37,9 +37,9 @@ class AdminController extends Controller
 
         // Filtra solo per la data tra sabato a sabato, ordinando per data crescente
         $aliases = Alias::whereBetween('data_allenamento', [
-                $startOfWeek->toDateString(),
-                $endOfWeek->toDateString()
-            ])
+            $startOfWeek->toDateString(),
+            $endOfWeek->toDateString()
+        ])
             ->orderBy('data_allenamento', 'asc')
             ->get();
 
@@ -123,7 +123,9 @@ class AdminController extends Controller
             $trainersQuery->whereDoesntHave('primoAllenatoreGroups')
                 ->whereDoesntHave('secondoAllenatoreGroups');
         }
-
+        
+        // Ordinamento alfabetico per nome e cognome
+        $trainersQuery->orderBy('name')->orderBy('cognome');
         // Paginazione con appending dei filtri
         $trainers = $trainersQuery->paginate(50)->appends($request->except('page'));
 

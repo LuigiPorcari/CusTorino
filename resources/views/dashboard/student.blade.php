@@ -93,7 +93,11 @@
                                             {{ $alias->formatHours($alias->orario) }}
                                         </td>
                                         <td class="text-uppercase">{{ $alias->location }}</td>
-                                        <td>{{ $alias->primoAllenatore->name }}</td>
+                                        @if ($alias->primoAllenatore != null)
+                                            <td>{{ $alias->primoAllenatore->name }}</td>
+                                        @else
+                                            <td>Nessun Allenatore</td>
+                                        @endif
                                     </tr>
                                 @else
                                     <tr>
@@ -110,7 +114,11 @@
                                             {{ $alias->formatHours($alias->orario) }}
                                         </td>
                                         <td class="bg-warning text-uppercase">{{ $alias->location }}</td>
-                                        <td class="bg-warning">{{ $alias->primoAllenatore->name }}</td>
+                                        @if ($alias->primoAllenatore != null)
+                                            <td class="bg-warning">{{ $alias->primoAllenatore->name }}</td>
+                                        @else
+                                            <td class="bg-warning">Nessun Allenatore</td>
+                                        @endif
                                     </tr>
                                 @endif
 
@@ -184,7 +192,12 @@
                                                 {{ $alias->formatDataStudent($alias->data_allenamento) }} <br>
                                                 {{ $alias->formatHours($alias->orario) }}</td>
                                             <td class="text-uppercase">{{ $alias->location }}</td>
-                                            <td>{{ $alias->primoAllenatore->name }}</td>
+                                            @if ($alias->primoAllenatore != null)
+                                                <td>{{ $alias->primoAllenatore->name }}</td>
+                                            @else
+                                                <td>Nessun Allenatore</td>
+                                            @endif
+
                                         </tr>
                                     @empty
                                         <tr>
@@ -244,7 +257,8 @@
                     <div class="modal-header admin-modal-header">
                         <h5 class="modal-title" id="absenceConfirmationModalLabel-{{ $alias->id }}">Conferma Segna
                             Assenza</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         {!! Auth::user()->canMarkAbsence($alias) !!}

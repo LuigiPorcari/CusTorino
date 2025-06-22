@@ -1,14 +1,14 @@
 <x-layout documentTitle="Trainer Dashboard">
     <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
-            <li class="nav-item admin-nav-item mt-3">
-                <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
-            </li>
-            <li class="nav-item admin-nav-item mt-3">
-                <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
-            </li>
-            <li class="nav-item admin-nav-item mt-3">
-                <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
-            </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('trainer.group') }}">Gruppi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
+        </li>
     </ul>
     <div class="container">
         <div class="mt-5 pt-5">
@@ -38,6 +38,9 @@
                                 @if ($alias->primo_allenatore_id != null)
                                     <p class="custom-paragraph"><span class="fw-bold">Primo allenatore:</span> <br>
                                         {{ $alias->primoAllenatore->name }} {{ $alias->primoAllenatore->cognome }}</p>
+                                @else
+                                    <p class="custom-paragraph"><span class="fw-bold">Primo allenatore:</span> <br>
+                                        Nessuno</p>
                                 @endif
                                 @if ($alias->secondo_allenatore_id != null)
                                     <p class="custom-paragraph"><span class="fw-bold">Secondo allenatore:</span> <br>

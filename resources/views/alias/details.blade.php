@@ -164,6 +164,9 @@
                                         Allenatore</label>
                                     <select name="primo_allenatore_id" id="primo_allenatore_id"
                                         class="custom-form-input">
+                                        <option value=""
+                                            {{ is_null($alias->primo_allenatore_id) ? 'selected' : '' }}>Nessuno
+                                        </option>
                                         @foreach ($trainers as $trainer)
                                             <option value="{{ $trainer->id }}"
                                                 {{ $alias->primo_allenatore_id == $trainer->id ? 'selected' : '' }}>

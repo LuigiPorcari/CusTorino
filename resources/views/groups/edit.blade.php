@@ -12,6 +12,9 @@
             </a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
     </ul>
@@ -126,9 +129,11 @@
                             <div class="col-12 col-md-3">
                                 {{-- PRIMO ALLENATORE --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="primo_allenatore_id">Primo Allenatore</label>
+                                    <label class="custom-form-label" for="primo_allenatore_id">Primo
+                                        Allenatore</label>
                                     <select class="custom-form-input" id="primo_allenatore_id"
-                                        name="primo_allenatore_id" required>
+                                        name="primo_allenatore_id">
+                                        <option value="" selected>Nessuno</option>
                                         @foreach ($trainers as $trainer)
                                             <option @if ($group->primo_allenatore_id == $trainer->id) selected @endif
                                                 value="{{ $trainer->id }}">

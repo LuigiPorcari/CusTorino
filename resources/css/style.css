@@ -247,6 +247,40 @@ body {
     justify-content: space-between;
     height: auto; /* Consente di modificare dinamicamente l'altezza */
 }
+.card-title-week, .custom-paragraph-week, .card-text-week {
+    font-size: 0.85rem;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.custom-card-week {
+    word-break: break-word;
+}
+
+.custom-link-btn-week {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    font-size: 0.7rem;
+    background-color: rgb(245, 189, 27);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    width: 100%;
+    white-space: nowrap; /* tutto su una riga */
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.custom-link-btn-week:hover {
+    background-color: rgb(0, 108, 181); /* Blu chiaro al passaggio */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 108, 181, 0.5);
+}
 
 /* Rendere scrollabile la lista degli studenti nella colonna "Segna Recuperi" */
 .custom-scrollable-list {

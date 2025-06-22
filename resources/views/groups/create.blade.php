@@ -105,7 +105,8 @@
                                     <label class="custom-form-label" for="primo_allenatore_id">Primo
                                         Allenatore</label>
                                     <select class="custom-form-input" id="primo_allenatore_id"
-                                        name="primo_allenatore_id" required>
+                                        name="primo_allenatore_id">
+                                        <option value="" selected>Nessuno</option>
                                         @foreach ($trainers as $trainer)
                                             <option value="{{ $trainer->id }}">{{ $trainer->name }}
                                                 {{ $trainer->cognome }}

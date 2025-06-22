@@ -37,6 +37,9 @@
                         @if ($group->primo_allenatore_id != null)
                             <p class="card-text">Primo allenatore: <br> {{ $group->primoAllenatore->name }}
                                 {{ $group->primoAllenatore->cognome }}</p>
+                        @else
+                            <p class="card-text">Primo allenatore: <br>
+                                Nessuno</p>
                         @endif
                         @if ($group->secondo_allenatore_id != null)
                             <p class="card-text">Secondo allenatore: <br> {{ $group->secondoAllenatore->name }}
@@ -50,7 +53,8 @@
                         <p class="card-text mb-0">Corsisti:</p>
                         @foreach ($group->users as $student)
                             <div class="d-flex">
-                                <a class="mt-3 fw-bold text-white" href="{{ route('admin.student.details', $student) }}">{{ $student->name }}
+                                <a class="mt-3 fw-bold text-white"
+                                    href="{{ route('admin.student.details', $student) }}">{{ $student->name }}
                                     {{ $student->cognome }}</a>
                                 <p class="mt-3 ms-2">LV: {{ $student->livello }}</p>
                                 {{-- <div class="btn-group dropend">
@@ -149,7 +153,7 @@
                         <tbody>
                             @foreach ($otherAliases as $alias)
                                 <tr class="archive-row bg-light" data-date="{{ $alias->data_allenamento }}">
-                                    <td class="{{ $alias->check_conf ? 'bg-warning' : '' }}">
+                                    <td class="@if (is_null($alias->primo_allenatore_id)) bg-danger text-white @elseif($alias->check_conf) bg-warning @endif">
                                         <p class="fw-bold">{{ $alias->formatData($alias->data_allenamento) }}</p>
                                     </td>
                                     <td>
@@ -172,6 +176,9 @@
                                                 <br>{{ $alias->primoAllenatore->name }}
                                                 {{ $alias->primoAllenatore->cognome }}
                                             </p>
+                                        @else
+                                            <p class="card-text">Primo allenatore: <br>
+                                                Nessuno</p>
                                         @endif
                                         @if ($alias->secondo_allenatore_id != null)
                                             <p class="card-text">Secondo allenatore:
@@ -224,7 +231,7 @@
                         <tbody>
                             @foreach ($aliases as $alias)
                                 <tr class="main-row" data-date="{{ $alias->data_allenamento }}">
-                                    <td class="{{ $alias->check_conf ? 'bg-warning' : '' }}">
+                                    <td class="@if (is_null($alias->primo_allenatore_id)) bg-danger text-white @elseif($alias->check_conf) bg-warning @endif">
                                         <p class="fw-bold">{{ $alias->formatData($alias->data_allenamento) }}</p>
                                     </td>
                                     <td>
@@ -247,6 +254,9 @@
                                                 <br>{{ $alias->primoAllenatore->name }}
                                                 {{ $alias->primoAllenatore->cognome }}
                                             </p>
+                                        @else
+                                            <p class="card-text">Primo allenatore: <br>
+                                                Nessuno</p>
                                         @endif
                                         @if ($alias->secondo_allenatore_id != null)
                                             <p class="card-text">Secondo allenatore:

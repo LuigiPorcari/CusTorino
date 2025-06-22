@@ -40,7 +40,7 @@ class GroupController extends Controller
             'orario' => 'required',
             'campo' => 'required|integer|min:1|max:4',
             'tipo' => 'required|string',
-            'primo_allenatore_id' => 'required|integer|exists:users,id',
+            'primo_allenatore_id' => 'nullable|integer|exists:users,id',
             'secondo_allenatore_id' => 'nullable|integer|exists:users,id',
             'condiviso' => 'required|string',
             'numero_massimo_partecipanti' => 'required|integer',
