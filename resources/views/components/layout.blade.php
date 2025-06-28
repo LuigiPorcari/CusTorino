@@ -2,6 +2,18 @@
 <html lang="it">
 
 <head>
+    {{-- !SCRIPT IUBENDA ACCESSIBILITA' --}}
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = {
+            "siteId": 3770174,
+            "cookiePolicyId": 42749205,
+            "lang": "it"
+        };
+    </script>
+    <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3770174.js"></script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+    {{-- !FINE SCRIPT IUBENDA ACCESSIBILITA' --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,6 +21,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+
 <body>
     <x-nav />
     <div class="min-vh-100">
@@ -30,7 +43,7 @@
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3767111.js"></script>
     <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script> --}}
     {{-- ! SCRIPT IUBENDA SERVER CUSTORINO --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         var _iub = _iub || [];
         _iub.csConfiguration = {
             "siteId": 3770174,
@@ -39,7 +52,7 @@
         };
     </script>
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3770174.js"></script>
-    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script> --}}
 </body>
 
 </html>
