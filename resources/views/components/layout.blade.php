@@ -13,7 +13,6 @@
     </script>
     <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3770174.js"></script>
     <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
-    <script type="text/javascript" src="https://cdn.iubenda.com/waywidget/3770174.js"></script>
     {{-- !FINE SCRIPT IUBENDA ACCESSIBILITA' --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
