@@ -1,55 +1,55 @@
-<nav class="navbar navbar-expand-lg custom-navbar fixed-top shadow-sm ps-1" id="neubar">
+<nav class="navbar navbar-expand-lg custom-navbar fixed-top shadow-sm ps-1" id="neubar" role="navigation"
+    aria-label="Navigazione principale">
     <div class="container-fluid">
-        <img src="{{ asset('img/CUS_Torino_Logo.png') }}" alt="Logo" class="img-fluid img-nav me-3 ms-0">
-        <a class="navbar-brand custom-navbar-brand mb-2" href="{{ route('homepage') }}">CusTorino</a>
+        <a class="navbar-brand custom-navbar-brand mb-2 d-flex align-items-center" href="{{ route('homepage') }}">
+            <img src="{{ asset('img/CUS_Torino_Logo.png') }}" alt="Logo Cus Torino" class="img-fluid img-nav me-3 ms-0" />
+            <span>CusTorino</span>
+        </a>
+
         <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
+            aria-label="Apri menu di navigazione">
             <i class="fa-solid fa-bars text-white"></i>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @if (!Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link custom-nav-link" aria-current="page" href="{{ route('homepage') }}">Home</a>
+                        <a class="nav-link custom-nav-link" href="{{ route('homepage') }}" aria-current="page">Home</a>
                     </li>
                 @endif
+
                 <li class="nav-item dropdown">
                     @if (Auth::check())
-                        <a class="nav-link dropdown-toggle custom-nav-link" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle custom-nav-link" href="#" id="utenteDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                             Benvenuto, {{ Auth::user()->name }}
                         </a>
-                        <ul class="dropdown-menu custom-dropdown-menu">
+                        <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="utenteDropdown">
                             @if (Auth::user()->is_admin)
                                 <li class="d-flex justify-content-center">
-                                    <a class="btn custom-btn-primary-nav-drop mb-2"
-                                        href="{{ route('groups.create') }}">Crea
-                                        gruppi</a>
+                                    <a class="btn custom-btn-primary-nav-drop mb-2" href="{{ route('groups.create') }}">
+                                        Crea gruppi
+                                    </a>
                                 </li>
                             @endif
                             <li class="d-flex justify-content-center">
-                                <a class="btn custom-btn-primary-nav-drop mb-2"
-                                    href="{{ route('password.change') }}">Cambia
-                                    Password</a>
+                                <a class="btn custom-btn-primary-nav-drop mb-2" href="{{ route('password.change') }}">
+                                    Cambia Password
+                                </a>
                             </li>
                             <li class="d-flex justify-content-center">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn custom-btn-warning-nav mb-2">Logout</button>
+                                    <button type="submit" class="btn custom-btn-warning-nav mb-2"
+                                        aria-label="Esci dal tuo account">Logout</button>
                                 </form>
                             </li>
-                            {{-- @if (Auth::user()->is_admin)
-                                <li class="d-flex justify-content-center">
-                                    <button type="button" class="btn custom-btn-danger-nav" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModalAdmin">
-                                        Elimina utente
-                                    </button>
-                                </li>
-                            @endif --}}
                         </ul>
                     @endif
                 </li>
+
                 @if (Auth::check())
                     @if (Auth::user()->is_corsista)
                         <li class="nav-item">
@@ -68,20 +68,18 @@
                     @endif
                 @endif
             </ul>
-            {{-- @if (!Auth::check())
-                <div>
-                    <a class="btn custom-btn-primary-nav" href="{{ route('login') }}">Accedi</a>
-                    <a class="btn custom-btn-primary-nav mx-2" href="{{ route('corsista.register') }}">Registrati come
-                        Corsista</a>
-                </div>
-            @endif --}}
+
             @if (Auth::check() && Auth::user()->is_admin)
-                <div class="d-flex">
-                    <a class="btn custom-btn-primary-nav me-2" href="{{ route('corsista.register') }}">Registra nuovo
-                        Corsista</a>
-                    <a class="btn custom-btn-primary-nav me-2" href="{{ route('trainer.register') }}">Registra nuovo
-                        Allenatore</a>
-                    <a class="btn custom-btn-primary-nav" href="{{ route('admin.register') }}">Registra nuovo Admin</a>
+                <div class="d-flex flex-wrap justify-content-end" role="group" aria-label="Azioni rapide Admin">
+                    <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('corsista.register') }}">
+                        Registra Corsista
+                    </a>
+                    <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('trainer.register') }}">
+                        Registra Allenatore
+                    </a>
+                    <a class="btn custom-btn-primary-nav mb-2" href="{{ route('admin.register') }}">
+                        Registra Admin
+                    </a>
                 </div>
             @endif
         </div>

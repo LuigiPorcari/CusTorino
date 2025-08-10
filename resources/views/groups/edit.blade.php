@@ -1,24 +1,25 @@
 <x-layout documentTitle="Modify Groups">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0">
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrativa">
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
                 Corsisti
             </a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
     </ul>
-    <div class="container mt-5 pt-1">
+
+    <main class="container mt-5 pt-1" id="content" tabindex="-1">
         <div class="pt-5 pt-md-0">
             <h1 class="custom-title mt-5 pt-5 text-center">Modifica Gruppo</h1>
         </div>
@@ -33,8 +34,9 @@
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="nome">Nome Gruppo</label>
                                     <input value="{{ $group->nome }}" type="text" class="custom-form-input"
-                                        name="nome">
+                                        name="nome" id="nome">
                                 </div>
+
                                 {{-- GIORNO SETTIMANA --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="giorno_settimana">Giorno della
@@ -57,15 +59,15 @@
                                             Domenica</option>
                                     </select>
                                 </div>
+
                                 {{-- SEDE --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="location">In che sede si svolge
-                                        l'allenamento?</label>
+                                    <label class="custom-form-label" for="location">Sede</label>
                                     <select class="custom-form-input" id="location" name="location" required>
                                         <option @if ($group->location == 'torino') selected @endif value="torino">TORINO
                                         </option>
-                                        <option @if ($group->location == 'leinì') selected @endif value="leinì"
-                                            class="text-uppercase">leinì</option>
+                                        <option @if ($group->location == 'leinì') selected @endif value="leinì">leinì
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -104,12 +106,14 @@
                                         </option>
                                     </select>
                                 </div>
+
                                 {{-- CAMPO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="campo">Campo</label>
                                     <input value="{{ $group->campo }}" type="number" class="custom-form-input"
                                         id="campo" name="campo" min="1" max="4" required>
                                 </div>
+
                                 {{-- GENERE --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="tipo">Tipo</label>
@@ -117,12 +121,11 @@
                                         <option @if ($group->tipo == 'M') selected @endif value="M">
                                             Maschile</option>
                                         <option @if ($group->tipo == 'F') selected @endif value="F">
-                                            Femminile
-                                        </option>
-                                        <option @if ($group->tipo == 'misto') selected @endif value="misto">Misto
-                                        </option>
-                                        <option @if ($group->tipo == 'under') selected @endif value="under">Under
-                                        </option>
+                                            Femminile</option>
+                                        <option @if ($group->tipo == 'misto') selected @endif value="misto">
+                                            Misto</option>
+                                        <option @if ($group->tipo == 'under') selected @endif value="under">
+                                            Under</option>
                                     </select>
                                 </div>
                             </div>
@@ -142,6 +145,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 {{-- SECONDO ALLENATORE --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="secondo_allenatore_id">Secondo
@@ -157,6 +161,7 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 {{-- CONDIVISO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="condiviso">Condiviso</label>
@@ -171,8 +176,9 @@
                             <div class="col-12 col-md-3">
                                 {{-- NUMERO MASSIMO PARTECIPANTI --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="numero_massimo_partecipanti">Numero Massimo
-                                        Partecipanti</label>
+                                    <label class="custom-form-label" for="numero_massimo_partecipanti">
+                                        Numero Massimo Partecipanti
+                                    </label>
                                     <select class="custom-form-input" id="numero_massimo_partecipanti"
                                         name="numero_massimo_partecipanti" required>
                                         <option @if ($group->numero_massimo_partecipanti == '6') selected @endif value="6">6
@@ -185,6 +191,7 @@
                                         </option>
                                     </select>
                                 </div>
+
                                 {{-- LIVELLO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="livello">Livello</label>
@@ -204,5 +211,5 @@
                 </form>
             </div>
         </div>
-    </div>
+    </main>
 </x-layout>

@@ -1,5 +1,5 @@
 <x-layout documentTitle="Create Groups">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5" role="navigation" aria-label="Navigazione amministrativa">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
@@ -18,7 +18,8 @@
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
     </ul>
-    <div class="container pt-5">
+
+    <main id="main-content" tabindex="-1" class="container pt-5">
         <div class="mt-2 mt-md-0 pt-5 pt-md-4">
             <h1 class="custom-title mt-5 pt-5 text-center">Crea Gruppo</h1>
         </div>
@@ -29,13 +30,11 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12 col-md-2">
-                                {{-- NOME --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="nome">Nome Gruppo</label>
                                     <input type="text" class="custom-form-input" id="nome" name="nome"
                                         required>
                                 </div>
-                                {{-- GIORNO SETTIMANA --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="giorno_settimana">Giorno della
                                         Settimana</label>
@@ -51,8 +50,8 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-12 col-md-2">
-                                {{-- ORARIO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="orario">Orario</label>
                                     <select class="custom-form-input" id="orario" name="orario" required>
@@ -72,23 +71,21 @@
                                         <option value="21:30">21:30</option>
                                     </select>
                                 </div>
-                                {{-- CAMPO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="campo">Campo</label>
                                     <input type="number" class="custom-form-input" id="campo" name="campo"
                                         min="1" max="4" required>
                                 </div>
                             </div>
+
                             <div class="col-12 col-md-2">
-                                {{-- SEDE --}}
                                 <div class="mb-3">
-                                    <label class="custom-form-label" for="location">Sede dell'allenamento?</label>
+                                    <label class="custom-form-label" for="location">Sede dell'allenamento</label>
                                     <select class="custom-form-input" id="location" name="location" required>
                                         <option value="torino">TORINO</option>
-                                        <option value="leinì" class="text-uppercase">leinì</option>
+                                        <option value="leinì">LEINÌ</option>
                                     </select>
                                 </div>
-                                {{-- GENERE --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="tipo">Tipo</label>
                                     <select class="custom-form-input" id="tipo" name="tipo" required>
@@ -100,7 +97,6 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-2">
-                                {{-- PRIMO ALLENATORE --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="primo_allenatore_id">Primo
                                         Allenatore</label>
@@ -109,12 +105,10 @@
                                         <option value="" selected>Nessuno</option>
                                         @foreach ($trainers as $trainer)
                                             <option value="{{ $trainer->id }}">{{ $trainer->name }}
-                                                {{ $trainer->cognome }}
-                                            </option>
+                                                {{ $trainer->cognome }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- SECONDO ALLENATORE --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="secondo_allenatore_id">Secondo
                                         Allenatore</label>
@@ -123,12 +117,10 @@
                                         <option value="" selected>Nessuno</option>
                                         @foreach ($trainers as $trainer)
                                             <option value="{{ $trainer->id }}">{{ $trainer->name }}
-                                                {{ $trainer->cognome }}
-                                            </option>
+                                                {{ $trainer->cognome }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- CONDIVISO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="condiviso">Condiviso</label>
                                     <select class="custom-form-input" id="condiviso" name="condiviso" required>
@@ -137,8 +129,8 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-12 col-md-2">
-                                {{-- NUMERO MASSIMO PARTECIPANTI --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="numero_massimo_partecipanti">Numero
                                         Partecipanti</label>
@@ -150,21 +142,19 @@
                                         <option value="16">16</option>
                                     </select>
                                 </div>
-                                {{-- LIVELLO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="livello">Livello</label>
                                     <input type="number" class="custom-form-input" id="livello" name="livello"
-                                        required min="1" max="12">
+                                        min="1" max="12" required>
                                 </div>
                             </div>
+
                             <div class="col-12 col-md-2">
-                                {{-- DATA INIZIO CORSO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="data_inizio_corso">Data Inizio Corso</label>
                                     <input type="date" class="custom-form-input-date" id="data_inizio_corso"
                                         name="data_inizio_corso" required>
                                 </div>
-                                {{-- DATA FINE CORSO --}}
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="data_fine_corso">Data Fine Corso</label>
                                     <input type="date" class="custom-form-input-date" id="data_fine_corso"
@@ -176,10 +166,10 @@
                                     <button type="submit" class="custom-btn-create-group">Crea gruppo</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> {{-- chiude row --}}
+                    </div> {{-- chiude container-fluid --}}
                 </form>
             </div>
         </div>
-    </div>
+    </main>
 </x-layout>

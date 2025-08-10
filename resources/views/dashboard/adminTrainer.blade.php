@@ -1,75 +1,89 @@
 <x-layout documentTitle="Admin Trainer Dashboard">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-0">
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
-                Corsisti
-            </a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
-        </li>
-        <li class="nav-item admin-nav-item mt-3">
-            <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrativa">
+            <li class="nav-item admin-nav-item mt-3" role="presentation">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}" role="tab">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3" role="presentation">
+                <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}"
+                    role="tab">Allenatori</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3" role="presentation">
+                <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}"
+                    role="tab">
+                    Corsisti
+                </a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3" role="presentation">
+                <a class="nav-link" href="{{ route('admin.week') }}" role="tab">Settimana</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3" role="presentation">
+                <a class="nav-link" href="{{ route('logs.index') }}" role="tab">Log</a>
+            </li>
+        </ul>
+
     @if (session('success'))
-        <div class="alert alert-dismissible custom-alert-success">
+        <div class="alert alert-dismissible custom-alert-success" role="alert">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi notifica"></button>
         </div>
     @endif
-    <div class="container mt-md-5 admin-trainer-dashboard">
-        <div class="pt-5 pt-md-0">
-            <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h2>
-        </div>
-        <!-- Form per inviare i filtri al server -->
-        <form id="filterForm" method="GET" action="{{ route('admin.dashboard.trainer') }}">
-            <div class="mb-4 admin-student-filter">
+
+    <main id="main-content" class="container mt-md-5 admin-trainer-dashboard" tabindex="-1">
+        <header class="pt-5 pt-md-0">
+            <h1 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Elenco Allenatori</h1>
+        </header>
+        <!-- Form di filtro allenatori -->
+        <form id="filterForm" method="GET" action="{{ route('admin.dashboard.trainer') }}"
+            aria-label="Filtra allenatori">
+            <fieldset class="mb-4 admin-student-filter">
+                <legend class="visually-hidden">Filtri Allenatori</legend>
                 <div class="row">
-                    <!-- Filtro per Nome e Cognome -->
+                    <!-- Filtro nome e gruppo -->
                     <div class="col-md-4 my-auto">
+                        <label for="trainer_name" class="form-label visually-hidden">Nome o Cognome</label>
                         <input type="search" name="trainer_name" id="trainer_name" class="custom-form-input shadow-lg"
                             placeholder="Nome o Cognome" value="{{ request('trainer_name') }}">
+
+                        <label for="group_filter" class="form-label visually-hidden">Gruppo</label>
                         <input type="search" name="group_filter" id="group_filter" class="custom-form-input shadow-lg"
                             placeholder="Gruppi" value="{{ request('group_filter') }}">
                     </div>
 
-                    <!-- Checkbox per "Non allena nessun gruppo" -->
+                    <!-- Checkbox "non allena" -->
                     <div class="col-6 col-md-2">
-                        <div class="filter-box shadow-lg">
-                            <p class="fw-bold">Gruppi</p>
+                        <fieldset class="filter-box shadow-lg" role="group" aria-labelledby="gruppiLabel">
+                            <legend id="gruppiLabel" class="fw-bold">Gruppi</legend>
                             <input type="hidden" name="no_group" value="0">
-                            <label for="no_group_filter" class="mt-2">
-                                <input type="checkbox" name="no_group" id="no_group_filter" value="1"
-                                    {{ request('no_group') == '1' ? 'checked' : '' }}> Non allena nessun gruppo
-                            </label>
-                        </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="no_group" id="no_group_filter"
+                                    value="1" {{ request('no_group') == '1' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="no_group_filter">Non allena nessun gruppo</label>
+                            </div>
+                        </fieldset>
                     </div>
 
+                    <!-- Bottone filtra -->
                     <div class="col-6 col-md-2 text-center d-flex justify-content-center align-items-center">
-                        <button type="submit" class="btn admin-btn-info">Applica Filtri</button>
+                        <button type="submit" class="btn admin-btn-info" aria-label="Applica i filtri">Applica
+                            Filtri</button>
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </form>
 
-        <div class="table-responsive admin-table-responsive">
-            <table class="table table-bordered admin-trainer-table">
+        <!-- Tabella allenatori -->
+        <div class="table-responsive admin-table-responsive" aria-live="polite">
+            <table class="table table-bordered admin-trainer-table" aria-describedby="trainerTableCaption">
+                <caption id="trainerTableCaption" class="visually-hidden">Tabella degli allenatori</caption>
                 <thead>
                     <tr>
-                        <th class="d-table-cell d-md-none">Nome e Cognome</th>
-                        <th class="d-none d-md-table-cell">Nome</th>
-                        <th class="d-none d-md-table-cell">Cognome</th>
-                        <th class="d-none d-md-table-cell">Gruppi</th>
-                        <th class="d-none d-md-table-cell">Stipendio Tot:</th>
-                        <th>Dettagli</th>
-                        <th>Questo Allenatore è anche un Corsista?</th>
+                        <th scope="col" class="d-table-cell d-md-none">Nome e Cognome</th>
+                        <th scope="col" class="d-none d-md-table-cell">Nome</th>
+                        <th scope="col" class="d-none d-md-table-cell">Cognome</th>
+                        <th scope="col" class="d-none d-md-table-cell">Gruppi</th>
+                        <th scope="col" class="d-none d-md-table-cell">Stipendio Tot:</th>
+                        <th scope="col">Dettagli</th>
+                        <th scope="col">Anche corsista?</th>
                     </tr>
                 </thead>
                 <tbody id="trainer_table_body">
@@ -91,23 +105,30 @@
                                     @endforeach
                                 @endif
                             </td>
-                            <td class="d-none d-md-table-cell">{{ $trainer->calcolaStipendioAllenatore($trainer->id) }}
-                                €</td>
+                            <td class="d-none d-md-table-cell">
+                                {{ $trainer->calcolaStipendioAllenatore($trainer->id) }} €</td>
                             <td>
-                                <a href="{{ route('admin.trainer.details', $trainer) }}"
-                                    class="btn admin-btn-info">Visualizza Dettagli</a>
+                                <a href="{{ route('admin.trainer.details', $trainer) }}" class="btn admin-btn-info"
+                                    aria-label="Visualizza dettagli di {{ $trainer->name }} {{ $trainer->cognome }}">
+                                    Visualizza Dettagli
+                                </a>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('admin.user.make-trainer-student', $trainer) }}">
+                                <form method="POST"
+                                    action="{{ route('admin.user.make-trainer-student', $trainer) }}">
                                     @csrf
                                     <div class="d-flex">
-                                        <select class="form-control mb-2 mb-md-0" name="is_corsista">
+                                        <label for="is_corsista_{{ $trainer->id }}"
+                                            class="visually-hidden">Corsista?</label>
+                                        <select class="form-control mb-2 mb-md-0" name="is_corsista"
+                                            id="is_corsista_{{ $trainer->id }}">
                                             <option @if ($trainer->is_corsista == 1) selected @endif value="1">SI
                                             </option>
                                             <option @if ($trainer->is_corsista == 0) selected @endif value="0">NO
                                             </option>
                                         </select>
-                                        <button type="submit" class="btn admin-btn-info">Modifica</button>
+                                        <button type="submit" class="btn admin-btn-info ms-2"
+                                            aria-label="Salva stato corsista">Modifica</button>
                                     </div>
                                 </form>
                             </td>
@@ -122,16 +143,16 @@
         </div>
 
         {{ $trainers->links('pagination::bootstrap-5') }}
-    </div>
+        </div>
 
-    <script>
-        // Aggiungi evento di aggiornamento automatico quando si cancella il contenuto degli input
-        document.querySelectorAll('#trainer_name, #group_filter').forEach(function(input) {
-            input.addEventListener('input', function() {
-                if (this.value === '') {
-                    document.getElementById('filterForm').submit(); // Invia il form automaticamente
-                }
+        <script>
+            document.querySelectorAll('#trainer_name, #group_filter').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    if (this.value === '') {
+                        document.getElementById('filterForm').submit();
+                    }
+                });
             });
-        });
-    </script>
+        </script>
+    </main>
 </x-layout>
