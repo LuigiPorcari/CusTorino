@@ -123,9 +123,9 @@ class AdminController extends Controller
             $trainersQuery->whereDoesntHave('primoAllenatoreGroups')
                 ->whereDoesntHave('secondoAllenatoreGroups');
         }
-        
+
         // Ordinamento alfabetico per nome e cognome
-        $trainersQuery->orderBy('name')->orderBy('cognome');
+        $trainersQuery->orderBy('cognome')->orderBy('name');
         // Paginazione con appending dei filtri
         $trainers = $trainersQuery->paginate(50)->appends($request->except('page'));
 
