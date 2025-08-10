@@ -247,7 +247,9 @@ body {
     justify-content: space-between;
     height: auto; /* Consente di modificare dinamicamente l'altezza */
 }
-.card-title-week, .custom-paragraph-week, .card-text-week {
+.card-title-week,
+.custom-paragraph-week,
+.card-text-week {
     font-size: 0.85rem;
     line-height: 1.2;
     word-wrap: break-word;
@@ -434,5 +436,14 @@ body {
         border-bottom: 2px solid rgb(245, 189, 27); /* Bordo giallo */
         position: fixed;
         width: 100%;
+    }
+
+    @media (max-width: 576px) {
+        .admin-student-table td.notes,
+        .admin-student-table th.notes {
+            white-space: normal !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
     }
 }

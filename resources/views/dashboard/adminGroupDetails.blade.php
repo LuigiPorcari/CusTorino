@@ -1,5 +1,5 @@
 <x-layout documentTitle="Admin Group Details">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrazione">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-3" role="navigation" aria-label="Navigazione amministrazione">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}"
                 aria-label="Pagina gruppi">Gruppi</a>
@@ -17,6 +17,9 @@
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}"
                 aria-label="Pagina settimana">Settimana</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}" aria-label="Pagina log">Log</a>

@@ -1,5 +1,5 @@
 <x-layout documentTitle="Admin Week Group">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrativa">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-3" role="navigation" aria-label="Navigazione amministrativa">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
@@ -15,13 +15,16 @@
             <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
         </li>
         <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
     </ul>
 
     <main class="container" id="main-content">
         <header class="mt-5 pt-5">
-            <h1 class="mt-5 custom-title">Gestione Gruppi Settimanali</h1>
+            <h1 class="mt-5 pt-5 custom-title">Gestione Gruppi Settimanali</h1>
 
             @if (session('success'))
                 <div class="alert alert-dismissible custom-alert-success mt-5" role="status">

@@ -18,15 +18,20 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Middleware\CheckAdminOrTrainer;
+use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 
 Route::get('/export-db', [ExportController::class, 'export']);
-
 Route::get('/export-all-trainers-salary', function () {
-    return Excel::download(new AllTrainersSalaryExport, 'stipendi_allenatori.xlsx');});
+    return Excel::download(new AllTrainersSalaryExport, 'stipendi_allenatori.xlsx');
+});
+
+
+
+
 
 
 //!ROTTE REGISTRAZIONE ADMIN
@@ -56,6 +61,7 @@ Route::middleware([CheckAdminOrTrainer::class])->group(function () {
 });
 //!MIDDLEWERE UTENTE LOGGATO
 Route::middleware('auth')->group(function () {
+    Route::get('/student/{user}/availabilities', [AvailabilityController::class, 'edit'])->name('student.availabilities.edit');
     //!ROTTE CAMBIO PASSWORD
     Route::get('/password/change', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
     Route::post('/password/change', [PasswordController::class, 'changePassword']);
@@ -88,6 +94,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
     //!ROTTE ADMIN DASHBOARD
+    Route::get('/admin/availabilities/groups', [AvailabilityController::class, 'groups'])->name('admin.availabilities.groups');
     Route::get('/admin/week/group', [AdminController::class, 'weekGroup'])->name('admin.week');
     Route::get('/admin/logs', [LogController::class, 'index'])->name('logs.index');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -107,6 +114,7 @@ Route::middleware(CheckTrainer::class)->group(function () {
 //!MIDDLEWERE CORSISTA
 Route::middleware(CheckStudent::class)->group(function () {
     //!ROTTE DASHBOARD CORSISTA
+    Route::post('/student/{user}/availabilities', [AvailabilityController::class, 'update'])->name('student.availabilities.update');
     Route::get('/corsista/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
     Route::post('/student/mark-absence/{alias}', [StudentController::class, 'markAbsence'])->name('student.markAbsence');
     Route::post('/student/rec-absence/{alias}', [StudentController::class, 'recAbsence'])->name('student.recAbsence');

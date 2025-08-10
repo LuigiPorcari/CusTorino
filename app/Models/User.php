@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Availability;
 use App\Traits\LogsActivity;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -329,4 +330,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Log::class, 'user_modified_id');
     }
+
+    public function availabilities()
+    {
+        return $this->hasMany(Availability::class, 'user_id');
+    }
+
 }

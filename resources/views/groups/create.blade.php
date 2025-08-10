@@ -1,20 +1,23 @@
 <x-layout documentTitle="Create Groups">
     <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5" role="navigation" aria-label="Navigazione amministrativa">
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3 pt-md-3">
             <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3 pt-md-3">
             <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3 pt-md-3">
             <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">
                 Corsisti
             </a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3 pt-md-3">
             <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        <li class="nav-item admin-nav-item mt-3 pt-md-3">
+            <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3 pt-md-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
     </ul>

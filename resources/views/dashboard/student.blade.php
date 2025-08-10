@@ -1,6 +1,6 @@
 <x-layout documentTitle="Student Dashboard">
     @if (Auth::check() && Auth::user()->is_trainer)
-        <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrativa">
+        <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-3" role="navigation" aria-label="Navigazione amministrativa">
             <li class="nav-item admin-nav-item mt-3">
                 <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
             </li>

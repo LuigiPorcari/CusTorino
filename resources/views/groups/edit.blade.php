@@ -1,5 +1,5 @@
 <x-layout documentTitle="Modify Groups">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrativa">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-3" role="navigation" aria-label="Navigazione amministrativa">
         <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
         </li>
@@ -14,12 +14,15 @@
         <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link active" aria-current="page" href="{{ route('admin.week') }}">Settimana</a>
         </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
+        </li>
         <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
     </ul>
 
-    <main class="container mt-5 pt-1" id="content" tabindex="-1">
+    <main class="container mt-5 pt-5" id="content" tabindex="-1">
         <div class="pt-5 pt-md-0">
             <h1 class="custom-title mt-5 pt-5 text-center">Modifica Gruppo</h1>
         </div>

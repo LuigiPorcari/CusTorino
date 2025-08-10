@@ -1,5 +1,5 @@
 <x-layout documentTitle="Trainer Dashboard">
-    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0" role="navigation" aria-label="Navigazione amministrativa">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-0 pt-md-3" role="navigation" aria-label="Navigazione amministrativa">
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" aria-current="page" href="{{ route('trainer.dashboard') }}">Settimana</a>
         </li>
@@ -105,7 +105,7 @@
                     </section>
                 </div>
             @empty
-                <div class="min-vh-100 text-center custom-title">
+                <div class="min-vh-100 text-center custom-title mt-5 pt-5">
                     <h2>Non alleni nessun gruppo in questa settimana</h2>
                 </div>
             @endforelse
