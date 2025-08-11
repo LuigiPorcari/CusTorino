@@ -112,25 +112,41 @@ class AvailabilityController extends Controller
     {
         $min = max(1, (int) $request->query('min', 1));
 
-        // Prende tutte le disponibilità con l'utente associato
-        $all = Availability::with('user')
+        // Prendi le disponibilità ma solo di utenti con livello valorizzato
+        $all = Availability::with([
+            'user' => function ($q) {
+                $q->select('id', 'name', 'cognome', 'email', 'livello');
+            }
+        ])
+            ->whereHas('user', fn($q) => $q->whereNotNull('livello'))
             ->orderBy('slot_key')
-            ->orderBy('user_id')
             ->get();
 
-        // Raggruppa per slot_key, filtra per minimo membri
-        // e ordina i gruppi con Lunedì per primo (Lun..Dom)
-        $groups = $all->groupBy('slot_key')
-            ->filter(fn($items) => $items->count() >= $min)
-            ->sortBy(function ($items, $slotKey) {
-                $slotKey = (int) $slotKey;
-                $day = intdiv($slotKey, 1440);   // 0=Sunday .. 6=Saturday
-                $mins = $slotKey % 1440;          // minuti nel giorno
-                $dayMondayFirst = ($day + 6) % 7; // rimappa: 1->0, 2->1, ..., 0(sun)->6
-                return $dayMondayFirst * 1440 + $mins;
-            });
+        // Raggruppa per coppia (slot_key, livello)
+        $groups = $all->groupBy(function ($row) {
+            return $row->slot_key . '|' . $row->user->livello;
+        })
+            ->map(function ($items, $key) {
+                [$slotKey, $livello] = explode('|', $key, 2);
+                return (object) [
+                    'slot_key' => (int) $slotKey,
+                    'livello' => is_numeric($livello) ? (int) $livello : $livello,
+                    'items' => $items->values(),
+                    'count' => $items->count(),
+                ];
+            })
+            ->filter(fn($g) => $g->count >= $min)
+            // Ordina: Lunedì..Domenica, poi orario, poi livello
+            ->sortBy(function ($g) {
+                $day = intdiv($g->slot_key, 1440);      // 0=Sunday .. 6=Saturday
+                $mins = $g->slot_key % 1440;             // minuti nel giorno
+                $dayMondayFirst = ($day + 6) % 7;        // Lunedì prima
+                // Chiave ordinamento composta (tempo) + livello
+                return sprintf('%05d-%03d', $dayMondayFirst * 1440 + $mins, (int) $g->livello);
+            })
+            ->values();
 
-        // Etichette giorno (0..6 coerente con WeeklySlot::fromKey)
+        // Etichette giorno
         $dayNames = [
             0 => 'Domenica',
             1 => 'Lunedì',
@@ -142,7 +158,7 @@ class AvailabilityController extends Controller
         ];
 
         return view('availabilities.groups', [
-            'groups' => $groups,
+            'groups' => $groups,  // ora è una collection di oggetti {slot_key, livello, items, count}
             'dayNames' => $dayNames,
             'min' => $min,
         ]);
