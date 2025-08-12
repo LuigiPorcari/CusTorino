@@ -223,13 +223,13 @@
                 </fieldset>
             </form>
             {{-- TASTO PER RESET MASSIVO --}}
-            <form method="POST" action="{{ route('admin.users.corsisti.reset-flags') }}" class="d-inline"
+            {{-- <form method="POST" action="{{ route('admin.users.corsisti.reset-flags') }}" class="d-inline"
                 onsubmit="return confirm('Questa azione imposta Universitario, Pagamento, Visita medica e CUS Card a NO per tutti i corsisti. Confermi?');">
                 @csrf
                 <button type="submit" class="btn btn-warning">
                     Reset flag corsisti
                 </button>
-            </form>
+            </form> --}}
             {{-- FINE TASTO PER RESET MASSIVO --}}
             <div class="table-responsive admin-table-responsive">
                 <p class="fw-bold text-uppercase fs-4">Numero Universitari: {{ $uniCount }}</p>
