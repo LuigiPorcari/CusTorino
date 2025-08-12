@@ -70,6 +70,15 @@
             </ul>
 
             @if (Auth::check() && Auth::user()->is_admin)
+                {{-- !TASTO ELIMINA MASSIVO DEI LOG PRIMA DI MESI --}}
+                <form method="POST" action="{{ route('admin.logs.purge_old') }}" class="d-inline"
+                    onsubmit="return confirm('Eliminare TUTTI i log più vecchi di 4 mesi? Operazione irreversibile.');">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">
+                        Pulisci log (> 4 mesi)
+                    </button>
+                </form>
+                {{-- !FINE TASTO ELIMINA MASSIVO DEI LOG PRIMA DI MESI --}}
                 <div class="d-flex flex-wrap justify-content-end" role="group" aria-label="Azioni rapide Admin">
                     <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('corsista.register') }}">
                         Registra Corsista

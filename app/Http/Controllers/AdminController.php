@@ -8,6 +8,7 @@ use App\Models\Alias;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -376,5 +377,24 @@ class AdminController extends Controller
 
         return back()->with('success', "Reset effettuato su {$affected} corsista/e.");
     }
+    public function purgeOld(): RedirectResponse
+    {
+        $threshold = now()->subMonths(4);
+        $totalDeleted = 0;
 
+        // Se la tabella è enorme, cancelliamo a blocchi di 10k ID
+        DB::table('logs')
+            ->where('created_at', '<', $threshold)
+            ->orderBy('id')
+            ->chunkById(10000, function ($rows) use (&$totalDeleted) {
+                $ids = $rows->pluck('id');
+                $deleted = DB::table('logs')->whereIn('id', $ids)->delete();
+                $totalDeleted += $deleted;
+            });
+
+        return back()->with(
+            'success',
+            "Eliminati {$totalDeleted} log più vecchi di " . $threshold->format('d/m/Y') . "."
+        );
+    }
 }
