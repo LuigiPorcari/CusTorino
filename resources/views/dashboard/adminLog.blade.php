@@ -16,9 +16,9 @@
             <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}"
                 aria-label="Pagina settimana">Settimana</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        {{-- <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
-        </li>
+        </li> --}}
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}" aria-label="Pagina log">Log</a>
         </li>

@@ -72,6 +72,8 @@ Route::middleware('auth')->group(function () {
 });
 //!MIDDLEWERE ADMIN
 Route::middleware(CheckAdmin::class)->group(function () {
+    //!ROTTA PER AGGIORNAMENTO MASSIVO CORSISTI
+    Route::post('/admin/users/corsisti/reset-flags', [AdminController::class,'resetCorsistiFlags'])->name('admin.users.corsisti.reset-flags');
     //!ROTTE CAMBIO RUOLI TRAINER E CORSISTA
     Route::post('/admin/user/{trainer}/make-trainer-student', [AdminController::class, 'makeTrainerAndStudent'])->name('admin.user.make-trainer-student');
     //!ROTTA ELIMINA ADMIN

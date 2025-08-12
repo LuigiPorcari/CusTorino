@@ -16,9 +16,9 @@
             <a class="nav-link" aria-current="page" href="{{ route('admin.week') }}"
                 aria-label="Pagina settimana">Settimana</a>
         </li>
-        <li class="nav-item admin-nav-item mt-3">
+        {{-- <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
-        </li>
+        </li> --}}
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}" aria-label="Pagina log">Log</a>
         </li>
@@ -222,6 +222,15 @@
                     </div>
                 </fieldset>
             </form>
+            {{-- TASTO PER RESET MASSIVO --}}
+            <form method="POST" action="{{ route('admin.users.corsisti.reset-flags') }}" class="d-inline"
+                onsubmit="return confirm('Questa azione imposta Universitario, Pagamento, Visita medica e CUS Card a NO per tutti i corsisti. Confermi?');">
+                @csrf
+                <button type="submit" class="btn btn-warning">
+                    Reset flag corsisti
+                </button>
+            </form>
+            {{-- FINE TASTO PER RESET MASSIVO --}}
             <div class="table-responsive admin-table-responsive">
                 <p class="fw-bold text-uppercase fs-4">Numero Universitari: {{ $uniCount }}</p>
                 <table class="table table-bordered admin-student-table" aria-label="Elenco corsisti">

@@ -16,9 +16,9 @@
             <li class="nav-item admin-nav-item mt-3" role="presentation">
                 <a class="nav-link" href="{{ route('admin.week') }}" role="tab">Settimana</a>
             </li>
-            <li class="nav-item admin-nav-item mt-3">
+            {{-- <li class="nav-item admin-nav-item mt-3">
                 <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
-            </li>
+            </li> --}}
             <li class="nav-item admin-nav-item mt-3" role="presentation">
                 <a class="nav-link" href="{{ route('logs.index') }}" role="tab">Log</a>
             </li>

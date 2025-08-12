@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Alias;
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
@@ -362,6 +363,18 @@ class AdminController extends Controller
         $alias->save();
 
         return redirect()->route('admin.group.details', $group->id)->with('success', 'Gruppo Alias creato con successo');
+    }
+    public function resetCorsistiFlags(): RedirectResponse
+    {
+        $affected = User::where('is_corsista', true)->update([
+            'universitario' => false,
+            'pagamento' => false,
+            'visita_medica' => false,
+            'cus_card' => false,
+            'updated_at' => now(),
+        ]);
+
+        return back()->with('success', "Reset effettuato su {$affected} corsista/e.");
     }
 
 }

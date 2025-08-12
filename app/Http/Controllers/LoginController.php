@@ -42,9 +42,9 @@ class LoginController extends Controller
             }
             if (Auth::user()->is_corsista) {
                 //!ROTTA PER LA NORMALE DASHBOARD
-                // return redirect()->route('student.dashboard');
+                return redirect()->route('student.dashboard');
                 //!ROTTA PER DISPONIBILITA'
-                return redirect()->route('student.availabilities.edit', ['user' => Auth::id()]);
+                // return redirect()->route('student.availabilities.edit', ['user' => Auth::id()]);
             }
             if (Auth::user()->is_trainer) {
                 return redirect()->route('trainer.dashboard');

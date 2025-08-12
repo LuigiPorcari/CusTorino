@@ -42,7 +42,7 @@
     </div>
 
     <!-- Link policy CUS -->
-    {{-- <div class="mb-3" aria-label="Link alle policy">
+    <div class="mb-3" aria-label="Link alle policy">
         <a href="https://www.iubenda.com/privacy-policy/42749205"
             class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe" title="Privacy Policy"
             aria-label="Leggi la Privacy Policy">Privacy Policy</a>
@@ -82,9 +82,9 @@
                     w.onload = loader;
                 }
             })(window, document);
-        </script> --}}
+        </script>
         <!-- Link policy PERSONALE -->
-        <a href="https://www.iubenda.com/privacy-policy/11435994"
+        {{-- <a href="https://www.iubenda.com/privacy-policy/11435994"
             class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy
             Policy</a>
         <script type="text/javascript">
@@ -123,7 +123,7 @@
                     w.onload = loader;
                 }
             })(window, document);
-        </script>
+        </script> --}}
     </div>
     <!-- Copyright -->
     <div class="text-center custom-copyright p-3" aria-label="Copyright">
