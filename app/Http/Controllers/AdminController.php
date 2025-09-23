@@ -286,6 +286,15 @@ class AdminController extends Controller
         return redirect(route('admin.dashboard.student'))->with('success', 'Corsista modificato con successo');
     }
 
+    public function resetAllRecuperi()
+    {
+        // Aggiorna in blocco tutti gli utenti, mettendo Nrecuperi = 0
+        User::query()->update(['Nrecuperi' => 0]);
+
+        return redirect(route('admin.dashboard.student'))
+            ->with('success', 'Tutti i Nrecuperi sono stati azzerati con successo');
+    }
+
     public function makeTrainerAndStudent(Request $request, User $trainer)
     {
         $trainer->update([

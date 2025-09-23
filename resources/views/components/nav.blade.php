@@ -69,28 +69,48 @@
                 @endif
             </ul>
 
-            @if (Auth::check() && Auth::user()->is_admin)
-                {{-- !TASTO ELIMINA MASSIVO DEI LOG PRIMA DI 4 MESI --}}
-                {{-- <form method="POST" action="{{ route('admin.logs.purge_old') }}" class="d-inline"
+            {{-- @if (Auth::check() && Auth::user()->is_admin) --}}
+            {{-- !TASTO ELIMINA MASSIVO DEI LOG PRIMA DI 4 MESI --}}
+            {{-- <form method="POST" action="{{ route('admin.logs.purge_old') }}" class="d-inline"
                     onsubmit="return confirm('Eliminare TUTTI i log più vecchi di 4 mesi? Operazione irreversibile.');">
                     @csrf
                     <button type="submit" class="btn btn-danger">
                         Pulisci log (> 4 mesi)
                     </button>
                 </form> --}}
-                {{-- !FINE TASTO ELIMINA MASSIVO DEI LOG PRIMA 4 DI MESI --}}
-                <div class="d-flex flex-wrap justify-content-end" role="group" aria-label="Azioni rapide Admin">
-                    <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('corsista.register') }}">
-                        Registra Corsista
-                    </a>
-                    <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('trainer.register') }}">
-                        Registra Allenatore
-                    </a>
-                    <a class="btn custom-btn-primary-nav mb-2" href="{{ route('admin.register') }}">
-                        Registra Admin
-                    </a>
-                </div>
-            @endif
+            {{-- !FINE TASTO ELIMINA MASSIVO DEI LOG PRIMA 4 DI MESI --}}
+            {{-- !TASTO ELIMINA MASSIVO DEI GRUPPI --}}
+            <form action="{{ route('groups.deleteAll') }}" method="POST"
+                onsubmit="return confirm('Sei sicuro di voler eliminare tutti i gruppi? Questa azione non è reversibile!')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">
+                    Elimina tutti i gruppi
+                </button>
+            </form>
+            {{-- !FINE TASTO ELIMINA MASSIVO DEI GRUPPI --}}
+            {{-- !TASTO AZZERA RECUPERI --}}
+            <form action="{{ route('students.resetRecuperi') }}" method="POST"
+                onsubmit="return confirm('Vuoi davvero azzerare tutti i Nrecuperi degli studenti?')">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="btn btn-warning">
+                    Azzera tutti i Nrecuperi
+                </button>
+            </form>
+            {{-- !FINE TASTO AZZERA RECUPERI --}}
+            <div class="d-flex flex-wrap justify-content-end" role="group" aria-label="Azioni rapide Admin">
+                <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('corsista.register') }}">
+                    Registra Corsista
+                </a>
+                <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('trainer.register') }}">
+                    Registra Allenatore
+                </a>
+                <a class="btn custom-btn-primary-nav mb-2" href="{{ route('admin.register') }}">
+                    Registra Admin
+                </a>
+            </div>
+            {{-- @endif --}}
         </div>
     </div>
 </nav>

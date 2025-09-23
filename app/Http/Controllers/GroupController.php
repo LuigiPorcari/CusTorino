@@ -264,6 +264,26 @@ class GroupController extends Controller
         return redirect(route('admin.dashboard'))->with('success', 'Gruppo cancellato');
     }
 
+    public function deleteAll()
+    {
+        $array_vuoto = [];
+        $groups = Group::all();
+
+        foreach ($groups as $group) {
+            foreach ($group->aliases as $alias) {
+                $alias->users()->sync($array_vuoto);
+            }
+
+            // Elimina tutti gli alias del gruppo
+            $group->aliases()->delete();
+            // Scollega gli utenti dal gruppo
+            $group->users()->sync($array_vuoto);
+            // Elimina il gruppo
+            $group->delete();
+        }
+        return redirect(route('admin.dashboard'))->with('success', 'Tutti i gruppi sono stati cancellati');
+    }
+
     public function deleteAlias(Alias $alias)
     {
         $group = $alias->group;  // Recupera il gruppo a cui appartiene l'alias

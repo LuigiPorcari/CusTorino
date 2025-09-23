@@ -94,6 +94,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/groups/edit/{group}', [GroupController::class, 'edit'])->name('groups.edit');
     Route::post('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
     Route::delete('/groups/delete/{group}', [GroupController::class, 'delete'])->name('groups.delete');
+    Route::delete('/groups/delete-all', [GroupController::class, 'deleteAll'])->name('groups.deleteAll');
     Route::delete('/alias/delete/{alias}', [GroupController::class, 'deleteAlias'])->name('alias.delete');
     Route::get('/groups/create/student/{group}', [GroupController::class, 'editStudent'])->name('edit.student');
     Route::post('/groups/update/student/{group}', [GroupController::class, 'createStudent'])->name('create.student');
@@ -107,6 +108,7 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/admin/dashboard/student/details/{student}', [AdminController::class, 'studentDetails'])->name('admin.student.details');
     Route::get('/admin/dashboard/student', [AdminController::class, 'dashboardStudent'])->name('admin.dashboard.student');
     Route::post('/admin/dashboard/update/{student}', [AdminController::class, 'updateStudent'])->name('admin.update.student');
+    Route::patch('/students/reset-recuperi', [AdminController::class, 'resetAllRecuperi'])->name('students.resetRecuperi');
 });
 //!MIDDLEWERE TRAINER
 Route::middleware(CheckTrainer::class)->group(function () {
