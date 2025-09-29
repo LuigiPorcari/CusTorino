@@ -13,7 +13,9 @@ class GroupController extends Controller
 {
     public function create()
     {
-        $trainers = User::where('is_trainer', 1)->get();
+        $trainers = User::where('is_trainer', 1)
+            ->orderBy('cognome', 'asc')
+            ->get();
         $students = User::where('is_corsista', 1)->get();
         return view('groups.create', compact('trainers', 'students'));
     }
