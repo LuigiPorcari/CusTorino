@@ -139,7 +139,9 @@ class AliasController extends Controller
         if (Carbon::parse($alias->data_allenamento)->lt(Carbon::now()->subDays(3))) {
             $threeDaysCheck = 0;
         }
-        $trainers = User::where('is_trainer', 1)->get();
+        $trainers = User::where('is_trainer', 1)
+            ->orderBy('cognome', 'asc')
+            ->get();
         $group = Group::find($alias->group_id);
         $students = $group->users;
         return view('alias.details', compact('alias', 'trainers', 'students', 'threeDaysCheck'));

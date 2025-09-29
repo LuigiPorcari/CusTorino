@@ -98,8 +98,14 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        $trainers = User::where('is_trainer', 1)->get();
-        $students = User::where('is_corsista', 1)->get();
+        $trainers = User::where('is_trainer', 1)
+            ->orderBy('cognome', 'asc')
+            ->get();
+
+        $students = User::where('is_corsista', 1)
+            ->orderBy('cognome', 'asc')
+            ->get();
+
         return view('groups.edit', compact('group', 'trainers', 'students'));
     }
 
