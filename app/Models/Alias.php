@@ -87,6 +87,12 @@ class Alias extends Model
         return $formattedDate;
     }
 
+    public function formatDataWeek($date)
+    {
+        $formattedDate = Carbon::parse($date)->translatedFormat('l d');
+        return $formattedDate;
+    }
+
     public function formatDataStudent($date)
     {
         $formattedDate = Carbon::parse($date)->format('d/m/y');

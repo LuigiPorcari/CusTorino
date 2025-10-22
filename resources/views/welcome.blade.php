@@ -7,15 +7,13 @@
                 <div class="row mt-5 pt-5 justify-content-center">
                     <div class="col-6">
                         <!-- Pulsante Accedi -->
-                        <a class="btn custom-btn-primary-nav w-100 py-4 fs-4 fw-bolder"
-                            href="{{ route('login') }}"
+                        <a class="btn custom-btn-primary-nav w-100 py-4 fs-4 fw-bolder" href="{{ route('login') }}"
                             aria-label="Accedi all'area riservata">Accedi</a>
                     </div>
                     <div class="col-6">
                         <!-- Pulsante Registrati -->
                         <a class="btn custom-btn-primary-nav w-100 py-4 fs-4 fw-bolder"
-                            href="{{ route('corsista.register') }}"
-                            aria-label="Registrati come corsista">Registrati</a>
+                            href="{{ route('corsista.register') }}" aria-label="Registrati come corsista">Registrati</a>
                     </div>
                 </div>
             </div>
@@ -27,6 +25,10 @@
                 data-bs-interval="2500">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
+                        <img src="{{ asset('img/2025.jpeg') }}" class="d-block w-100"
+                            alt="Allenamento di gruppo all'aperto">
+                    </div>
+                    <div class="carousel-item">
                         <img src="{{ asset('img/gruppo1.jpg') }}" class="d-block w-100 custom-carousel-img"
                             alt="Allenamento di gruppo all'aperto">
                     </div>

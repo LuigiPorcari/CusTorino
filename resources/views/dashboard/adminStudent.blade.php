@@ -40,6 +40,8 @@
             <form id="filterForm" method="GET" action="{{ route('admin.dashboard.student') }}">
                 <fieldset class="mb-4 admin-student-filter">
                     <legend class="visually-hidden">Filtri di ricerca corsisti</legend>
+
+                    {{-- RIGA 1: testo + tre box --}}
                     <div class="row justify-content-center">
                         <!-- Filtro per Nome e Cognome -->
                         <div class="col-12 col-md-4 my-auto">
@@ -88,7 +90,8 @@
                                 </div>
                             </fieldset>
                         </div>
-                        <!-- Checkbox per CUS Card -->
+
+                        <!-- CUS Card -->
                         <div class="col-12 col-md-2">
                             <fieldset class="filter-box shadow-lg" aria-labelledby="cusCardLabel">
                                 <legend id="cusCardLabel" class="fw-bold">CUS Card</legend>
@@ -108,7 +111,7 @@
                             </fieldset>
                         </div>
 
-                        <!-- Checkbox per Visita Medica -->
+                        <!-- Visita Medica -->
                         <div class="col-12 col-md-2">
                             <fieldset class="filter-box shadow-lg" aria-labelledby="visitaMedicaLabel">
                                 <legend id="visitaMedicaLabel" class="fw-bold">Visita Medica</legend>
@@ -130,6 +133,7 @@
                         </div>
                     </div>
 
+                    {{-- RIGA 2: restante box come prima --}}
                     <div class="row justify-content-center">
                         <!-- Livello desktop -->
                         <div class="col-12 col-md-4 d-none d-md-block">
@@ -212,38 +216,66 @@
                                 </div>
                             </fieldset>
                         </div>
+                    </div>
 
-                        <!-- Bottoni mobile -->
-                        <div class="col-12 d-md-none d-block d-flex justify-content-center mt-3">
-                            <button type="submit" class="btn admin-btn-info me-5">Applica Filtri</button>
-                            <a href="{{ route('admin.dashboard.student') }}" class="btn admin-btn-info"
-                                id="clearFilters">Pulisci Filtri</a>
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-3">
+                            <fieldset class="filter-box shadow-lg" aria-labelledby="universitarioLabel">
+                                <!-- Legend solo per screen reader, non influisce sul layout -->
+                                <legend id="universitarioLabel" class="visually-hidden">Universitario</legend>
+
+                                <!-- Riga orizzontale: titolo + checkbox Sì/No in linea -->
+                                <div class="d-flex align-items-center flex-nowrap gap-3">
+                                    <span class="fw-bold fs-5">Universitario</span>
+
+                                    <div class="form-check form-check-inline my-0">
+                                        <input type="checkbox" name="universitario_ok" id="universitario_ok"
+                                            value="1" class="form-check-input"
+                                            {{ request('universitario_ok') == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label ms-1" for="universitario_ok">Sì</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline my-0">
+                                        <input type="checkbox" name="universitario_nonok" id="universitario_nonok"
+                                            value="1" class="form-check-input"
+                                            {{ request('universitario_nonok') == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label ms-1" for="universitario_nonok">No</label>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
+
                 </fieldset>
             </form>
-            {{-- !TASTO PER RESET MASSIVO --}}
-            {{-- <form method="POST" action="{{ route('admin.users.corsisti.reset-flags') }}" class="d-inline"
-                onsubmit="return confirm('Questa azione imposta Universitario, Pagamento, Visita medica e CUS Card a NO per tutti i corsisti. Confermi?');">
-                @csrf
-                <button type="submit" class="btn btn-warning">
-                    Reset flag corsisti
-                </button>
-            </form> --}}
-            {{-- !FINE TASTO PER RESET MASSIVO --}}
+
             <div class="table-responsive admin-table-responsive">
                 <p class="fw-bold text-uppercase fs-4">Numero Universitari: {{ $uniCount }}</p>
                 <table class="table table-bordered admin-student-table" aria-label="Elenco corsisti">
                     <thead>
                         <tr>
                             <th scope="col">Nome</th>
-                            <th scope="col">Cognome</th>
+
+                            <th scope="col" id="th-cognome" aria-sort="none">
+                                <button type="button" id="sort-cognome"
+                                    class="btn btn-link p-0 text-decoration-none align-baseline text-white">
+                                    Cognome <span class="sort-indicator" aria-hidden="true"></span>
+                                </button>
+                            </th>
+
                             <th scope="col" class="d-none d-md-table-cell">CUS Card</th>
                             <th scope="col" class="d-none d-md-table-cell">Visita Medica</th>
                             <th scope="col" class="d-none d-md-table-cell">Pagamento</th>
                             <th scope="col" class="d-none d-md-table-cell">Trimestrale</th>
                             <th scope="col" class="d-none d-md-table-cell">Livello</th>
-                            <th scope="col" class="d-none d-md-table-cell">Nrecuperi</th>
+
+                            <th scope="col" class="d-none d-md-table-cell" id="th-nrecuperi" aria-sort="none">
+                                <button type="button" id="sort-nrecuperi"
+                                    class="btn btn-link p-0 text-decoration-none align-baseline text-white"">
+                                    Nrecuperi <span class="sort-indicator" aria-hidden="true"></span>
+                                </button>
+                            </th>
+
                             <th scope="col" class="d-none d-md-table-cell">Gruppi</th>
                             <th scope="col">Dettagli</th>
                         </tr>
@@ -315,5 +347,87 @@
                     }
                 });
             </script>
+            <script>
+                (() => {
+                    const tbody = document.getElementById('student_table_body');
+                    if (!tbody) return;
+
+                    const state = {
+                        key: null,
+                        dir: 'asc'
+                    };
+
+                    const getVal = (tr, key) => {
+                        if (key === 'Nrecuperi') {
+                            const n = parseInt(tr.dataset.nrecuperi ?? '0', 10);
+                            return isNaN(n) ? 0 : n;
+                        }
+                        // cognome alfabetico
+                        return (tr.dataset.cognome ?? '').toString().toLowerCase().trim();
+                    };
+
+                    const updateIndicators = (activeKey) => {
+                        const map = [{
+                                th: document.getElementById('th-cognome'),
+                                btn: document.getElementById('sort-cognome'),
+                                key: 'cognome'
+                            },
+                            {
+                                th: document.getElementById('th-nrecuperi'),
+                                btn: document.getElementById('sort-nrecuperi'),
+                                key: 'Nrecuperi'
+                            },
+                        ];
+                        map.forEach(({
+                            th,
+                            btn,
+                            key
+                        }) => {
+                            if (!btn || !th) return;
+                            const indicator = btn.querySelector('.sort-indicator');
+                            if (activeKey === key) {
+                                th.setAttribute('aria-sort', state.dir === 'asc' ? 'ascending' : 'descending');
+                                if (indicator) indicator.textContent = state.dir === 'asc' ? ' ↑' : ' ↓';
+                            } else {
+                                th.setAttribute('aria-sort', 'none');
+                                if (indicator) indicator.textContent = '';
+                            }
+                        });
+                    };
+
+                    const sortBy = (key) => {
+                        // toggle direzione se clicco la stessa colonna
+                        if (state.key === key) {
+                            state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            state.key = key;
+                            state.dir = 'asc';
+                        }
+
+                        const rows = Array.from(tbody.querySelectorAll('tr'))
+                            .filter(r => r.id !== 'no_students_row');
+
+                        rows.sort((a, b) => {
+                            const va = getVal(a, key),
+                                vb = getVal(b, key);
+                            if (key === 'Nrecuperi') {
+                                return state.dir === 'asc' ? (va - vb) : (vb - va);
+                            }
+                            // alfabetico per cognome
+                            return state.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+                        });
+
+                        // ri-appendo in ordine
+                        rows.forEach(r => tbody.appendChild(r));
+                        updateIndicators(key);
+                    };
+
+                    const btnCognome = document.getElementById('sort-cognome');
+                    const btnNrec = document.getElementById('sort-nrecuperi');
+                    if (btnCognome) btnCognome.addEventListener('click', () => sortBy('cognome'));
+                    if (btnNrec) btnNrec.addEventListener('click', () => sortBy('Nrecuperi'));
+                })();
+            </script>
+
     </main>
 </x-layout>

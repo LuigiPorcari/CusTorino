@@ -46,7 +46,7 @@
                             <p class="card-text-week">Sede: <span class="text-uppercase">{{ $alias->location }}</span>
                             </p>
                             <h3 class="custom-date card-subtitle mb-2">
-                                {{ $alias->formatData($alias->data_allenamento) }}
+                                {{ $alias->formatDataWeek($alias->data_allenamento) }}
                             </h3>
                             <p class="custom-paragraph-week"><span class="fw-bold">Tipo:</span> {{ $alias->tipo }}</p>
                             <p class="custom-paragraph-week"><span class="fw-bold">Orario:</span>
@@ -84,8 +84,9 @@
                                 <p class="custom-paragraph-week">Condiviso</p>
                             @endif
 
-                            <div class="row border rounded-3" role="table">
-                                <div class="col-6 p-0 border-end">
+                            {{-- TABELLA: SOLO "CORSISTI" --}}
+                            <div class="row border rounded-3" role="table" aria-label="Elenco corsisti">
+                                <div class="col-12 p-0">
                                     <p class="my-0 py-2 card-text-week border-bottom fw-bold">Corsisti:</p>
                                     @foreach ($alias->group->users as $student)
                                         <p
@@ -94,18 +95,36 @@
                                         </p>
                                     @endforeach
                                 </div>
-                                <div class="col-6 p-0">
-                                    <p class="my-0 py-2 card-text-week border-bottom fw-bold">Recuperi:</p>
-                                    @foreach ($alias->compareStudents($alias->group->id, $alias->id) as $recupero)
-                                        @if (!in_array($recupero->id, $alias->group->studenti_id))
-                                            <p class="my-0 py-1 card-text-week border-bottom">
-                                                {{ $recupero->name }} {{ $recupero->cognome }}
-                                            </p>
-                                        @endif
-                                    @endforeach
+                            </div>
+
+                            <div class="row" role="table" aria-label="Elenco recuperi">
+                                <div class="col-12 p-0">
+                                    {{-- RECUPERI SOTTO LA TABELLA, FORMATO "Nome C." E A CAPO AUTOMATICO --}}
+                                    @php
+                                        $recuperiNames = [];
+                                        foreach ($alias->compareStudents($alias->group->id, $alias->id) as $recupero) {
+                                            // Mantengo la stessa logica di esclusione usata in precedenza
+                                            if (!in_array($recupero->id, $alias->group->studenti_id)) {
+                                                $initial = mb_substr($recupero->cognome ?? '', 0, 1);
+                                                $label = trim(
+                                                    ($recupero->name ?? '') . ' ' . ($initial ? $initial . '.' : ''),
+                                                );
+                                                if ($label !== '') {
+                                                    $recuperiNames[] = $label;
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    @if (count($recuperiNames))
+                                        <p class="my-2 card-text-week fw-bold">Recuperi:</p>
+                                        <p class="card-text-week mb-0" style="white-space: normal;">
+                                            {{ implode(', ', $recuperiNames) }}
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
+
                         <div class="text-center row gx-3 mx-0">
                             <div class="col-6 px-0">
                                 <a href="{{ route('alias.details', $alias) }}" class="custom-link-btn-week w-100"

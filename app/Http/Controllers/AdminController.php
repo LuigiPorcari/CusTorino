@@ -154,9 +154,11 @@ class AdminController extends Controller
                     ->orWhereRaw("CONCAT(name, ' ', cognome) LIKE ?", ['%' . $search . '%']);
             });
         }
+
         // Aggiungiamo un filtro per assicurarsi che vengano mostrati solo gli utenti che sono corsisti
         $studentsQuery = User::where('is_corsista', '1');
         $uniCount = User::where('is_corsista', '1')->where('universitario', 1)->count();
+
         // Filtro per nome e cognome
         if ($request->filled('student_name')) {
             $search = $request->input('student_name');
@@ -215,6 +217,14 @@ class AdminController extends Controller
             $studentsQuery->where('trimestrale', 0);
         }
 
+        // >>> Filtro per Universitario (NUOVO)
+        if ($request->input('universitario_ok') == '1') {
+            $studentsQuery->where('universitario', 1);
+        } elseif ($request->input('universitario_nonok') == '1') {
+            $studentsQuery->where('universitario', 0);
+        }
+        // <<< Fine filtro Universitario
+
         // Filtro per Livello
         if ($request->filled('student_level')) {
             $level = $request->input('student_level');
@@ -237,7 +247,7 @@ class AdminController extends Controller
         $genereFemmine = $request->input('genere_f') === 'F';
 
         if ($genereMaschi && $genereFemmine) {
-            // Se entrambe le checkbox sono selezionate, non applicare filtro (tutti i generi)
+            // nessun filtro
         } elseif ($genereMaschi) {
             $studentsQuery->where('genere', 'M');
         } elseif ($genereFemmine) {
@@ -246,11 +256,13 @@ class AdminController extends Controller
 
         // Ordinamento per Nrecuperi in ordine decrescente
         $studentsQuery->orderBy('Nrecuperi', 'desc');
+
         // Paginazione con 50 risultati per pagina
         $students = $studentsQuery->paginate(50)->appends($request->except('page'));
 
         return view('dashboard.adminStudent', compact('students', 'uniCount'));
     }
+
 
 
     public function trainerDetails(User $trainer)

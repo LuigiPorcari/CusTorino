@@ -87,6 +87,14 @@
                                         </option>
                                         <option @if ($group->orario == '14:30:00') selected @endif value="14:30">14:30
                                         </option>
+                                        <option @if ($group->orario == '15:00:00') selected @endif value="15:00">15:00
+                                        </option>
+                                        <option @if ($group->orario == '15:30:00') selected @endif value="15:30">15:30
+                                        </option>
+                                        <option @if ($group->orario == '16:00:00') selected @endif value="16:00">16:00
+                                        </option>
+                                        <option @if ($group->orario == '16:30:00') selected @endif value="16:30">16:30
+                                        </option>
                                         <option @if ($group->orario == '17:00:00') selected @endif value="17:00">17:00
                                         </option>
                                         <option @if ($group->orario == '17:30:00') selected @endif value="17:30">17:30
