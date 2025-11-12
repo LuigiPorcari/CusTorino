@@ -28,10 +28,10 @@
                         <img src="{{ asset('img/2025.jpeg') }}" class="d-block w-100"
                             alt="Allenamento di gruppo all'aperto">
                     </div>
-                    <div class="carousel-item">
+                    {{-- <div class="carousel-item">
                         <img src="{{ asset('img/gruppo1.jpg') }}" class="d-block w-100 custom-carousel-img"
                             alt="Allenamento di gruppo all'aperto">
-                    </div>
+                    </div> --}}
                     <div class="carousel-item">
                         <img src="{{ asset('img/palla.jpg') }}" class="d-block w-100 custom-carousel-img"
                             alt="Primo piano di una palla da beach volley">

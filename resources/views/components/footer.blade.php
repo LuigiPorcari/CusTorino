@@ -4,12 +4,12 @@
         <!-- Section: Social media -->
         <section class="mb-4" aria-label="Social media links">
             <!-- Facebook -->
-            <a class="btn custom-btn-social m-1" href="https://www.facebook.com/custorino/?locale=it_IT" role="button"
+            <a class="btn custom-btn-social m-1" href="https://www.facebook.com/beachvolleycustorino?rdid=qqx7CzmPbnIQmMzP&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1G4iW4i3QP%2F#" role="button"
                 target="_blank" aria-label="Visita la nostra pagina Facebook">
                 <i class="fab fa-facebook-f" aria-hidden="true"></i>
             </a>
             <!-- Instagram -->
-            <a class="btn custom-btn-social m-1" href="https://www.instagram.com/custorinoofficial/" role="button"
+            <a class="btn custom-btn-social m-1" href="https://www.instagram.com/beachvolleycustorino/" role="button"
                 target="_blank" aria-label="Visita il nostro profilo Instagram">
                 <i class="fab fa-instagram" aria-hidden="true"></i>
             </a>
