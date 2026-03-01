@@ -19,7 +19,6 @@ class GroupController extends Controller
         $students = User::where('is_corsista', 1)->get();
         return view('groups.create', compact('trainers', 'students'));
     }
-
     public function editStudent(Group $group)
     {
         $possibleDates = $this->calculatePossibleAliasDates($group->data_inizio_corso, $group->data_fine_corso, $group->giorno_settimana);
@@ -33,7 +32,6 @@ class GroupController extends Controller
         }
         return view('groups.createStudent', compact('group', 'studentsAvaiable', 'possibleDates'));
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -97,7 +95,6 @@ class GroupController extends Controller
         }
         return redirect()->route('admin.dashboard')->with('success', 'Gruppo creato con successo');
     }
-
     public function edit(Group $group)
     {
         $trainers = User::where('is_trainer', 1)
@@ -110,7 +107,6 @@ class GroupController extends Controller
 
         return view('groups.edit', compact('group', 'trainers', 'students'));
     }
-
     public function update(Request $request, Group $group)
     {
         $group->update([
@@ -145,7 +141,6 @@ class GroupController extends Controller
         }
         return redirect(route('admin.group.details', compact('group')))->with('success', 'Gruppo modificato con successo');
     }
-
     public function createStudent(Request $request, Group $group)
     {
         // Inizializza gli studenti precedenti come array vuoto se non esistono
@@ -235,8 +230,6 @@ class GroupController extends Controller
         return redirect(route('admin.group.details', ['group' => $group->id]))
             ->with('success', 'Operazione avvenuta con successo');
     }
-
-
     private function calculatePossibleAliasDates($startDate, $endDate, $dayOfWeek)
     {
         $dates = [];
@@ -254,12 +247,6 @@ class GroupController extends Controller
 
         return $dates;
     }
-
-
-
-
-
-
     public function delete(Group $group)
     {
         $array_vuoto = [];

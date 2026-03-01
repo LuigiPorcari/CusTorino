@@ -30,6 +30,16 @@
                 <h2 class="mt-5 mb-4 pt-5 pt-md-0 custom-title">Log delle Operazioni</h2>
             </div>
 
+            <div>
+                <form method="POST" action="{{ route('admin.logs.purge_old') }}" class="d-inline"
+                    onsubmit="return confirm('Eliminare TUTTI i log più vecchi di 4 mesi? Operazione irreversibile.');">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">
+                        Pulisci log (> 4 mesi)
+                    </button>
+                </form>
+            </div>
+
             <!-- Log degli Admin -->
             <h3 class="mb-3 custom-subtitle">Admin</h3>
             <table id="adminLogsTable" class="table table-bordered admin-table"
