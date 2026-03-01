@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
+use App\Jobs\PurgeOldLogsJob;
+use App\Jobs\ResetAllRecuperiJob;
+use App\Jobs\ResetCorsistiFlagsJob;
 use App\Models\Alias;
 use App\Models\Group;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -22,7 +25,6 @@ class AdminController extends Controller
         $groups = $groupQuery->paginate(50);
         return view('dashboard.admin', compact('groups'));
     }
-
     public function weekGroup(Request $request)
     {
         // Ottieni la data odierna
@@ -47,7 +49,6 @@ class AdminController extends Controller
 
         return view('dashboard.adminWeekGroup', compact('aliases'));
     }
-
     public function groupDetails(Group $group, Request $request)
     {
         // Calcola l'inizio della settimana corrente
@@ -88,7 +89,6 @@ class AdminController extends Controller
 
         return view('dashboard.adminGroupDetails', compact('group', 'aliases', 'availableDates', 'otherAliases', 'dateMancanti'));
     }
-
     public function dashboardTrainer(Request $request)
     {
 
@@ -134,9 +134,6 @@ class AdminController extends Controller
         // Restituisce la vista con i dati filtrati
         return view('dashboard.adminTrainer', compact('trainers'));
     }
-
-
-
     public function dashboardStudent(Request $request)
     {
         // Salva i filtri nella sessione
@@ -262,9 +259,6 @@ class AdminController extends Controller
 
         return view('dashboard.adminStudent', compact('students', 'uniCount'));
     }
-
-
-
     public function trainerDetails(User $trainer)
     {
         // Recupera gli alias dove il trainer è il primo o secondo allenatore, ordinati per data_allenamento
@@ -277,7 +271,6 @@ class AdminController extends Controller
 
         return view('dashboard.adminTrainerDetails', compact('trainer', 'aliasesTrainer'));
     }
-
     public function updateStudent(Request $request, User $student)
     {
         //Modifica Corsista
@@ -297,16 +290,6 @@ class AdminController extends Controller
 
         return redirect(route('admin.dashboard.student'))->with('success', 'Corsista modificato con successo');
     }
-
-    public function resetAllRecuperi()
-    {
-        // Aggiorna in blocco tutti gli utenti, mettendo Nrecuperi = 0
-        User::query()->update(['Nrecuperi' => 0]);
-
-        return redirect(route('admin.dashboard.student'))
-            ->with('success', 'Tutti i Nrecuperi sono stati azzerati con successo');
-    }
-
     public function makeTrainerAndStudent(Request $request, User $trainer)
     {
         $trainer->update([
@@ -315,13 +298,11 @@ class AdminController extends Controller
 
         return redirect(route('admin.dashboard.trainer'))->with('success', 'Trainer modificato con successo');
     }
-
     public function studentDetails(User $student)
     {
         $logs = $student->actionLogs->sortByDesc('created_at');
         return view('dashboard.adminStudentDetails', compact('student', 'logs'));
     }
-
     public function getMissingAliasDates(Group $group)
     {
         // Ottieni le date di inizio e fine del corso
@@ -348,7 +329,6 @@ class AdminController extends Controller
 
         return array_values($dateMancanti); // Restituisci l'array delle date mancanti
     }
-
     public function storeAlias(Request $request, Group $group)
     {
         // Validazione della data di allenamento
@@ -386,36 +366,69 @@ class AdminController extends Controller
 
         return redirect()->route('admin.group.details', $group->id)->with('success', 'Gruppo Alias creato con successo');
     }
+
+
+
+
+    // public function resetCorsistiFlags(): RedirectResponse
+    // {
+    //     $affected = User::where('is_corsista', true)->update([
+    //         'universitario' => false,
+    //         'pagamento' => false,
+    //         'visita_medica' => false,
+    //         'cus_card' => false,
+    //         'updated_at' => now(),
+    //     ]);
+
+    //     return back()->with('success', "Reset effettuato su {$affected} corsista/e.");
+    // }
+    // public function purgeOld(): RedirectResponse
+    // {
+    //     $threshold = now()->subMonths(4);
+    //     $totalDeleted = 0;
+    //     // Se la tabella è enorme, cancelliamo a blocchi di 10k ID
+    //     DB::table('logs')
+    //         ->where('created_at', '<', $threshold)
+    //         ->orderBy('id')
+    //         ->chunkById(10000, function ($rows) use (&$totalDeleted) {
+    //             $ids = $rows->pluck('id');
+    //             $deleted = DB::table('logs')->whereIn('id', $ids)->delete();
+    //             $totalDeleted += $deleted;
+    //         });
+
+    //     return back()->with(
+    //         'success',
+    //         "Eliminati {$totalDeleted} log più vecchi di " . $threshold->format('d/m/Y') . "."
+    //     );
+    // }
+    // public function resetAllRecuperi()
+    // {
+    //     // Aggiorna in blocco tutti gli utenti, mettendo Nrecuperi = 0
+    //     User::query()->update(['Nrecuperi' => 0]);
+
+    //     return redirect(route('admin.dashboard.student'))
+    //         ->with('success', 'Tutti i Nrecuperi sono stati azzerati con successo');
+    // }
+
+    public function resetAllRecuperi()
+    {
+        ResetAllRecuperiJob::dispatch();
+
+        return redirect(route('admin.dashboard.student'))
+            ->with('success', 'Operazione avviata in background.');
+    }
+
     public function resetCorsistiFlags(): RedirectResponse
     {
-        $affected = User::where('is_corsista', true)->update([
-            'universitario' => false,
-            'pagamento' => false,
-            'visita_medica' => false,
-            'cus_card' => false,
-            'updated_at' => now(),
-        ]);
+        ResetCorsistiFlagsJob::dispatch();
 
-        return back()->with('success', "Reset effettuato su {$affected} corsista/e.");
+        return back()->with('success', 'Reset corsisti avviato in background.');
     }
+
     public function purgeOld(): RedirectResponse
     {
-        $threshold = now()->subMonths(4);
-        $totalDeleted = 0;
+        PurgeOldLogsJob::dispatch(4);
 
-        // Se la tabella è enorme, cancelliamo a blocchi di 10k ID
-        DB::table('logs')
-            ->where('created_at', '<', $threshold)
-            ->orderBy('id')
-            ->chunkById(10000, function ($rows) use (&$totalDeleted) {
-                $ids = $rows->pluck('id');
-                $deleted = DB::table('logs')->whereIn('id', $ids)->delete();
-                $totalDeleted += $deleted;
-            });
-
-        return back()->with(
-            'success',
-            "Eliminati {$totalDeleted} log più vecchi di " . $threshold->format('d/m/Y') . "."
-        );
+        return back()->with('success', 'Pulizia log avviata in background.');
     }
 }
