@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class ResetAllRecuperiJob implements ShouldQueue
+class ResetCorsistiTrimestraleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class ResetAllRecuperiJob implements ShouldQueue
             'started_at' => now(),
         ]);
 
-        $lockName = 'bulk:reset_all_recuperi';
+        $lockName = 'bulk:reset_corsisti_trimestrale';
         $locked = DB::selectOne("SELECT GET_LOCK(?, 0) AS l", [$lockName])->l ?? 0;
 
         if ((int) $locked !== 1) {
@@ -43,16 +43,18 @@ class ResetAllRecuperiJob implements ShouldQueue
         }
 
         try {
-            $affected = User::query()->update([
-                'Nrecuperi' => 0,
-                'updated_at' => now(),
-            ]);
+            $affected = User::where('is_corsista', true)
+                ->where('trimestrale', true)
+                ->update([
+                    'trimestrale' => false,
+                    'updated_at' => now(),
+                ]);
 
             $op->update([
                 'status' => 'completed',
                 'finished_at' => now(),
                 'affected_rows' => $affected,
-                'message' => "Completato. Aggiornati {$affected} utenti (Nrecuperi=0).",
+                'message' => "Completato. Impostato trimestrale=false per {$affected} corsisti.",
             ]);
         } catch (\Throwable $e) {
             $op->update([

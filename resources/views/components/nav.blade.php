@@ -70,46 +70,64 @@
             </ul>
 
             @if (Auth::check() && Auth::user()->is_admin)
-            {{-- !TASTO ELIMINA MASSIVO DEI LOG PRIMA DI 4 MESI --}}
-            {{-- <form method="POST" action="{{ route('admin.logs.purge_old') }}" class="d-inline"
+                {{-- !TASTO ELIMINA MASSIVO DEI LOG PRIMA DI 4 MESI --}}
+                {{-- <form method="POST" action="{{ route('admin.logs.purge_old') }}" class="d-inline"
                     onsubmit="return confirm('Eliminare TUTTI i log più vecchi di 4 mesi? Operazione irreversibile.');">
                     @csrf
-                    <button type="submit" class="btn btn-danger">
+                    <button type="submit" class="btn btn-danger" onclick="this.disabled=true; this.innerText='Avvio...'; this.form.submit();">
                         Pulisci log (> 4 mesi)
                     </button>
                 </form> --}}
-            {{-- !FINE TASTO ELIMINA MASSIVO DEI LOG PRIMA 4 DI MESI --}}
-            {{-- !TASTO ELIMINA MASSIVO DEI GRUPPI --}}
-            {{-- <form action="{{ route('groups.deleteAll') }}" method="POST"
+                {{-- !FINE TASTO ELIMINA MASSIVO DEI LOG PRIMA 4 DI MESI --}}
+                {{-- !TASTO ELIMINA MASSIVO DEI GRUPPI --}}
+                {{-- <form action="{{ route('groups.deleteAll') }}" method="POST"
                 onsubmit="return confirm('Sei sicuro di voler eliminare tutti i gruppi? Questa azione non è reversibile!')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="btn btn-danger" onclick="this.disabled=true; this.innerText='Avvio...'; this.form.submit();">
                     Elimina tutti i gruppi
                 </button>
             </form> --}}
-            {{-- !FINE TASTO ELIMINA MASSIVO DEI GRUPPI --}}
-            {{-- !TASTO AZZERA RECUPERI --}}
-            {{-- <form action="{{ route('students.resetRecuperi') }}" method="POST"
+                {{-- !FINE TASTO ELIMINA MASSIVO DEI GRUPPI --}}
+                {{-- !TASTO AZZERA RECUPERI --}}
+                {{-- <form action="{{ route('students.resetRecuperi') }}" method="POST"
                 onsubmit="return confirm('Vuoi davvero azzerare tutti i Nrecuperi degli studenti?')">
                 @csrf
                 @method('PATCH')
-                <button type="submit" class="btn btn-warning">
+                <button type="submit" class="btn btn-danger" onclick="this.disabled=true; this.innerText='Avvio...'; this.form.submit();">
                     Azzera tutti i Nrecuperi
                 </button>
             </form> --}}
-            {{-- !FINE TASTO AZZERA RECUPERI --}}
-            <div class="d-flex flex-wrap justify-content-end" role="group" aria-label="Azioni rapide Admin">
-                <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('corsista.register') }}">
-                    Registra Corsista
-                </a>
-                <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('trainer.register') }}">
-                    Registra Allenatore
-                </a>
-                <a class="btn custom-btn-primary-nav mb-2" href="{{ route('admin.register') }}">
-                    Registra Admin
-                </a>
-            </div>
+                {{-- !FINE TASTO AZZERA RECUPERI --}}
+                {{-- !TASTO RESET FLAG CORSISTI --}}
+                {{-- <form method="POST" action="{{ route('admin.users.corsisti.reset-flags') }}" class="d-inline"
+                    onsubmit="return confirm('Vuoi davvero resettare tutti i flag (universitario, pagamento, visita medica, cus card) per TUTTI i corsisti?');">
+                    @csrf
+                    <button type="submit" class="btn btn-danger" onclick="this.disabled=true; this.innerText='Avvio...'; this.form.submit();">
+                        Reset flag corsisti
+                    </button>
+                </form> --}}
+                {{-- !FINE TASTO RESET FLAG CORSISTI --}}
+                {{-- !TASTO RESET TRIMESTRALE CORSISTI --}}
+                {{-- <form method="POST" action="{{ route('admin.users.corsisti.reset-trimestrale') }}"
+                    onsubmit="return confirm('Vuoi impostare trimestrale = false per tutti i corsisti?');">
+                    @csrf
+                    <button type="submit" class="btn btn-danger" onclick="this.disabled=true; this.innerText='Avvio...'; this.form.submit();">
+                        Reset trimestrale corsisti
+                    </button>
+                </form> --}}
+                {{-- !FINE TASTO RESET TRIMESTRALE CORSISTI --}}
+                <div class="d-flex flex-wrap justify-content-end" role="group" aria-label="Azioni rapide Admin">
+                    <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('corsista.register') }}">
+                        Registra Corsista
+                    </a>
+                    <a class="btn custom-btn-primary-nav me-2 mb-2" href="{{ route('trainer.register') }}">
+                        Registra Allenatore
+                    </a>
+                    <a class="btn custom-btn-primary-nav mb-2" href="{{ route('admin.register') }}">
+                        Registra Admin
+                    </a>
+                </div>
             @endif
         </div>
     </div>

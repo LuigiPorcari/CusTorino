@@ -20,6 +20,10 @@
         <li class="nav-item admin-nav-item mt-3">
             <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
         </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link bg-danger" href="{{ route('admin.maintenance') }}"
+                aria-label="Pagina manutenzione">Manutenzione</a>
+        </li>
     </ul>
 
     <main class="container mt-5 admin-trainer-details" id="main-content">

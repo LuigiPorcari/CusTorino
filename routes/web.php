@@ -1,27 +1,28 @@
 <?php
 
 
-use App\Http\Middleware\CheckAdmin;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Middleware\CheckStudent;
-use App\Http\Middleware\CheckTrainer;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LogController;
 use App\Exports\AllTrainersSalaryExport;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AliasController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\BulkOperationController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
-use App\Http\Controllers\PasswordController;
+use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckAdminOrTrainer;
-use App\Http\Controllers\AvailabilityController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Middleware\CheckStudent;
+use App\Http\Middleware\CheckTrainer;
+use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 Route::get('/export-db', [ExportController::class, 'export']);
@@ -109,6 +110,10 @@ Route::middleware(CheckAdmin::class)->group(function () {
     Route::get('/admin/dashboard/student', [AdminController::class, 'dashboardStudent'])->name('admin.dashboard.student');
     Route::post('/admin/dashboard/update/{student}', [AdminController::class, 'updateStudent'])->name('admin.update.student');
     Route::patch('/students/reset-recuperi', [AdminController::class, 'resetAllRecuperi'])->name('students.resetRecuperi');
+    Route::post('/admin/users/corsisti/reset-trimestrale', [AdminController::class, 'resetCorsistiTrimestrale'])->name('admin.users.corsisti.reset-trimestrale');
+    //! ROTTE ADMIN MANUTANZIONE
+    Route::get('/admin/maintenance/{id?}', [AdminController::class, 'maintenance'])->name('admin.maintenance');
+    Route::get('/admin/bulk-operations/{id}/status', [BulkOperationController::class, 'status'])->name('admin.bulk-operations.status');
 });
 //!MIDDLEWERE TRAINER
 Route::middleware(CheckTrainer::class)->group(function () {

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Jobs\PurgeOldLogsJob;
 use App\Jobs\ResetAllRecuperiJob;
 use App\Jobs\ResetCorsistiFlagsJob;
+use App\Jobs\ResetCorsistiTrimestraleJob;
 use App\Models\Alias;
+use App\Models\BulkOperation;
 use App\Models\Group;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -368,67 +369,67 @@ class AdminController extends Controller
     }
 
 
-
-
-    // public function resetCorsistiFlags(): RedirectResponse
-    // {
-    //     $affected = User::where('is_corsista', true)->update([
-    //         'universitario' => false,
-    //         'pagamento' => false,
-    //         'visita_medica' => false,
-    //         'cus_card' => false,
-    //         'updated_at' => now(),
-    //     ]);
-
-    //     return back()->with('success', "Reset effettuato su {$affected} corsista/e.");
-    // }
-    // public function purgeOld(): RedirectResponse
-    // {
-    //     $threshold = now()->subMonths(4);
-    //     $totalDeleted = 0;
-    //     // Se la tabella è enorme, cancelliamo a blocchi di 10k ID
-    //     DB::table('logs')
-    //         ->where('created_at', '<', $threshold)
-    //         ->orderBy('id')
-    //         ->chunkById(10000, function ($rows) use (&$totalDeleted) {
-    //             $ids = $rows->pluck('id');
-    //             $deleted = DB::table('logs')->whereIn('id', $ids)->delete();
-    //             $totalDeleted += $deleted;
-    //         });
-
-    //     return back()->with(
-    //         'success',
-    //         "Eliminati {$totalDeleted} log più vecchi di " . $threshold->format('d/m/Y') . "."
-    //     );
-    // }
-    // public function resetAllRecuperi()
-    // {
-    //     // Aggiorna in blocco tutti gli utenti, mettendo Nrecuperi = 0
-    //     User::query()->update(['Nrecuperi' => 0]);
-
-    //     return redirect(route('admin.dashboard.student'))
-    //         ->with('success', 'Tutti i Nrecuperi sono stati azzerati con successo');
-    // }
-
-    public function resetAllRecuperi()
+    public function resetCorsistiTrimestrale()
     {
-        ResetAllRecuperiJob::dispatch();
+        $op = BulkOperation::create([
+            'user_id' => auth()->id(),
+            'type' => 'reset_corsisti_trimestrale',
+            'status' => 'queued',
+        ]);
 
-        return redirect(route('admin.dashboard.student'))
+        ResetCorsistiTrimestraleJob::dispatch($op->id);
+
+        return redirect()->route('admin.maintenance', ['id' => $op->id])
+            ->with('success', 'Operazione avviata in background.');
+    }
+    public function resetAllRecuperi(): RedirectResponse
+    {
+        $op = BulkOperation::create([
+            'user_id' => auth()->id(),
+            'type' => 'reset_all_recuperi',
+            'status' => 'queued',
+        ]);
+
+        ResetAllRecuperiJob::dispatch($op->id);
+
+        return redirect()->route('admin.maintenance', ['id' => $op->id])
+            ->with('success', 'Operazione avviata in background.');
+    }
+    public function resetCorsistiFlags(): RedirectResponse
+    {
+        $op = BulkOperation::create([
+            'user_id' => auth()->id(),
+            'type' => 'reset_corsisti_flags',
+            'status' => 'queued',
+        ]);
+
+        ResetCorsistiFlagsJob::dispatch($op->id);
+
+        return redirect()->route('admin.maintenance', ['id' => $op->id])
+            ->with('success', 'Operazione avviata in background.');
+    }
+    public function purgeOld(): RedirectResponse
+    {
+        $op = BulkOperation::create([
+            'user_id' => auth()->id(),
+            'type' => 'purge_old_logs_4m',
+            'status' => 'queued',
+        ]);
+
+        PurgeOldLogsJob::dispatch($op->id, 4);
+
+        return redirect()->route('admin.maintenance', ['id' => $op->id])
             ->with('success', 'Operazione avviata in background.');
     }
 
-    public function resetCorsistiFlags(): RedirectResponse
+    public function maintenance(?int $id = null)
     {
-        ResetCorsistiFlagsJob::dispatch();
+        $op = null;
 
-        return back()->with('success', 'Reset corsisti avviato in background.');
-    }
+        if ($id) {
+            $op = BulkOperation::find($id); // oppure findOrFail se vuoi 404 se id non esiste
+        }
 
-    public function purgeOld(): RedirectResponse
-    {
-        PurgeOldLogsJob::dispatch(4);
-
-        return back()->with('success', 'Pulizia log avviata in background.');
+        return view('dashboard.maintenance', compact('op'));
     }
 }

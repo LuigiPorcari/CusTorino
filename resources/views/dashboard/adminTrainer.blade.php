@@ -1,28 +1,32 @@
 <x-layout documentTitle="Admin Trainer Dashboard">
-        <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-3" role="navigation" aria-label="Navigazione amministrativa">
-            <li class="nav-item admin-nav-item mt-3" role="presentation">
-                <a class="nav-link" href="{{ route('admin.dashboard') }}" role="tab">Gruppi</a>
-            </li>
-            <li class="nav-item admin-nav-item mt-3" role="presentation">
-                <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}"
-                    role="tab">Allenatori</a>
-            </li>
-            <li class="nav-item admin-nav-item mt-3" role="presentation">
-                <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}"
-                    role="tab">
-                    Corsisti
-                </a>
-            </li>
-            <li class="nav-item admin-nav-item mt-3" role="presentation">
-                <a class="nav-link" href="{{ route('admin.week') }}" role="tab">Settimana</a>
-            </li>
-            {{-- <li class="nav-item admin-nav-item mt-3">
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-3" role="navigation" aria-label="Navigazione amministrativa">
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}" role="tab">Gruppi</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.dashboard.trainer') }}"
+                role="tab">Allenatori</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link" href="{{ route('admin.dashboard.student', session('student_filters', [])) }}"
+                role="tab">
+                Corsisti
+            </a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link" href="{{ route('admin.week') }}" role="tab">Settimana</a>
+        </li>
+        {{-- <li class="nav-item admin-nav-item mt-3">
                 <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
             </li> --}}
-            <li class="nav-item admin-nav-item mt-3" role="presentation">
-                <a class="nav-link" href="{{ route('logs.index') }}" role="tab">Log</a>
-            </li>
-        </ul>
+        <li class="nav-item admin-nav-item mt-3" role="presentation">
+            <a class="nav-link" href="{{ route('logs.index') }}" role="tab">Log</a>
+        </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link bg-danger" href="{{ route('admin.maintenance') }}"
+                aria-label="Pagina manutenzione">Manutenzione</a>
+        </li>
+    </ul>
 
     @if (session('success'))
         <div class="alert alert-dismissible custom-alert-success" role="alert">

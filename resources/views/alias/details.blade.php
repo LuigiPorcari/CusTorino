@@ -1,38 +1,42 @@
 <x-layout documentTitle="Dettagli Alias">
-        <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-3" role="navigation" aria-label="Navigazione amministrazione">
-            @if (Auth::check() && Auth::user()->is_admin)
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link"
-                        href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">Corsisti</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('admin.week') }}">Settimana</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
-                </li>
-            @endif
-            @if (Auth::check() && Auth::user()->is_trainer)
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('trainer.dashboard') }}">Settimana</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('trainer.group') }}">Gruppi</a>
-                </li>
-                <li class="nav-item admin-nav-item mt-3">
-                    <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
-                </li>
-            @endif
-        </ul>
+    <ul class="nav nav-tabs admin-nav-tabs z-3 pt-5 pt-md-3" role="navigation" aria-label="Navigazione amministrazione">
+        @if (Auth::check() && Auth::user()->is_admin)
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.dashboard.trainer') }}">Allenatori</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link"
+                    href="{{ route('admin.dashboard.student', session('student_filters', [])) }}">Corsisti</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.week') }}">Settimana</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('admin.availabilities.groups') }}">Disponibilità</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('logs.index') }}">Log</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link bg-danger" href="{{ route('admin.maintenance') }}"
+                    aria-label="Pagina manutenzione">Manutenzione</a>
+            </li>
+        @endif
+        @if (Auth::check() && Auth::user()->is_trainer)
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('trainer.dashboard') }}">Settimana</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('trainer.group') }}">Gruppi</a>
+            </li>
+            <li class="nav-item admin-nav-item mt-3">
+                <a class="nav-link" href="{{ route('trainer.salary') }}">Compensi</a>
+            </li>
+        @endif
+    </ul>
 
     <main class="container mt-5 pt-5" id="main-content">
         <header class="pt-5 pt-md-0">

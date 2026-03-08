@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\BulkOperation;
-use App\Models\User;
+use App\Models\Group;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class ResetAllRecuperiJob implements ShouldQueue
+class DeleteAllGroupsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class ResetAllRecuperiJob implements ShouldQueue
             'started_at' => now(),
         ]);
 
-        $lockName = 'bulk:reset_all_recuperi';
+        $lockName = 'bulk:delete_all_groups';
         $locked = DB::selectOne("SELECT GET_LOCK(?, 0) AS l", [$lockName])->l ?? 0;
 
         if ((int) $locked !== 1) {
@@ -43,16 +43,36 @@ class ResetAllRecuperiJob implements ShouldQueue
         }
 
         try {
-            $affected = User::query()->update([
-                'Nrecuperi' => 0,
-                'updated_at' => now(),
-            ]);
+            $deletedGroups = 0;
+
+            Group::query()
+                ->select('id')
+                ->orderBy('id')
+                ->chunkById(100, function ($groups) use (&$deletedGroups) {
+                    foreach ($groups as $g) {
+                        DB::transaction(function () use ($g, &$deletedGroups) {
+                            $group = Group::with('aliases')->find($g->id);
+                            if (!$group)
+                                return;
+
+                            foreach ($group->aliases as $alias) {
+                                $alias->users()->sync([]);
+                            }
+
+                            $group->aliases()->delete();
+                            $group->users()->sync([]);
+                            $group->delete();
+
+                            $deletedGroups++;
+                        });
+                    }
+                });
 
             $op->update([
                 'status' => 'completed',
                 'finished_at' => now(),
-                'affected_rows' => $affected,
-                'message' => "Completato. Aggiornati {$affected} utenti (Nrecuperi=0).",
+                'affected_rows' => $deletedGroups,
+                'message' => "Completato. Eliminati {$deletedGroups} gruppi.",
             ]);
         } catch (\Throwable $e) {
             $op->update([

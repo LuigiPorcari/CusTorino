@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DeleteAllGroupsJob;
+use App\Models\Alias;
+use App\Models\BulkOperation;
+use App\Models\Group;
 use App\Models\User;
 use Carbon\Carbon;
-use App\Models\Alias;
-use App\Models\Group;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -259,24 +262,18 @@ class GroupController extends Controller
         return redirect(route('admin.dashboard'))->with('success', 'Gruppo cancellato');
     }
 
-    public function deleteAll()
+    public function deleteAll(): RedirectResponse
     {
-        $array_vuoto = [];
-        $groups = Group::all();
+        $op = BulkOperation::create([
+            'user_id' => auth()->id(),
+            'type' => 'delete_all_groups',
+            'status' => 'queued',
+        ]);
 
-        foreach ($groups as $group) {
-            foreach ($group->aliases as $alias) {
-                $alias->users()->sync($array_vuoto);
-            }
+        DeleteAllGroupsJob::dispatch($op->id);
 
-            // Elimina tutti gli alias del gruppo
-            $group->aliases()->delete();
-            // Scollega gli utenti dal gruppo
-            $group->users()->sync($array_vuoto);
-            // Elimina il gruppo
-            $group->delete();
-        }
-        return redirect(route('admin.dashboard'))->with('success', 'Tutti i gruppi sono stati cancellati');
+        return redirect()->route('admin.maintenance', ['id' => $op->id])
+            ->with('success', 'Operazione avviata in background.');
     }
 
     public function deleteAlias(Alias $alias)

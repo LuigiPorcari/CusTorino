@@ -21,6 +21,10 @@
         <li class="nav-item admin-nav-item mt-3" role="presentation">
             <a class="nav-link" href="{{ route('logs.index') }}" aria-label="Pagina log">Log</a>
         </li>
+        <li class="nav-item admin-nav-item mt-3">
+            <a class="nav-link bg-danger" href="{{ route('admin.maintenance') }}"
+                aria-label="Pagina manutenzione">Manutenzione</a>
+        </li>
     </ul>
 
     <main>
