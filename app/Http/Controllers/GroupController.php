@@ -110,40 +110,112 @@ class GroupController extends Controller
 
         return view('groups.edit', compact('group', 'trainers', 'students'));
     }
+    // public function update(Request $request, Group $group)
+    // {
+    //     $group->update([
+    //         'nome' => $request->nome,
+    //         'giorno_settimana' => $request->giorno_settimana,
+    //         'orario' => $request->orario,
+    //         'campo' => $request->campo,
+    //         'tipo' => $request->tipo,
+    //         'primo_allenatore_id' => $request->primo_allenatore_id,
+    //         'secondo_allenatore_id' => $request->secondo_allenatore_id,
+    //         'condiviso' => $request->condiviso,
+    //         'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
+    //         'livello' => $request->livello,
+    //         'location' => $request->location,
+    //     ]);
+
+    //     // Modifica dei gruppi alias
+    //     foreach ($group->aliases as $alias) {
+    //         $alias->update([
+    //             'nome' => $request->nome,
+    //             'group_id' => $group->id,
+    //             'orario' => $request->orario,
+    //             'campo' => $request->campo,
+    //             'tipo' => $request->tipo,
+    //             'primo_allenatore_id' => $request->primo_allenatore_id,
+    //             'secondo_allenatore_id' => $request->secondo_allenatore_id,
+    //             'condiviso' => $request->condiviso,
+    //             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
+    //             'livello' => $request->livello,
+    //             'location' => $request->location,
+    //         ]);
+    //     }
+    //     return redirect(route('admin.group.details', compact('group')))->with('success', 'Gruppo modificato con successo');
+    // }
+    
+    
+    
+    
     public function update(Request $request, Group $group)
-    {
-        $group->update([
+{
+    $oldPrimoAllenatoreId = $group->primo_allenatore_id;
+    $oldSecondoAllenatoreId = $group->secondo_allenatore_id;
+
+    $group->update([
+        'nome' => $request->nome,
+        'giorno_settimana' => $request->giorno_settimana,
+        'orario' => $request->orario,
+        'campo' => $request->campo,
+        'tipo' => $request->tipo,
+        'primo_allenatore_id' => $request->primo_allenatore_id,
+        'secondo_allenatore_id' => $request->secondo_allenatore_id,
+        'condiviso' => $request->condiviso,
+        'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
+        'livello' => $request->livello,
+        'location' => $request->location,
+    ]);
+
+    foreach ($group->aliases as $alias) {
+        $data = [
             'nome' => $request->nome,
-            'giorno_settimana' => $request->giorno_settimana,
+            'group_id' => $group->id,
             'orario' => $request->orario,
             'campo' => $request->campo,
             'tipo' => $request->tipo,
-            'primo_allenatore_id' => $request->primo_allenatore_id,
-            'secondo_allenatore_id' => $request->secondo_allenatore_id,
             'condiviso' => $request->condiviso,
             'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
             'livello' => $request->livello,
             'location' => $request->location,
-        ]);
+        ];
 
-        // Modifica dei gruppi alias
-        foreach ($group->aliases as $alias) {
-            $alias->update([
-                'nome' => $request->nome,
-                'group_id' => $group->id,
-                'orario' => $request->orario,
-                'campo' => $request->campo,
-                'tipo' => $request->tipo,
-                'primo_allenatore_id' => $request->primo_allenatore_id,
-                'secondo_allenatore_id' => $request->secondo_allenatore_id,
-                'condiviso' => $request->condiviso,
-                'numero_massimo_partecipanti' => $request->numero_massimo_partecipanti,
-                'livello' => $request->livello,
-                'location' => $request->location,
-            ]);
+        if ($alias->primo_allenatore_id == $oldPrimoAllenatoreId) {
+            $data['primo_allenatore_id'] = $request->primo_allenatore_id;
         }
-        return redirect(route('admin.group.details', compact('group')))->with('success', 'Gruppo modificato con successo');
+
+        if ($alias->secondo_allenatore_id == $oldSecondoAllenatoreId) {
+            $data['secondo_allenatore_id'] = $request->secondo_allenatore_id;
+        }
+
+        $alias->update($data);
     }
+
+    return redirect(route('admin.group.details', compact('group')))
+        ->with('success', 'Gruppo modificato con successo');
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public function createStudent(Request $request, Group $group)
     {
         // Inizializza gli studenti precedenti come array vuoto se non esistono
