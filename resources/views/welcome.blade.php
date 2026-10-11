@@ -25,7 +25,7 @@
                 data-bs-interval="2500">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="{{ asset('img/2025.jpeg') }}" class="d-block w-100"
+                        <img src="{{ asset('img/2026.jpeg') }}" class="d-block w-100"
                             alt="Allenamento di gruppo all'aperto">
                     </div>
                     {{-- <div class="carousel-item">

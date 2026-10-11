@@ -62,6 +62,14 @@
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="orario">Orario</label>
                                     <select class="custom-form-input" id="orario" name="orario" required>
+                                        <option value="09:00">09:00</option>
+                                        <option value="09:30">09:30</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="10:30">10:30</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="11:30">11:30</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="12:30">12:30</option>
                                         <option value="13:00">13:00</option>
                                         <option value="13:30">13:30</option>
                                         <option value="14:00">14:00</option>

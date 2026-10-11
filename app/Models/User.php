@@ -117,9 +117,9 @@ class User extends Authenticatable
         $aliasesPrimoAllenatore = Alias::where('primo_allenatore_id', $trainer->id)->get();
         foreach ($aliasesPrimoAllenatore as $alias) {
             if ($alias->condiviso == "true") {
-                $stipendio += 15.00;
+                $stipendio += 17.50;
             } else {
-                $stipendio += 22.50;
+                $stipendio += 25.00;
             }
         }
 
@@ -127,9 +127,9 @@ class User extends Authenticatable
         $aliasesSecondoAllenatore = Alias::where('secondo_allenatore_id', $trainer->id)->get();
         foreach ($aliasesSecondoAllenatore as $alias) {
             if ($alias->condiviso == "true") {
-                $stipendio += 15.00;
+                $stipendio += 17.50;
             } else {
-                $stipendio += 7.50;
+                $stipendio += 10.00;
             }
         }
 

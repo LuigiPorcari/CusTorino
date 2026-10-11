@@ -81,9 +81,9 @@
                                 <td
                                     class="{{ \Carbon\Carbon::parse($alias->data_allenamento)->lt(\Carbon\Carbon::today()) ? 'bg-green-salary text-white' : '' }}">
                                     @if ($alias->primo_allenatore_id == $trainer->id)
-                                        {{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}
+                                        {{ $alias->condiviso == 'true' ? '17.50 €' : '25.00 €' }}
                                     @else
-                                        {{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}
+                                        {{ $alias->condiviso == 'true' ? '17.50 €' : '10.00 €' }}
                                     @endif
                                 </td>
                             </tr>

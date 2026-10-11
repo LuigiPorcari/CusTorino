@@ -65,9 +65,9 @@
                                     </td>
                                     <td class="{{ $rowClass }}">
                                         @if ($alias->primo_allenatore_id == Auth::user()->id)
-                                            {{ $alias->condiviso == 'true' ? '15.00 €' : '22.50 €' }}
+                                            {{ $alias->condiviso == 'true' ? '17.50 €' : '25.00 €' }}
                                         @else
-                                            {{ $alias->condiviso == 'true' ? '15.00 €' : '7.50 €' }}
+                                            {{ $alias->condiviso == 'true' ? '17.50 €' : '10.00 €' }}
                                         @endif
                                     </td>
                                 </tr>
