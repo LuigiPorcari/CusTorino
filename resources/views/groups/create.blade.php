@@ -153,11 +153,12 @@
                                 <div class="mb-3">
                                     <label class="custom-form-label" for="numero_massimo_partecipanti">Numero
                                         Partecipanti</label>
-                                    <select class="custom-form-input" id="numero_massimo_partecipanti"
-                                        name="numero_massimo_partecipanti" required>
+                                    <select class="custom-form-input" id="numero_massimo_partecipanti" name="numero_massimo_partecipanti" required>
+                                        <option value="4">4</option>
                                         <option value="6">6</option>
                                         <option value="8">8</option>
                                         <option value="10">10</option>
+                                        <option value="14">14</option>
                                         <option value="16">16</option>
                                     </select>
                                 </div>
